@@ -1,0 +1,23 @@
+rootProject.name = 'daybyday'
+include ':react-native-send-intent'
+project(':react-native-send-intent').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-send-intent/android')
+include ':react-native-splash-screen'   
+project(':react-native-splash-screen').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-splash-screen/android')
+include ':react-native-pager-view'
+project(':react-native-pager-view').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-pager-view/android')
+include ':react-native-camera'
+project(':react-native-camera').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-camera/android')
+include ':@react-native-community_viewpager'
+project(':@react-native-community_viewpager').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/viewpager/android')
+//react-native-sensitive-info testing
+include ':react-native-sensitive-info'
+project(':react-native-sensitive-info').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-sensitive-info/android')
+
+//react-native-config
+include ':react-native-config'
+project(':react-native-config').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-config/android')
+
+//react-native-googlesignin
+include ':react-native-google-signin', ':app'
+apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+include ':app'

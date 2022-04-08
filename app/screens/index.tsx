@@ -1,5 +1,5 @@
-import LogIn from './Auth/LogIn';
-import SignUp from './Auth/SignUp';
+import LogIn from './Auth/login';
+import SignUp from './Auth/signup';
 import Complete from './MainTab/Complete';
 import Ing from './MainTab/Ing';
 import Orders from './MainTab/Orders';

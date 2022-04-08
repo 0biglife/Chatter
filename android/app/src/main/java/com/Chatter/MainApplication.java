@@ -1,4 +1,4 @@
-package com.daybyday;
+package com.chatter;
 
 import android.app.Application;
 import android.content.Context;

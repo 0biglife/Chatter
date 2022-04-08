@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* daybydayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* daybydayTests.m */; };
+		00E356F31AD99517003FC87E /* ChatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ChatterTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -15,8 +15,8 @@
 		32B9B8E3274F60DA002CBF60 /* dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B9B8E2274F60DA002CBF60 /* dummy.swift */; };
 		32D538C127EB2C72006C988D /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32D678232787EE7900ED9EC7 /* SplashScreen.storyboard */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		A78FC2BF43C86C239619464D /* libPods-daybyday.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 99CE37595412A0E616AC3E72 /* libPods-daybyday.a */; };
-		D3B416F63923F2F17582EA12 /* libPods-daybyday-daybydayTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8888A6BCB6EB8BBFE9C912AE /* libPods-daybyday-daybydayTests.a */; };
+		A78FC2BF43C86C239619464D /* libPods-Chatter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 99CE37595412A0E616AC3E72 /* libPods-Chatter.a */; };
+		D3B416F63923F2F17582EA12 /* libPods-Chatter-ChatterTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8888A6BCB6EB8BBFE9C912AE /* libPods-Chatter-ChatterTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,20 +25,20 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = daybyday;
+			remoteInfo = Chatter;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00E356EE1AD99517003FC87E /* daybydayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = daybydayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* ChatterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChatterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* daybydayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = daybydayTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* daybyday.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = daybyday.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = daybyday/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = daybyday/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = daybyday/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = daybyday/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = daybyday/main.m; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* ChatterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatterTests.m; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* Chatter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chatter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Chatter/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Chatter/AppDelegate.m; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Chatter/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Chatter/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Chatter/main.m; sourceTree = "<group>"; };
 		322594DE2775BA33000CF4D4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		32B9B8D1274F2B5E002CBF60 /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		32B9B8D2274F2B5E002CBF60 /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
@@ -56,16 +56,16 @@
 		32B9B8DE274F2B5F002CBF60 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		32B9B8DF274F2B5F002CBF60 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		32B9B8E0274F2B5F002CBF60 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
-		32B9B8E1274F60DA002CBF60 /* daybyday-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "daybyday-Bridging-Header.h"; sourceTree = "<group>"; };
+		32B9B8E1274F60DA002CBF60 /* Chatter-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Chatter-Bridging-Header.h"; sourceTree = "<group>"; };
 		32B9B8E2274F60DA002CBF60 /* dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dummy.swift; sourceTree = "<group>"; };
 		32D678232787EE7900ED9EC7 /* SplashScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
-		70831612965C0D813A60C320 /* Pods-daybyday.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-daybyday.debug.xcconfig"; path = "Target Support Files/Pods-daybyday/Pods-daybyday.debug.xcconfig"; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = daybyday/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		8888A6BCB6EB8BBFE9C912AE /* libPods-daybyday-daybydayTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-daybyday-daybydayTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		99CE37595412A0E616AC3E72 /* libPods-daybyday.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-daybyday.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B859961B80CEE41997884D6F /* Pods-daybyday.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-daybyday.release.xcconfig"; path = "Target Support Files/Pods-daybyday/Pods-daybyday.release.xcconfig"; sourceTree = "<group>"; };
-		D683FEFF0025978389C0F5AD /* Pods-daybyday-daybydayTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-daybyday-daybydayTests.release.xcconfig"; path = "Target Support Files/Pods-daybyday-daybydayTests/Pods-daybyday-daybydayTests.release.xcconfig"; sourceTree = "<group>"; };
-		DCB255D12290AF0C8E3971F3 /* Pods-daybyday-daybydayTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-daybyday-daybydayTests.debug.xcconfig"; path = "Target Support Files/Pods-daybyday-daybydayTests/Pods-daybyday-daybydayTests.debug.xcconfig"; sourceTree = "<group>"; };
+		70831612965C0D813A60C320 /* Pods-Chatter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatter.debug.xcconfig"; path = "Target Support Files/Pods-Chatter/Pods-Chatter.debug.xcconfig"; sourceTree = "<group>"; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Chatter/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8888A6BCB6EB8BBFE9C912AE /* libPods-Chatter-ChatterTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Chatter-ChatterTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		99CE37595412A0E616AC3E72 /* libPods-Chatter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Chatter.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B859961B80CEE41997884D6F /* Pods-Chatter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatter.release.xcconfig"; path = "Target Support Files/Pods-Chatter/Pods-Chatter.release.xcconfig"; sourceTree = "<group>"; };
+		D683FEFF0025978389C0F5AD /* Pods-Chatter-ChatterTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatter-ChatterTests.release.xcconfig"; path = "Target Support Files/Pods-Chatter-ChatterTests/Pods-Chatter-ChatterTests.release.xcconfig"; sourceTree = "<group>"; };
+		DCB255D12290AF0C8E3971F3 /* Pods-Chatter-ChatterTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatter-ChatterTests.debug.xcconfig"; path = "Target Support Files/Pods-Chatter-ChatterTests/Pods-Chatter-ChatterTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -74,7 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3B416F63923F2F17582EA12 /* libPods-daybyday-daybydayTests.a in Frameworks */,
+				D3B416F63923F2F17582EA12 /* libPods-Chatter-ChatterTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,20 +82,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A78FC2BF43C86C239619464D /* libPods-daybyday.a in Frameworks */,
+				A78FC2BF43C86C239619464D /* libPods-Chatter.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* daybydayTests */ = {
+		00E356EF1AD99517003FC87E /* ChatterTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* daybydayTests.m */,
+				00E356F21AD99517003FC87E /* ChatterTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = daybydayTests;
+			path = ChatterTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -106,7 +106,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* daybyday */ = {
+		13B07FAE1A68108700A75B9A /* Chatter */ = {
 			isa = PBXGroup;
 			children = (
 				322594DE2775BA33000CF4D4 /* GoogleService-Info.plist */,
@@ -118,15 +118,15 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = daybyday;
+			name = Chatter;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				99CE37595412A0E616AC3E72 /* libPods-daybyday.a */,
-				8888A6BCB6EB8BBFE9C912AE /* libPods-daybyday-daybydayTests.a */,
+				99CE37595412A0E616AC3E72 /* libPods-Chatter.a */,
+				8888A6BCB6EB8BBFE9C912AE /* libPods-Chatter-ChatterTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -166,13 +166,13 @@
 			children = (
 				32D678232787EE7900ED9EC7 /* SplashScreen.storyboard */,
 				32B9B8E2274F60DA002CBF60 /* dummy.swift */,
-				13B07FAE1A68108700A75B9A /* daybyday */,
+				13B07FAE1A68108700A75B9A /* Chatter */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* daybydayTests */,
+				00E356EF1AD99517003FC87E /* ChatterTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				E233CBF5F47BEE60B243DCF8 /* Pods */,
-				32B9B8E1274F60DA002CBF60 /* daybyday-Bridging-Header.h */,
+				32B9B8E1274F60DA002CBF60 /* Chatter-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -182,8 +182,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* daybyday.app */,
-				00E356EE1AD99517003FC87E /* daybydayTests.xctest */,
+				13B07F961A680F5B00A75B9A /* Chatter.app */,
+				00E356EE1AD99517003FC87E /* ChatterTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -191,10 +191,10 @@
 		E233CBF5F47BEE60B243DCF8 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				70831612965C0D813A60C320 /* Pods-daybyday.debug.xcconfig */,
-				B859961B80CEE41997884D6F /* Pods-daybyday.release.xcconfig */,
-				DCB255D12290AF0C8E3971F3 /* Pods-daybyday-daybydayTests.debug.xcconfig */,
-				D683FEFF0025978389C0F5AD /* Pods-daybyday-daybydayTests.release.xcconfig */,
+				70831612965C0D813A60C320 /* Pods-Chatter.debug.xcconfig */,
+				B859961B80CEE41997884D6F /* Pods-Chatter.release.xcconfig */,
+				DCB255D12290AF0C8E3971F3 /* Pods-Chatter-ChatterTests.debug.xcconfig */,
+				D683FEFF0025978389C0F5AD /* Pods-Chatter-ChatterTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -202,9 +202,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* daybydayTests */ = {
+		00E356ED1AD99517003FC87E /* ChatterTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "daybydayTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "ChatterTests" */;
 			buildPhases = (
 				0EE6F03243C5E21895AE44BA /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -218,14 +218,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = daybydayTests;
-			productName = daybydayTests;
-			productReference = 00E356EE1AD99517003FC87E /* daybydayTests.xctest */;
+			name = ChatterTests;
+			productName = ChatterTests;
+			productReference = 00E356EE1AD99517003FC87E /* ChatterTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* daybyday */ = {
+		13B07F861A680F5B00A75B9A /* Chatter */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "daybyday" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Chatter" */;
 			buildPhases = (
 				3756C62F52B36F9B9653E388 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -241,9 +241,9 @@
 			);
 			dependencies = (
 			);
-			name = daybyday;
-			productName = daybyday;
-			productReference = 13B07F961A680F5B00A75B9A /* daybyday.app */;
+			name = Chatter;
+			productName = Chatter;
+			productReference = 13B07F961A680F5B00A75B9A /* Chatter.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -263,7 +263,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "daybyday" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Chatter" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -276,8 +276,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* daybyday */,
-				00E356ED1AD99517003FC87E /* daybydayTests */,
+				13B07F861A680F5B00A75B9A /* Chatter */,
+				00E356ED1AD99517003FC87E /* ChatterTests */,
 			);
 		};
 /* End PBXProject section */
@@ -333,7 +333,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-daybyday-daybydayTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Chatter-ChatterTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -355,7 +355,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-daybyday-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Chatter-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -381,15 +381,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-daybyday/Pods-daybyday-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Chatter/Pods-Chatter-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-daybyday/Pods-daybyday-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Chatter/Pods-Chatter-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-daybyday/Pods-daybyday-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Chatter/Pods-Chatter-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8BB5086BC358688F16F9C9CE /* [CP] Copy Pods Resources */ = {
@@ -398,15 +398,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-daybyday/Pods-daybyday-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Chatter/Pods-Chatter-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-daybyday/Pods-daybyday-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Chatter/Pods-Chatter-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-daybyday/Pods-daybyday-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Chatter/Pods-Chatter-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8D86F5DF84A738F5BA3E8533 /* [CP] Copy Pods Resources */ = {
@@ -415,15 +415,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-daybyday-daybydayTests/Pods-daybyday-daybydayTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Chatter-ChatterTests/Pods-Chatter-ChatterTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-daybyday-daybydayTests/Pods-daybyday-daybydayTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Chatter-ChatterTests/Pods-Chatter-ChatterTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-daybyday-daybydayTests/Pods-daybyday-daybydayTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Chatter-ChatterTests/Pods-Chatter-ChatterTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D7E21A9BEF7A1D63E0FDE2DF /* [CP] Embed Pods Frameworks */ = {
@@ -432,15 +432,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-daybyday-daybydayTests/Pods-daybyday-daybydayTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Chatter-ChatterTests/Pods-Chatter-ChatterTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-daybyday-daybydayTests/Pods-daybyday-daybydayTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Chatter-ChatterTests/Pods-Chatter-ChatterTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-daybyday-daybydayTests/Pods-daybyday-daybydayTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Chatter-ChatterTests/Pods-Chatter-ChatterTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -469,7 +469,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* daybydayTests.m in Sources */,
+				00E356F31AD99517003FC87E /* ChatterTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -488,7 +488,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* daybyday */;
+			target = 13B07F861A680F5B00A75B9A /* Chatter */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -496,7 +496,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DCB255D12290AF0C8E3971F3 /* Pods-daybyday-daybydayTests.debug.xcconfig */;
+			baseConfigurationReference = DCB255D12290AF0C8E3971F3 /* Pods-Chatter-ChatterTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -504,7 +504,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = daybydayTests/Info.plist;
+				INFOPLIST_FILE = ChatterTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -518,18 +518,18 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/daybyday.app/daybyday";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Chatter.app/Chatter";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D683FEFF0025978389C0F5AD /* Pods-daybyday-daybydayTests.release.xcconfig */;
+			baseConfigurationReference = D683FEFF0025978389C0F5AD /* Pods-Chatter-ChatterTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = daybydayTests/Info.plist;
+				INFOPLIST_FILE = ChatterTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -543,20 +543,20 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/daybyday.app/daybyday";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Chatter.app/Chatter";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 70831612965C0D813A60C320 /* Pods-daybyday.debug.xcconfig */;
+			baseConfigurationReference = 70831612965C0D813A60C320 /* Pods-Chatter.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MBPZ2RX35Q;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = daybyday/Info.plist;
+				INFOPLIST_FILE = Chatter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -566,9 +566,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.daybyday;
-				PRODUCT_NAME = daybyday;
-				SWIFT_OBJC_BRIDGING_HEADER = "daybyday-Bridging-Header.h";
+				PRODUCT_BUNDLE_IDENTIFIER = com.chatter;
+				PRODUCT_NAME = Chatter;
+				SWIFT_OBJC_BRIDGING_HEADER = "Chatter-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -577,13 +577,13 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B859961B80CEE41997884D6F /* Pods-daybyday.release.xcconfig */;
+			baseConfigurationReference = B859961B80CEE41997884D6F /* Pods-Chatter.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MBPZ2RX35Q;
-				INFOPLIST_FILE = daybyday/Info.plist;
+				INFOPLIST_FILE = Chatter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -593,9 +593,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.daybyday;
-				PRODUCT_NAME = daybyday;
-				SWIFT_OBJC_BRIDGING_HEADER = "daybyday-Bridging-Header.h";
+				PRODUCT_BUNDLE_IDENTIFIER = com.chatter;
+				PRODUCT_NAME = Chatter;
+				SWIFT_OBJC_BRIDGING_HEADER = "Chatter-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -729,7 +729,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "daybydayTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "ChatterTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -738,7 +738,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "daybyday" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Chatter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -747,7 +747,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "daybyday" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Chatter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

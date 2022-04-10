@@ -139,7 +139,7 @@ const Complete = () => {
     formData.append('image', image);
     formData.append('orderId', orderId);
     try {
-      await axios.post(`${Config.API_URL}/complete`, formData, {
+      await axios.post(`${Config.API_URL_IOS}/complete`, formData, {
         headers: {
           authorization: `Bearer ${accessToken}`,
         },

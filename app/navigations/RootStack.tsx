@@ -48,7 +48,7 @@ const RootStack = () => {
             const originalRequest = config;
             const refreshToken = await EncryptedStorage.getItem('refreshToken');
             const {data} = await axios.post(
-              `${Config.API_URL}/refreshToken`,
+              `${Config.API_URL_IOS}/refreshToken`,
               {},
               {
                 headers: {
@@ -103,7 +103,7 @@ const RootStack = () => {
         }
         //있으면 아래 경로로 토큰 쏴주고, 받아온 값을 리덕스로 보관
         const response = await axios.post(
-          `${Config.API_URL}/refreshToken`,
+          `${Config.API_URL_IOS}/refreshToken`,
           {},
           {
             headers: {

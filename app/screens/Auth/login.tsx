@@ -209,7 +209,7 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
     //API Call
     try {
       setLoading(true);
-      const response = await axios.post(`${Config.API_URL}/login`, {
+      const response = await axios.post(`${Config.API_URL_IOS}/login`, {
         email,
         password,
       });

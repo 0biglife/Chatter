@@ -1,6 +1,6 @@
 import axios, {AxiosError} from 'axios';
 import React, {useCallback, useState} from 'react';
-import {Alert, View} from 'react-native';
+import {Alert} from 'react-native';
 import {useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import orderSlice, {Order} from '../redux/slices/order';
@@ -11,6 +11,7 @@ import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {MainTabParamList} from '../navigations/Types';
 import NaverMapView, {Marker, Path} from 'react-native-nmap';
+import client from '../apis/client';
 
 const Container = styled.View`
   //
@@ -93,8 +94,14 @@ const OrderCell = ({item}: OrderCellProps) => {
   const onAccept = useCallback(async () => {
     try {
       setLoading(true);
-      await axios.post(
-        `${Config.API_URL}/accept`,
+      // 모듈화 전
+      // await axios.post(
+      //   `${Config.API_URL_IOS}/accept`,
+      //   {orderId: item.orderId},
+      //   {headers: {authorization: `Bearer ${accessToken}`}},
+      // );
+      await client.post(
+        '/accept',
         {orderId: item.orderId},
         {headers: {authorization: `Bearer ${accessToken}`}},
       );

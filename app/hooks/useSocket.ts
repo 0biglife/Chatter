@@ -13,7 +13,7 @@ const useSocket = (): [typeof socket, () => void] => {
   }, []);
   if (!socket) {
     //socket이 없을 때만 연결
-    socket = io(Config.API_URL, {
+    socket = io(Config.API_URL_IOS, {
       transports: ['websocket'],
       // path: '/socket-io', //백에서 넘겨주는 주소
     });

@@ -125,7 +125,7 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
 
     try {
       setLoading(true);
-      const response = await axios.post(`${Config.API_URL}/user`, {
+      const response = await axios.post(`${Config.API_URL_IOS}/user`, {
         email,
         name,
         password, //비밀번호는 hash화(일방향 암호화) 되어서 숨겨진 채로 백으로 들어감

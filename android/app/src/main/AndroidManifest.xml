@@ -46,6 +46,6 @@
         <!-- react-native-nmap -->
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID" 
-            android:value="2uviq89k2c" />
+            android:value="m1wqbrsgd4" />
     </application>
 </manifest>

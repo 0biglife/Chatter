@@ -7,17 +7,15 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 
-//Token Control
-import {AuthParamList} from '../../navigations/Types';
 //Redux
 import DismissKeyboardView from '../../components/DismissKeyboardView';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 //API + Storage
-import axios, {AxiosError} from 'axios';
-import Config from 'react-native-config';
+import {AxiosError} from 'axios';
 import {useAppDispatch} from '../../redux/store/index';
 import userSlice from '../../redux/slices/user';
 import EncrytedStorage from 'react-native-encrypted-storage';
+import client from '../../apis/client';
 
 interface tokenType {
   aud: string;
@@ -209,7 +207,7 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
     //API Call
     try {
       setLoading(true);
-      const response = await axios.post(`${Config.API_URL_IOS}/login`, {
+      const response = await client.post('/login', {
         email,
         password,
       });

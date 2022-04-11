@@ -12,12 +12,12 @@ import ImagePicker from 'react-native-image-crop-picker';
 //카메라로 찍은 사진을 서버로 보내는 건 용량이 너무 커서 비효율적(서버 터짐)
 //따라서, 리사이징 과정이 필요
 import ImageResizer from 'react-native-image-resizer';
-import axios, {AxiosError} from 'axios';
-import Config from 'react-native-config';
+import {AxiosError} from 'axios';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../redux/store/reducers';
 import orderSlice from '../../redux/slices/order';
 import {useAppDispatch} from '../../redux/store/index';
+import client from '../../apis/client';
 
 const HeaderContainer = styled.View`
   padding-top: 20px;
@@ -139,7 +139,7 @@ const Complete = () => {
     formData.append('image', image);
     formData.append('orderId', orderId);
     try {
-      await axios.post(`${Config.API_URL_IOS}/complete`, formData, {
+      await client.post('/complete', formData, {
         headers: {
           authorization: `Bearer ${accessToken}`,
         },

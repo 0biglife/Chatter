@@ -1,4 +1,4 @@
-import axios, {AxiosError} from 'axios';
+import {AxiosError} from 'axios';
 import React, {useCallback, useState} from 'react';
 import {Alert} from 'react-native';
 import {useSelector} from 'react-redux';
@@ -6,7 +6,6 @@ import styled from 'styled-components/native';
 import orderSlice, {Order} from '../redux/slices/order';
 import {useAppDispatch} from '../redux/store';
 import {RootState} from '../redux/store/reducers';
-import {Config} from 'react-native-config';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {MainTabParamList} from '../navigations/Types';
@@ -94,12 +93,6 @@ const OrderCell = ({item}: OrderCellProps) => {
   const onAccept = useCallback(async () => {
     try {
       setLoading(true);
-      // 모듈화 전
-      // await axios.post(
-      //   `${Config.API_URL_IOS}/accept`,
-      //   {orderId: item.orderId},
-      //   {headers: {authorization: `Bearer ${accessToken}`}},
-      // );
       await client.post(
         '/accept',
         {orderId: item.orderId},

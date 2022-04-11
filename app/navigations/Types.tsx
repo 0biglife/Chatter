@@ -1,7 +1,8 @@
 export type MainTabParamList = {
-  Orders: undefined;
-  Settings: undefined;
-  Delivery: undefined;
+  HomeMap: undefined;
+  HomeFeed: undefined;
+  Chat: undefined;
+  Profile: undefined;
   Complete: {orderId: string};
 };
 

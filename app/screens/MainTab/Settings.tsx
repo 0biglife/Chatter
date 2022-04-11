@@ -2,8 +2,8 @@ import React, {useCallback, useEffect} from 'react';
 import styled from 'styled-components/native';
 import {Alert} from 'react-native';
 //API + Storage
-import axios, {AxiosError} from 'axios';
-import Config from 'react-native-config';
+import client from '../../apis/client';
+import {AxiosError} from 'axios';
 import EncryptedStorage from 'react-native-encrypted-storage';
 //Redux
 import {useAppDispatch} from '../../redux/store/index';
@@ -28,7 +28,6 @@ const ButtonContainer = styled.TouchableOpacity`
   align-items: center;
   background-color: lightcoral;
   height: 48px;
-  border-radius: 8px;
   margin: 20px;
 `;
 
@@ -45,14 +44,11 @@ function Settings() {
 
   useEffect(() => {
     const getMoney = async () => {
-      const response = await axios.get<{data: number}>(
-        `${Config.API_URL_IOS}/showmethemoney`,
-        {
-          headers: {
-            authorization: `Bearer ${accessToken}`,
-          },
+      const response = await client.get<{data: number}>('/showmethemoney', {
+        headers: {
+          authorization: `Bearer ${accessToken}`,
         },
-      );
+      });
       dispatch(userSlice.actions.setMoney(response.data.data));
     };
     getMoney();
@@ -60,8 +56,8 @@ function Settings() {
 
   const onLogout = useCallback(async () => {
     try {
-      await axios.post(
-        `${Config.API_URL_IOS}/logout`,
+      await client.post(
+        '/logout',
         {},
         {
           headers: {

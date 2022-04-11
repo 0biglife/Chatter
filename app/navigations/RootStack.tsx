@@ -8,13 +8,14 @@ import {LogIn, SignUp, Orders, Settings} from '../screens';
 import Delivery from './DeliveryStack';
 import {useAppDispatch} from '../redux/store';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import axios, {AxiosError} from 'axios';
-import Config from 'react-native-config';
+import {AxiosError} from 'axios';
+import client from '../apis/client';
 import userSlice from '../redux/slices/user';
 import {Alert} from 'react-native';
 import useSocket from '../hooks/useSocket';
 import orderSlice from '../redux/slices/order';
 import usePermissions from '../hooks/usePermissions';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -28,11 +29,11 @@ const RootStack = () => {
 
   usePermissions();
 
-  // axios.interceptor로 refreshToken 적용
+  // axios interceptor로 refreshToken 적용
   useEffect(() => {
     //첫 번째 인자 : 성공했을 때 실행 함수
     //두 번째 인자 : 에러났을 때 실행 함수
-    axios.interceptors.response.use(
+    client.interceptors.response.use(
       response => {
         return response;
       },
@@ -47,8 +48,8 @@ const RootStack = () => {
           if (error.response.data.code === 'expired') {
             const originalRequest = config;
             const refreshToken = await EncryptedStorage.getItem('refreshToken');
-            const {data} = await axios.post(
-              `${Config.API_URL_IOS}/refreshToken`,
+            const {data} = await client.post(
+              '/refreshToken',
               {},
               {
                 headers: {
@@ -58,7 +59,7 @@ const RootStack = () => {
             );
             dispatch(userSlice.actions.setAccessToken(data.data.accessToken));
             originalRequest.headers.authorization = `Bearer ${data.data.accessToken}`;
-            return axios(originalRequest); //예전 요청 다시 보내는 방식
+            return client(originalRequest); //예전 요청 다시 보내는 방식
           }
         }
         return Promise.reject(error); //419 아닐 때 처리
@@ -102,8 +103,8 @@ const RootStack = () => {
           return; //없으면 탈출
         }
         //있으면 아래 경로로 토큰 쏴주고, 받아온 값을 리덕스로 보관
-        const response = await axios.post(
-          `${Config.API_URL_IOS}/refreshToken`,
+        const response = await client.post(
+          '/refreshToken',
           {},
           {
             headers: {
@@ -133,21 +134,44 @@ const RootStack = () => {
   }, [dispatch]);
 
   return isLoggedIn ? (
-    <Tab.Navigator>
+    <Tab.Navigator
+      initialRouteName="Orders"
+      screenOptions={({route}) => ({
+        tabBarShowLabel: false,
+        tabBarIcon: ({focused, color, size}) => {
+          let iconName;
+
+          if (route.name === 'HomeMap') {
+            iconName = focused ? 'map' : 'map-outline';
+          } else if (route.name === 'HomeFeed') {
+            iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === 'Chat') {
+            iconName = focused ? 'chatbox' : 'chatbox-outline';
+          } else if (route.name === 'Profile') {
+            iconName = focused ? 'person' : 'person-outline';
+          }
+          return <IonIcon name={iconName} size={size} color={color} />;
+        },
+      })}>
       <Tab.Screen
-        name="Orders"
-        component={Orders}
-        options={{title: '주문 목록'}}
-      />
-      <Tab.Screen
-        name="Delivery"
+        name="HomeFeed"
         component={Delivery}
-        options={{title: '배달 완료'}}
+        options={{title: '뉴스피드'}}
       />
       <Tab.Screen
-        name="Settings"
+        name="HomeMap"
+        component={Orders}
+        options={{headerShown: false}}
+      />
+      <Tab.Screen
+        name="Chat"
         component={Settings}
-        options={{title: '내 정보'}}
+        options={{title: '대화목록'}}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Settings}
+        options={{title: '프로필'}}
       />
     </Tab.Navigator>
   ) : (

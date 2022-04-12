@@ -4,7 +4,15 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {RootState} from '../redux/store/reducers';
 import {useSelector} from 'react-redux';
-import {LogIn, SignUp, Orders, Settings} from '../screens';
+import {
+  LogIn,
+  SignUp,
+  Orders,
+  HomeFeed,
+  Chat,
+  Profile,
+  HomeMap,
+} from '../screens';
 import Delivery from './DeliveryStack';
 import {useAppDispatch} from '../redux/store';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -155,22 +163,18 @@ const RootStack = () => {
       })}>
       <Tab.Screen
         name="HomeFeed"
-        component={Delivery}
+        component={HomeFeed}
         options={{title: '뉴스피드'}}
       />
       <Tab.Screen
         name="HomeMap"
-        component={Orders}
+        component={HomeMap}
         options={{headerShown: false}}
       />
-      <Tab.Screen
-        name="Chat"
-        component={Settings}
-        options={{title: '대화목록'}}
-      />
+      <Tab.Screen name="Chat" component={Chat} options={{title: '대화목록'}} />
       <Tab.Screen
         name="Profile"
-        component={Settings}
+        component={Profile}
         options={{title: '프로필'}}
       />
     </Tab.Navigator>

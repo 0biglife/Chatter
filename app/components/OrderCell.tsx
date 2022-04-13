@@ -147,7 +147,7 @@ const OrderCell = ({item}: OrderCellProps) => {
                 longitude: (start.longitude + end.longitude) / 2,
               }}>
               <Marker //출발지점 마커
-                coordinate={{
+                coordinate={{x
                   latitude: start.latitude,
                   longitude: start.longitude,
                 }}

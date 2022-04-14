@@ -2,15 +2,15 @@ import React, {useCallback, useEffect, useState} from 'react';
 import NaverMapView, {Circle, Marker} from 'react-native-nmap';
 import styled from 'styled-components/native';
 import Geolocation from '@react-native-community/geolocation';
-import {ActivityIndicator, Alert, View} from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../redux/store/reducers';
 import Config from 'react-native-config';
 import weatherClient from '../../apis/weatherClient';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import UserModal from '../../components/UserModal';
-import {Order} from '../../redux/slices/order';
 import unsplashClient from '../../apis/unsplashClient';
+import {WeatherData} from '../../apis/WeatherData';
 
 const Container = styled.View`
   flex: 1;
@@ -84,6 +84,7 @@ const HomeMap = () => {
   const [markerUser, setMarkerUser] = useState<string>('');
   const [profileUrl, setProfileUrl] = useState<string>('');
   //Weather Control
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [myWeather, setMyWeather] = useState<string>('');
   const [iconName, setIconName] = useState<string>('');
   // const [areaWeather, setAreaWeather] = useState<Array<string>>();
@@ -134,6 +135,7 @@ const HomeMap = () => {
         const response = await weatherClient.get(
           `/weather?lat=${myPosition?.latitude}&lon=${myPosition?.longitude}&appid=${Config.WEATHER_APIKEY}`,
         );
+        setWeatherData(response.data);
         setMyWeather(response.data.weather[0].main);
         if (myWeather === 'Clouds') {
           setIconName('cloudy-outline');
@@ -141,6 +143,8 @@ const HomeMap = () => {
           setIconName('filter');
         } else if (myWeather === 'Rain') {
           setIconName('rainy-outline');
+        } else if (myWeather === 'Clear') {
+          setIconName('sunny-outline');
         } else {
           // <ActivityIndicator />;
         }
@@ -159,7 +163,7 @@ const HomeMap = () => {
           },
         });
         setProfileUrl(response.data.profile_image.large);
-        console.log('UNSPLASH SUCCESSED : ', response.data);
+        console.log('UNSPLASH SUCCESSED');
       } catch (e) {
         console.log('UNSPLASH FAILED : ', e);
       }

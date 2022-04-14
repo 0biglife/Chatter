@@ -81,7 +81,7 @@ interface ModalProps {
 }
 
 const UserModal = (props: ModalProps) => {
-  console.log('Modal Data : ', props.userProfile);
+  // console.log('Modal Data : ', props.userProfile);
   return (
     <MainContainer>
       <Modal

@@ -10,6 +10,7 @@ import weatherClient from '../../apis/weatherClient';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import UserModal from '../../components/UserModal';
 import {Order} from '../../redux/slices/order';
+import unsplashClient from '../../apis/unsplashClient';
 
 const Container = styled.View`
   flex: 1;
@@ -81,6 +82,7 @@ const HomeMap = () => {
   //User -> Modal
   const [showModal, setShowModal] = useState<boolean>(false);
   const [markerUser, setMarkerUser] = useState<string>('');
+  const [profileUrl, setProfileUrl] = useState<string>('');
   //Weather Control
   const [myWeather, setMyWeather] = useState<string>('');
   const [iconName, setIconName] = useState<string>('');
@@ -147,7 +149,23 @@ const HomeMap = () => {
         console.log('Weather API error : ', e);
       }
     };
+
+    //unsplash api
+    const getRandomImage = async () => {
+      try {
+        const response = await unsplashClient.get('/users/Loi/', {
+          params: {
+            client_id: '3eVYYY9UEOTwk4CcDUgHt9uSSP_MJiAO3E1hcna-i1Q',
+          },
+        });
+        setProfileUrl(response.data.profile_image.large);
+        console.log('UNSPLASH SUCCESSED : ', response.data);
+      } catch (e) {
+        console.log('UNSPLASH FAILED : ', e);
+      }
+    };
     getWeather();
+    getRandomImage();
   }, []);
 
   if (!myPosition || !myPosition.latitude) {
@@ -211,6 +229,7 @@ const HomeMap = () => {
         showModal={showModal}
         setShowModal={setShowModal}
         userInfo={markerUser}
+        userProfile={profileUrl}
       />
       <HeaderView>
         <WeatherView>

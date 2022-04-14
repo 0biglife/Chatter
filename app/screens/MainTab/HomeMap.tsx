@@ -2,12 +2,14 @@ import React, {useCallback, useEffect, useState} from 'react';
 import NaverMapView, {Circle, Marker} from 'react-native-nmap';
 import styled from 'styled-components/native';
 import Geolocation from '@react-native-community/geolocation';
-import {ActivityIndicator, Alert, Text, View} from 'react-native';
+import {ActivityIndicator, Alert, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../redux/store/reducers';
 import Config from 'react-native-config';
 import weatherClient from '../../apis/weatherClient';
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import UserModal from '../../components/UserModal';
+import {Order} from '../../redux/slices/order';
 
 const Container = styled.View`
   flex: 1;
@@ -67,24 +69,24 @@ const WeatherText = styled.Text`
   color: black;
 `;
 
-const distance = 0.01;
+const distance = 0.1; // 1km -> 0.01
 
 const HomeMap = () => {
+  //User Control
   const orders = useSelector((state: RootState) => state.order.orders);
-  const [myWeather, setMyWeather] = useState<string>('');
-  const [areaWeather, setAreaWeather] = useState('');
-  const [iconName, setIconName] = useState<string>('');
-  const [areaIconName, setAreaIconName] = useState('');
   const [myPosition, setMyPosition] = useState<{
     latitude: number;
     longitude: number;
   } | null>(null);
-  const Angle = [0, 45, 90, 135, 180, 225];
-  const [detail, setDetail] = useState<boolean>(false);
-
-  const toggleDetail = useCallback(() => {
-    setDetail(prev => !prev);
-  }, []);
+  //User -> Modal
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [markerUser, setMarkerUser] = useState<string>('');
+  //Weather Control
+  const [myWeather, setMyWeather] = useState<string>('');
+  const [iconName, setIconName] = useState<string>('');
+  // const [areaWeather, setAreaWeather] = useState<Array<string>>();
+  // const [areaIconName, setAreaIconName] = useState<Array<string>>();
+  // const Angle = [0, 45, 90, 135, 180, 225];
 
   useEffect(() => {
     Geolocation.getCurrentPosition(
@@ -101,30 +103,30 @@ const HomeMap = () => {
         distanceFilter: 400,
       },
     );
-    const getAreaWeather = async () => {
-      try {
-        for (let i = 0; i < Angle.length; i++) {
-          const response = await weatherClient.get(
-            `/weather?lat=${
-              myPosition!.latitude + distance * Math.cos(Angle[i])
-            }&lon=${
-              myPosition!.longitude + distance * Math.sin(Angle[i])
-            }&appid=${Config.WEATHER_APIKEY}`,
-          );
-          setAreaWeather(response.data.weather[0].main);
-          if (areaWeather === 'Clouds') {
-            setAreaIconName('cloudy-outline');
-          } else if (areaWeather === 'Mist') {
-            setAreaIconName('filter');
-          } else {
-            setAreaIconName('cloudy');
-          }
-          console.log('getAreaWeather API : ', i, areaWeather);
-        }
-      } catch (e) {
-        console.log('Around Area Weather API error : ', e);
-      }
-    };
+    // const getAreaWeather = async () => {
+    //   try {
+    //     for (let i = 0; i < Angle.length; i++) {
+    //       const response = await weatherClient.get(
+    //         `/weather?lat=${
+    //           myPosition!.latitude + distance * Math.cos(Angle[i])
+    //         }&lon=${
+    //           myPosition!.longitude + distance * Math.sin(Angle[i])
+    //         }&appid=${Config.WEATHER_APIKEY}`,
+    //       );
+    //       setAreaWeather(response.data.weather[0].main);
+    //       if (areaWeather === 'Clouds') {
+    //         setAreaIconName('cloudy-outline');
+    //       } else if (areaWeather === 'Mist') {
+    //         setAreaIconName('filter');
+    //       } else {
+    //         setAreaIconName('cloudy');
+    //       }
+    //       console.log('getAreaWeather API : ', i, areaWeather);
+    //     }
+    //   } catch (e) {
+    //     console.log('Around Area Weather API error : ', e);
+    //   }
+    // };
     const getWeather = async () => {
       try {
         const response = await weatherClient.get(
@@ -135,10 +137,12 @@ const HomeMap = () => {
           setIconName('cloudy-outline');
         } else if (myWeather === 'Mist') {
           setIconName('filter');
+        } else if (myWeather === 'Rain') {
+          setIconName('rainy-outline');
         } else {
-          setIconName('cloudy');
+          // <ActivityIndicator />;
         }
-        getAreaWeather();
+        // getAreaWeather();
       } catch (e) {
         console.log('Weather API error : ', e);
       }
@@ -154,6 +158,11 @@ const HomeMap = () => {
     );
   }
 
+  const markerFunc = (userInfo: string) => {
+    setShowModal(true);
+    setMarkerUser(userInfo);
+  };
+
   //rainy-outline,cloudy-outline,md-cloudy-night-outline(night)
   //partly-sunny-outline(구름 가린 햇빛),sunny-outline(태양), snow-outline(눈)
   return (
@@ -162,7 +171,7 @@ const HomeMap = () => {
         style={{width: '100%', height: '100%'}}
         zoomControl={false}
         center={{
-          zoom: 13,
+          zoom: 10, //13
           latitude: myPosition.latitude,
           longitude: myPosition.longitude,
         }}>
@@ -175,43 +184,39 @@ const HomeMap = () => {
           width={30}
           height={40}
         />
-        {/* {detail ? (
-          <Marker
-            coordinate={{
-              latitude: myPosition.latitude + 0.01 * Math.cos(angle),
-              longitude: myPosition.longitude + 0.01 * Math.sin(angle),
-            }}
-            pinColor="blue"
-            width={30}
-            height={40}
-          />
-        ) : null} */}
         <Circle //사용자 중심 반경 1km 지역
           coordinate={{
             latitude: myPosition.latitude,
             longitude: myPosition.longitude,
           }}
-          radius={1000}
+          radius={distance * 100000}
           color={'rgba(255,150,0,0.15)'}
         />
-        {orders.map(orderPostition => (
-          <Marker
-            coordinate={{
-              latitude: orderPostition.start.latitude,
-              longitude: orderPostition.start.longitude,
-            }}
-            pinColor="red"
-            width={30}
-            height={40}
-            onClick={() => Alert.alert(`${orderPostition.orderId}`)}
-          />
+        {orders.map(orderPosition => (
+          <>
+            <Marker
+              coordinate={{
+                latitude: orderPosition.start.latitude,
+                longitude: orderPosition.start.longitude,
+              }}
+              pinColor="red"
+              width={30}
+              height={40}
+              onClick={() => markerFunc(orderPosition.orderId)}
+            />
+          </>
         ))}
       </NaverMapView>
+      <UserModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        userInfo={markerUser}
+      />
       <HeaderView>
         <WeatherView>
           <HeadText>현재날씨</HeadText>
           {!myWeather ? (
-            <ActivityIndicator />
+            <ActivityIndicator style={{marginTop: 10}} />
           ) : (
             <IonIcon name={iconName} size={30} />
           )}
@@ -227,8 +232,8 @@ const HomeMap = () => {
               justifyContent: 'space-around',
               flex: 1,
             }}>
-            {Angle.map(() => (
-              <AreaWeatherCell onPress={toggleDetail}>
+            {/* {Angle.map(() => (
+              <AreaWeatherCell>
                 {!areaWeather ? (
                   <ActivityIndicator />
                 ) : (
@@ -236,7 +241,7 @@ const HomeMap = () => {
                 )}
                 <WeatherText>{areaWeather}</WeatherText>
               </AreaWeatherCell>
-            ))}
+            ))} */}
           </View>
         </NextWeatherView>
       </HeaderView>

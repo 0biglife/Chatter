@@ -1,15 +1,25 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import {FlatList} from 'react-native-gesture-handler';
+import {postData} from '../../apis/postData';
 import {Text, View} from 'react-native';
+//Imported RenderItem
+import {
+  CellContainer,
+  PostedTime,
+  PostedWrapper,
+  PostImage,
+  PostText,
+} from '../../components/ProfilePost';
 
 const SafeContainer = styled.SafeAreaView`
   flex: 1;
+  background-color: transparent;
 `;
 
 const HeaderContainer = styled.View`
-  width: 100%;
-  height: 390px;
-  /* background-color: lightblue; */
+  flex: 1;
   align-items: center;
 `;
 
@@ -17,12 +27,12 @@ const ProfileBG = styled.Image`
   width: 100%;
   height: 100%;
   position: absolute;
-  opacity: 0.6;
+  opacity: 0.9;
 `;
 
 const ProfileSection = styled.View`
   width: 90%;
-  height: 352px;
+  height: 50%;
   background-color: white;
   align-items: center;
   margin-top: 20px;
@@ -30,7 +40,7 @@ const ProfileSection = styled.View`
 `;
 
 const ProfileView = styled.View`
-  margin-top: 40px;
+  margin-top: 20px;
   align-items: center;
 `;
 
@@ -91,17 +101,48 @@ const InnerSubtitle = styled.Text`
   margin-top: 8px;
 `;
 
-const BodyContainer = styled.View`
-  flex: 1;
+const BodySection = styled.View`
+  width: 90%;
+  height: 100%;
+  background-color: white;
+  margin-top: 20px;
+  border-radius: 20px;
+`;
+
+const BodyTopWrapper = styled.View`
   width: 100%;
-  /* background-color: lightcoral; */
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const BodyTitle = styled.Text`
+  font-size: 16px;
+  font-weight: 300;
+  margin-top: 20px;
+  margin-left: 18px;
+`;
+
+const AddButton = styled.TouchableOpacity`
+  margin-top: 20px;
+  margin-right: 20px;
+`;
+
+const BodyLine = styled.View`
+  justify-self: center;
+  width: 90%;
+  height: 0.5px;
+  margin-top: 12px;
+  margin-left: 18px;
+  background-color: lightgray;
+  opacity: 0.8;
 `;
 
 const Profile = () => {
   return (
     <SafeContainer>
       <HeaderContainer>
-        <ProfileBG source={require('../../assets/profile_header.jpeg')} />
+        <ProfileBG source={require('../../assets/bg_01.jpeg')} />
         <ProfileSection>
           <ProfileView
             style={{
@@ -126,8 +167,30 @@ const Profile = () => {
             </TextWrapper>
           </InfoSection>
         </ProfileSection>
+        <BodySection>
+          <BodyTopWrapper>
+            <BodyTitle>Time Record</BodyTitle>
+            <AddButton>
+              <IonIcon name="add" size={24} color="black" />
+            </AddButton>
+          </BodyTopWrapper>
+          <BodyLine />
+          <FlatList
+            data={postData}
+            renderItem={({item}) => (
+              <CellContainer>
+                <PostImage source={require('../../assets/post01.jpeg')} />
+                <PostedWrapper>
+                  <PostText>{item.body}</PostText>
+                  <PostedTime>2022.02.22</PostedTime>
+                </PostedWrapper>
+              </CellContainer>
+            )}
+            keyExtractor={item => item.id}
+            showsVerticalScrollIndicator={false}
+          />
+        </BodySection>
       </HeaderContainer>
-      <BodyContainer></BodyContainer>
     </SafeContainer>
   );
 };

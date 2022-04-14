@@ -175,7 +175,9 @@ const RootStack = () => {
       <Tab.Screen
         name="Profile"
         component={Profile}
-        options={{title: '프로필'}}
+        options={{
+          headerShown: false,
+        }}
       />
     </Tab.Navigator>
   ) : (

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components/native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {FlatList} from 'react-native-gesture-handler';
@@ -12,6 +12,9 @@ import {
   PostImage,
   PostText,
 } from '../../components/ProfilePost';
+import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {MainStackParamList} from '../../navigations/Types';
 
 const SafeContainer = styled.SafeAreaView`
   flex: 1;
@@ -32,7 +35,7 @@ const ProfileBG = styled.Image`
 
 const ProfileSection = styled.View`
   width: 90%;
-  height: 45%;
+  height: 48%;
   background-color: white;
   align-items: center;
   margin-top: 20px;
@@ -103,10 +106,11 @@ const InnerSubtitle = styled.Text`
 
 const BodySection = styled.View`
   width: 90%;
-  height: 100%;
+  height: 43%;
   background-color: white;
   margin-top: 20px;
   border-radius: 20px;
+  padding-bottom: 14px;
 `;
 
 const BodyTopWrapper = styled.View`
@@ -123,11 +127,6 @@ const BodyTitle = styled.Text`
   margin-left: 18px;
 `;
 
-const AddButton = styled.TouchableOpacity`
-  margin-top: 20px;
-  margin-right: 20px;
-`;
-
 const BodyLine = styled.View`
   justify-self: center;
   width: 90%;
@@ -138,7 +137,35 @@ const BodyLine = styled.View`
   opacity: 0.8;
 `;
 
-const Profile = () => {
+const BlurWrapper = styled.View`
+  flex: 1;
+  background-color: lightgray;
+  opacity: 0.2;
+`;
+
+const LockedIcon = styled.TouchableOpacity`
+  position: absolute;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+  margin-top: 140px;
+  flex: 1;
+  flex-direction: column;
+`;
+
+const UserProfile = () => {
+  const route = useRoute<RouteProp<MainStackParamList>>();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<MainStackParamList>>();
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      title: 'User Profile',
+      headerBackTitle: '',
+      headerTintColor: 'black',
+      headerShadowVisible: false,
+    });
+  }, []);
   return (
     <SafeContainer>
       <HeaderContainer>
@@ -151,8 +178,8 @@ const Profile = () => {
               shadowRadius: 10,
               shadowOffset: {width: 2, height: 2},
             }}>
-            <ProfileImage source={require('../../assets/grboy02.webp')} />
-            <ProfileName>GRboy</ProfileName>
+            <ProfileImage source={{uri: route.params.user_profile}} />
+            <ProfileName>{route.params.user_name}</ProfileName>
           </ProfileView>
           <IntroText>0 year-old hambie</IntroText>
           <InfoSection>
@@ -170,29 +197,32 @@ const Profile = () => {
         <BodySection>
           <BodyTopWrapper>
             <BodyTitle>Time Record ( {postData.length} )</BodyTitle>
-            <AddButton onPress={() => Alert.alert('test')}>
-              <IonIcon name="add" size={24} color="black" />
-            </AddButton>
           </BodyTopWrapper>
           <BodyLine />
-          <FlatList
-            data={postData}
-            renderItem={({item}) => (
-              <CellContainer>
-                <PostImage source={require('../../assets/post01.jpeg')} />
-                <PostedWrapper>
-                  <PostText>{item.body}</PostText>
-                  <PostedTime>2022.02.22</PostedTime>
-                </PostedWrapper>
-              </CellContainer>
-            )}
-            keyExtractor={item => item.id}
-            showsVerticalScrollIndicator={false}
-          />
+          <BlurWrapper>
+            <FlatList
+              data={postData}
+              renderItem={({item}) => (
+                <CellContainer>
+                  <PostImage source={require('../../assets/post01.jpeg')} />
+                  <PostedWrapper>
+                    <PostText>{item.body}</PostText>
+                    <PostedTime>2022.02.22</PostedTime>
+                  </PostedWrapper>
+                </CellContainer>
+              )}
+              keyExtractor={item => item.id}
+              showsVerticalScrollIndicator={false}
+            />
+          </BlurWrapper>
+          <LockedIcon onPress={() => Alert.alert('Locked')}>
+            <IonIcon name="lock-closed" size={30} color="black" />
+            <Text>Locked</Text>
+          </LockedIcon>
         </BodySection>
       </HeaderContainer>
     </SafeContainer>
   );
 };
 
-export default Profile;
+export default UserProfile;

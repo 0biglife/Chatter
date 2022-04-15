@@ -1,9 +1,19 @@
+export type MainStackParamList = {
+  MainTab: MainTabParamList;
+  UserProfile: UserData;
+  ChatDetail: UserData;
+};
+
 export type MainTabParamList = {
   HomeFeed: undefined;
   HomeMap: undefined;
-  Chat: ChatparamList;
+  Chat: ChatStackParamList;
   Profile: undefined;
-  Complete: {orderId: string};
+};
+
+export type ChatStackParamList = {
+  UserProfile: UserData;
+  ChatDetail: UserData;
 };
 
 export type AuthParamList = {
@@ -11,13 +21,10 @@ export type AuthParamList = {
   SignUp: undefined;
 };
 
-export type ChatparamList = {
-  Chat: undefined;
-  ChatDetail: {
-    id: number;
-    user_id: string;
-    user_name: string;
-    user_location: string;
-    user_profile: string;
-  };
+type UserData = {
+  id: number;
+  user_id: string;
+  user_name: string;
+  user_location: string;
+  user_profile: string;
 };

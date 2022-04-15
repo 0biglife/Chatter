@@ -13,6 +13,7 @@ import {
   Profile,
   HomeMap,
   ChatDetail,
+  UserProfile,
 } from '../screens';
 import Delivery from './DeliveryStack';
 import {useAppDispatch} from '../redux/store';
@@ -153,9 +154,58 @@ const RootStack = () => {
             title: 'Chatting',
             headerBackTitle: '',
             headerTintColor: 'black',
+            headerShadowVisible: false,
           }}
         />
+        <Stack.Screen name="UserProfile" component={UserProfile} />
       </Stack.Navigator>
+    );
+  };
+
+  const MainTab = () => {
+    return (
+      <Tab.Navigator
+        initialRouteName="Orders"
+        screenOptions={({route}) => ({
+          tabBarShowLabel: false,
+          tabBarIcon: ({focused, color, size}) => {
+            let iconName;
+
+            if (route.name === 'HomeMap') {
+              iconName = focused ? 'map' : 'map-outline';
+            } else if (route.name === 'HomeFeed') {
+              iconName = focused ? 'home' : 'home-outline';
+            } else if (route.name === 'ChatStack') {
+              iconName = focused ? 'chatbox' : 'chatbox-outline';
+            } else if (route.name === 'Profile') {
+              iconName = focused ? 'person' : 'person-outline';
+            }
+            return <IonIcon name={iconName} size={size} color={color} />;
+          },
+        })}>
+        <Tab.Screen
+          name="HomeFeed"
+          component={HomeFeed}
+          options={{title: '뉴스피드'}}
+        />
+        <Tab.Screen
+          name="HomeMap"
+          component={HomeMap}
+          options={{headerShown: false}}
+        />
+        <Tab.Screen
+          name="ChatStack"
+          component={ChatStack}
+          options={{headerShown: false}}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Tab.Navigator>
     );
   };
 
@@ -171,7 +221,7 @@ const RootStack = () => {
             iconName = focused ? 'map' : 'map-outline';
           } else if (route.name === 'HomeFeed') {
             iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'Chat') {
+          } else if (route.name === 'ChatStack') {
             iconName = focused ? 'chatbox' : 'chatbox-outline';
           } else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
@@ -190,7 +240,7 @@ const RootStack = () => {
         options={{headerShown: false}}
       />
       <Tab.Screen
-        name="Chat"
+        name="ChatStack"
         component={ChatStack}
         options={{headerShown: false}}
       />

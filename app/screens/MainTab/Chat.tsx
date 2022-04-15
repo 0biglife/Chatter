@@ -76,7 +76,7 @@ const Chat = () => {
       try {
         const response = await unsplashClient.get('/photos/random', {
           params: {
-            count: 10,
+            count: 6,
             client_id: '3eVYYY9UEOTwk4CcDUgHt9uSSP_MJiAO3E1hcna-i1Q',
           },
         });
@@ -98,7 +98,15 @@ const Chat = () => {
           shadowRadius: 2,
           shadowOffset: {width: 2, height: 2},
         }}>
-        <ImageSection>
+        <ImageSection
+          onPress={() =>
+            navigation.navigate('UserProfile', {
+              id: item.id,
+              user_id: item.user.id,
+              user_name: item.user.username,
+              user_profile: item.user.profile_image.large,
+            })
+          }>
           <ProfileImage source={{uri: item.user.profile_image.large}} />
         </ImageSection>
         <TextSection

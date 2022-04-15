@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {FlatList} from 'react-native-gesture-handler';
 import {postData} from '../../apis/postData';
-import {Text, View} from 'react-native';
+import {Alert, Text, View} from 'react-native';
 //Imported RenderItem
 import {
   CellContainer,
@@ -32,7 +32,7 @@ const ProfileBG = styled.Image`
 
 const ProfileSection = styled.View`
   width: 90%;
-  height: 50%;
+  height: 45%;
   background-color: white;
   align-items: center;
   margin-top: 20px;
@@ -170,7 +170,7 @@ const Profile = () => {
         <BodySection>
           <BodyTopWrapper>
             <BodyTitle>Time Record</BodyTitle>
-            <AddButton>
+            <AddButton onPress={() => Alert.alert('test')}>
               <IonIcon name="add" size={24} color="black" />
             </AddButton>
           </BodyTopWrapper>

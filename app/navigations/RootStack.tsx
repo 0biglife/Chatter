@@ -12,6 +12,7 @@ import {
   Chat,
   Profile,
   HomeMap,
+  ChatDetail,
 } from '../screens';
 import Delivery from './DeliveryStack';
 import {useAppDispatch} from '../redux/store';
@@ -141,6 +142,23 @@ const RootStack = () => {
     getTokenAndRefresh();
   }, [dispatch]);
 
+  const ChatStack = () => {
+    return (
+      <Stack.Navigator initialRouteName="Chat">
+        <Stack.Screen name="Chat" component={Chat} options={{title: 'Chat'}} />
+        <Stack.Screen
+          name="ChatDetail"
+          component={ChatDetail}
+          options={{
+            title: 'Chatting',
+            headerBackTitle: '',
+            headerTintColor: 'black',
+          }}
+        />
+      </Stack.Navigator>
+    );
+  };
+
   return isLoggedIn ? (
     <Tab.Navigator
       initialRouteName="Orders"
@@ -171,7 +189,11 @@ const RootStack = () => {
         component={HomeMap}
         options={{headerShown: false}}
       />
-      <Tab.Screen name="Chat" component={Chat} options={{title: '대화목록'}} />
+      <Tab.Screen
+        name="Chat"
+        component={ChatStack}
+        options={{headerShown: false}}
+      />
       <Tab.Screen
         name="Profile"
         component={Profile}

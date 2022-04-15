@@ -1,12 +1,16 @@
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
 import {Dimensions} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 import unsplashClient from '../../apis/unsplashClient';
 import {userData, userModel} from '../../apis/userData';
+import {ChatparamList} from '../../navigations/Types';
 
 const MainConatiner = styled.View`
   flex: 1;
+  background-color: lightgray;
 `;
 
 const CellContainer = styled.View`
@@ -58,11 +62,12 @@ const NameText = styled.Text`
 `;
 
 const BodyText = styled.Text`
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 300;
 `;
 
 const Chat = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<ChatparamList>>();
   const [unsplashData, setUnsplashData] = useState<userModel>();
 
   useEffect(() => {
@@ -96,7 +101,16 @@ const Chat = () => {
         <ImageSection>
           <ProfileImage source={{uri: item.user.profile_image.large}} />
         </ImageSection>
-        <TextSection>
+        <TextSection
+          onPress={() =>
+            navigation.navigate('ChatDetail', {
+              id: item.id,
+              user_id: item.user.id,
+              user_location: item.user.location,
+              user_name: item.user.username,
+              user_profile: item.user.profile_image.large,
+            })
+          }>
           <NameWrapper>
             <NameText>{item.user.username}</NameText>
           </NameWrapper>

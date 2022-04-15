@@ -237,7 +237,7 @@ export type userModel = [
     id: number;
     user: {
       id: number;
-      username: number;
+      username: string;
       name: number;
       location: string;
       profile_image: {

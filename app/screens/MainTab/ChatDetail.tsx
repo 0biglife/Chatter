@@ -1,10 +1,11 @@
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
-import {ChatparamList} from '../../navigations/Types';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import {GiftedChat, Bubble} from 'react-native-gifted-chat';
 
 const MainContainer = styled.View`
   flex: 1;
@@ -35,6 +36,7 @@ const ChatSection = styled.View`
 const ChatDetail = () => {
   const route = useRoute<RouteProp<ChatparamList>>();
   const navigation = useNavigation<NativeStackNavigationProp<ChatparamList>>();
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -44,7 +46,43 @@ const ChatDetail = () => {
       headerTintColor: 'black',
       headerShadowVisible: false,
     });
+    setMessages([
+      {
+        _id: 1,
+        text: 'Testing Chat App',
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: route.params.user_name,
+          avatar: route.params.user_profile,
+        },
+      },
+    ]);
   }, []);
+
+  const onSend = useCallback((messages = []) => {
+    setMessages(previouseMessage =>
+      GiftedChat.append(previouseMessage, messages),
+    );
+  }, []);
+
+  const renderBubble = props => {
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          right: {
+            backgroundColor: 'lightgray',
+          },
+        }}
+        textStyle={{
+          right: {
+            color: 'black',
+          },
+        }}
+      />
+    );
+  };
 
   return (
     <MainContainer>
@@ -61,7 +99,21 @@ const ChatDetail = () => {
           <ProfileImage source={{uri: route.params?.user_profile}} />
         </TouchableOpacity>
       </HeaderSection>
-      <ChatSection></ChatSection>
+      <ChatSection>
+        <GiftedChat
+          messages={messages}
+          onSend={messages => onSend(messages)}
+          user={{
+            _id: 1,
+          }}
+          renderBubble={renderBubble}
+          alwaysShowSend
+          scrollToBottom
+          scrollToBottomComponent={() => {
+            return <IonIcon name="chevron-down" size={20} color="blackdsff" />;
+          }}
+        />
+      </ChatSection>
     </MainContainer>
   );
 };

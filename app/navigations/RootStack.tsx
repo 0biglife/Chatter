@@ -31,6 +31,16 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const RootStack = () => {
+  const getTabBarVisibility = route => {
+    const routeName = route.state
+      ? route.state.routes[route.state.index].name
+      : '';
+    if (routeName === 'ChatDetail') {
+      return false;
+    }
+    return true;
+  };
+
   const dispatch = useAppDispatch();
   //!!연산자 : undefined checking : null이나 undefined 면 false 를 반환 !
   const isLoggedIn = useSelector((state: RootState) => !!state.user.email);
@@ -162,57 +172,10 @@ const RootStack = () => {
     );
   };
 
-  const MainTab = () => {
-    return (
-      <Tab.Navigator
-        initialRouteName="Orders"
-        screenOptions={({route}) => ({
-          tabBarShowLabel: false,
-          tabBarIcon: ({focused, color, size}) => {
-            let iconName;
-
-            if (route.name === 'HomeMap') {
-              iconName = focused ? 'map' : 'map-outline';
-            } else if (route.name === 'HomeFeed') {
-              iconName = focused ? 'home' : 'home-outline';
-            } else if (route.name === 'ChatStack') {
-              iconName = focused ? 'chatbox' : 'chatbox-outline';
-            } else if (route.name === 'Profile') {
-              iconName = focused ? 'person' : 'person-outline';
-            }
-            return <IonIcon name={iconName} size={size} color={color} />;
-          },
-        })}>
-        <Tab.Screen
-          name="HomeFeed"
-          component={HomeFeed}
-          options={{title: '뉴스피드'}}
-        />
-        <Tab.Screen
-          name="HomeMap"
-          component={HomeMap}
-          options={{headerShown: false}}
-        />
-        <Tab.Screen
-          name="ChatStack"
-          component={ChatStack}
-          options={{headerShown: false}}
-        />
-        <Tab.Screen
-          name="Profile"
-          component={Profile}
-          options={{
-            headerShown: false,
-          }}
-        />
-      </Tab.Navigator>
-    );
-  };
-
   return isLoggedIn ? (
     <Tab.Navigator
       initialRouteName="Orders"
-      screenOptions={({route}) => ({
+      screenOptions={({ navigation, route }) => ({
         tabBarShowLabel: false,
         tabBarActiveTintColor: 'gray',
         tabBarIcon: ({focused, color, size}) => {
@@ -243,7 +206,9 @@ const RootStack = () => {
       <Tab.Screen
         name="ChatStack"
         component={ChatStack}
-        options={{headerShown: false}}
+        options={{
+          headerShown: false,
+        }}
       />
       <Tab.Screen
         name="Profile"

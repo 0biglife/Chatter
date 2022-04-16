@@ -214,6 +214,7 @@ const RootStack = () => {
       initialRouteName="Orders"
       screenOptions={({route}) => ({
         tabBarShowLabel: false,
+        tabBarActiveTintColor: 'gray',
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
 

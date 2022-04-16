@@ -76,7 +76,7 @@ const Chat = () => {
       try {
         const response = await unsplashClient.get('/photos/random', {
           params: {
-            count: 6,
+            count: 12,
             client_id: '3eVYYY9UEOTwk4CcDUgHt9uSSP_MJiAO3E1hcna-i1Q',
           },
         });

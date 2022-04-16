@@ -140,7 +140,7 @@ const BodyLine = styled.View`
 const BlurWrapper = styled.View`
   flex: 1;
   background-color: lightgray;
-  opacity: 0.2;
+  opacity: 0.1;
 `;
 
 const LockedIcon = styled.TouchableOpacity`

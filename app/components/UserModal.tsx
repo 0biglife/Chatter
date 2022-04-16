@@ -1,3 +1,5 @@
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
 import Modal from 'react-native-modal';
 import styled from 'styled-components/native';
@@ -78,6 +80,7 @@ interface ModalProps {
   setShowModal: any;
   userInfo: string;
   userProfile: string;
+  moveToProfile: () => void;
 }
 
 const UserModal = (props: ModalProps) => {
@@ -92,7 +95,7 @@ const UserModal = (props: ModalProps) => {
         onBackdropPress={() => props.setShowModal(false)}>
         <ModalContainer>
           <InnerContainer>
-            <ImageSection>
+            <ImageSection onPress={() => props.moveToProfile}>
               <ProfileImage source={{uri: props.userProfile}} />
             </ImageSection>
             <InfoSection>

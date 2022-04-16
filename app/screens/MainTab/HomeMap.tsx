@@ -11,6 +11,9 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import UserModal from '../../components/UserModal';
 import unsplashClient from '../../apis/unsplashClient';
 import {WeatherData} from '../../apis/WeatherData';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {ChatStackParamList, MainTabParamList} from '../../navigations/Types';
 
 const Container = styled.View`
   flex: 1;
@@ -73,6 +76,8 @@ const WeatherText = styled.Text`
 const distance = 0.1; // 1km -> 0.01
 
 const HomeMap = () => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<ChatStackParamList>>();
   //User Control
   const orders = useSelector((state: RootState) => state.order.orders);
   const [myPosition, setMyPosition] = useState<{
@@ -185,6 +190,16 @@ const HomeMap = () => {
     setMarkerUser(userInfo);
   };
 
+  const modalProfileTapped = () => {
+    navigation.navigate('UserProfile', {
+      id: 122,
+      user_id: 'test',
+      user_location: 'test',
+      user_name: 'test',
+      user_profile: require('../../assets/post01.jpeg'),
+    });
+  };
+
   //rainy-outline,cloudy-outline,md-cloudy-night-outline(night)
   //partly-sunny-outline(구름 가린 햇빛),sunny-outline(태양), snow-outline(눈)
   return (
@@ -234,6 +249,7 @@ const HomeMap = () => {
         setShowModal={setShowModal}
         userInfo={markerUser}
         userProfile={profileUrl}
+        moveToProfile={modalProfileTapped}
       />
       <HeaderView>
         <WeatherView>

@@ -2,10 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 import {postData} from '../../apis/postData';
+import CollapsibleView from '../../components/CollapsibleView';
 
 const MainContainer = styled.View`
   flex: 1;
-  background-color: gray;
+  background-color: white;
 `;
 
 const CellContainer = styled.View`
@@ -26,22 +27,6 @@ const PostImgae = styled.Image`
 `;
 
 const HomeFeed = () => {
-  // const [data, setData] = useState();
-
-  // useEffect(() => {
-  //   const getPostData = async () => {
-  //     try {
-  //       const response = await unsplashClient.get('');
-
-  //       console.log('HomeFeed API SUCCESS : ', response.data);
-  //       setData(response.data);
-  //     } catch (e) {
-  //       console.log('HomeFeed API FAILED : ', e);
-  //     }
-  //   };
-  //   getPostData();
-  // }, []);
-
   const renderItem = ({item}) => {
     return (
       <CellContainer>
@@ -54,6 +39,11 @@ const HomeFeed = () => {
 
   return (
     <MainContainer>
+      <CollapsibleView
+        sectionTitle="공지사항"
+        content="이 앱은 사용자을 위해 만들어졌습니다. 이 앱은 사용자을 위해 만들어졌습니다. 이 앱은 사용자을 위해 만들어졌습니다. 이 앱은 사용자을 위해 만들어졌습니다. 이 앱은 사용자을 위해 만들어졌습니다. 이 앱은 사용자을 위해 만들어졌습니다. 이 앱은 사용자을 위해 만들어졌습니다. 이 앱은 사용자을 위해 만들어졌습니다."
+        maxLine={2}
+      />
       <FlatList
         data={postData}
         renderItem={renderItem}

@@ -112,6 +112,12 @@ const ChatDetail = () => {
           scrollToBottomComponent={() => {
             return <IonIcon name="chevron-down" size={20} color="blackdsff" />;
           }}
+          scrollToBottomStyle={{
+            marginRight: 6,
+            marginTop: 20,
+            marginBottom: -20,
+          }}
+          placeholder="메세지를 입력하세요"
         />
       </ChatSection>
     </MainContainer>

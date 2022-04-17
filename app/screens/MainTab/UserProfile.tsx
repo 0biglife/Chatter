@@ -202,6 +202,7 @@ const UserProfile = () => {
           <BlurWrapper>
             <FlatList
               data={postData}
+              scrollEnabled={false}
               renderItem={({item}) => (
                 <CellContainer>
                   <PostImage source={require('../../assets/post01.jpeg')} />
@@ -215,7 +216,7 @@ const UserProfile = () => {
               showsVerticalScrollIndicator={false}
             />
           </BlurWrapper>
-          <LockedIcon onPress={() => Alert.alert('Locked')}>
+          <LockedIcon onPress={() => Alert.alert('Updating 0.0.1')}>
             <IonIcon name="lock-closed" size={30} color="black" />
             <Text>Locked</Text>
           </LockedIcon>

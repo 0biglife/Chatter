@@ -32,7 +32,7 @@ const ImageSection = styled.TouchableOpacity`
   margin-left: 6px;
   background-color: lightgray;
 `;
-
+``;
 const ProfileImage = styled.Image`
   flex: 1;
   width: 70px;
@@ -41,7 +41,7 @@ const ProfileImage = styled.Image`
 `;
 
 const TextSection = styled.TouchableOpacity`
-  width: ${Width - 160};
+  width: ${Width - 160}px;
   height: 80px;
   margin-left: 10px;
   padding: 6px;

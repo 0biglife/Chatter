@@ -4,6 +4,7 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import {FlatList} from 'react-native-gesture-handler';
 import {postData} from '../../apis/postData';
 import {Alert, Text, View} from 'react-native';
+import {ScrollView} from 'react-native-virtualized-view';
 //Imported RenderItem
 import {
   CellContainer,
@@ -32,7 +33,7 @@ const ProfileBG = styled.Image`
 
 const ProfileSection = styled.View`
   width: 90%;
-  height: 45%;
+  height: 320px;
   background-color: white;
   align-items: center;
   margin-top: 20px;
@@ -103,9 +104,10 @@ const InnerSubtitle = styled.Text`
 
 const BodySection = styled.View`
   width: 90%;
-  height: 100%;
+  flex: 1;
   background-color: white;
   margin-top: 20px;
+  margin-bottom: 20px;
   border-radius: 20px;
 `;
 
@@ -141,56 +143,60 @@ const BodyLine = styled.View`
 const Profile = () => {
   return (
     <SafeContainer>
-      <HeaderContainer>
-        <ProfileBG source={require('../../assets/bg_01.jpeg')} />
-        <ProfileSection>
-          <ProfileView
-            style={{
-              shadowColor: 'black',
-              shadowOpacity: 0.3,
-              shadowRadius: 10,
-              shadowOffset: {width: 2, height: 2},
-            }}>
-            <ProfileImage source={require('../../assets/grboy02.webp')} />
-            <ProfileName>GRboy</ProfileName>
-          </ProfileView>
-          <IntroText>0 year-old hambie</IntroText>
-          <InfoSection>
-            <TextWrapper>
-              <InnerTitle>Follower</InnerTitle>
-              <InnerSubtitle>2.7K</InnerSubtitle>
-            </TextWrapper>
-            <CustomLine />
-            <TextWrapper>
-              <InnerTitle>Following</InnerTitle>
-              <InnerSubtitle>339</InnerSubtitle>
-            </TextWrapper>
-          </InfoSection>
-        </ProfileSection>
-        <BodySection>
-          <BodyTopWrapper>
-            <BodyTitle>Time Record ( {postData.length} )</BodyTitle>
-            <AddButton onPress={() => Alert.alert('test')}>
-              <IonIcon name="add" size={24} color="black" />
-            </AddButton>
-          </BodyTopWrapper>
-          <BodyLine />
-          <FlatList
-            data={postData}
-            renderItem={({item}) => (
-              <CellContainer>
-                <PostImage source={require('../../assets/post01.jpeg')} />
-                <PostedWrapper>
-                  <PostText>{item.body}</PostText>
-                  <PostedTime>2022.02.22</PostedTime>
-                </PostedWrapper>
-              </CellContainer>
-            )}
-            keyExtractor={item => item.id}
-            showsVerticalScrollIndicator={false}
-          />
-        </BodySection>
-      </HeaderContainer>
+      <ScrollView nestedScrollEnabled>
+        <HeaderContainer>
+          <ProfileBG source={require('../../assets/bg_01.jpeg')} />
+          <ProfileSection>
+            <ProfileView
+              style={{
+                shadowColor: 'black',
+                shadowOpacity: 0.3,
+                shadowRadius: 10,
+                shadowOffset: {width: 2, height: 2},
+              }}>
+              <ProfileImage source={require('../../assets/grboy02.webp')} />
+              <ProfileName>GRboy</ProfileName>
+            </ProfileView>
+            <IntroText>0 year-old hambie</IntroText>
+            <InfoSection>
+              <TextWrapper>
+                <InnerTitle>Follower</InnerTitle>
+                <InnerSubtitle>2.7K</InnerSubtitle>
+              </TextWrapper>
+              <CustomLine />
+              <TextWrapper>
+                <InnerTitle>Following</InnerTitle>
+                <InnerSubtitle>339</InnerSubtitle>
+              </TextWrapper>
+            </InfoSection>
+          </ProfileSection>
+          <BodySection>
+            <BodyTopWrapper>
+              <BodyTitle>Time Record ( {postData.length} )</BodyTitle>
+              <AddButton onPress={() => Alert.alert('test')}>
+                <IonIcon name="add" size={24} color="black" />
+              </AddButton>
+            </BodyTopWrapper>
+            <BodyLine />
+            <FlatList
+              data={postData}
+              nestedScrollEnabled
+              style={{marginBottom: 10}}
+              renderItem={({item}) => (
+                <CellContainer>
+                  <PostImage source={require('../../assets/post01.jpeg')} />
+                  <PostedWrapper>
+                    <PostText>{item.body}</PostText>
+                    <PostedTime>2022.02.22</PostedTime>
+                  </PostedWrapper>
+                </CellContainer>
+              )}
+              keyExtractor={item => item.id}
+              showsVerticalScrollIndicator={false}
+            />
+          </BodySection>
+        </HeaderContainer>
+      </ScrollView>
     </SafeContainer>
   );
 };

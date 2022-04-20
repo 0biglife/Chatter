@@ -7,7 +7,6 @@ import {useSelector} from 'react-redux';
 import {
   LogIn,
   SignUp,
-  Orders,
   HomeFeed,
   Chat,
   Profile,
@@ -15,7 +14,6 @@ import {
   ChatDetail,
   UserProfile,
 } from '../screens';
-import Delivery from './DeliveryStack';
 import {useAppDispatch} from '../redux/store';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {AxiosError} from 'axios';
@@ -31,16 +29,6 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const RootStack = () => {
-  const getTabBarVisibility = route => {
-    const routeName = route.state
-      ? route.state.routes[route.state.index].name
-      : '';
-    if (routeName === 'ChatDetail') {
-      return false;
-    }
-    return true;
-  };
-
   const dispatch = useAppDispatch();
   //!!연산자 : undefined checking : null이나 undefined 면 false 를 반환 !
   const isLoggedIn = useSelector((state: RootState) => !!state.user.email);
@@ -92,7 +80,7 @@ const RootStack = () => {
     //서버로부터 데이터 받을 때는 콜백 방식 필수
     //useCallback => ()
     const socketCallBack = (data: any) => {
-      console.log('RootStack Socket Callback : ', data);
+      // console.log('RootStack Socket Callback : ', data);
       dispatch(orderSlice.actions.addOrder(data));
     };
     if (socket && isLoggedIn) {
@@ -175,7 +163,7 @@ const RootStack = () => {
   return isLoggedIn ? (
     <Tab.Navigator
       initialRouteName="Orders"
-      screenOptions={({ navigation, route }) => ({
+      screenOptions={({navigation, route}) => ({
         tabBarShowLabel: false,
         tabBarActiveTintColor: 'gray',
         tabBarIcon: ({focused, color, size}) => {

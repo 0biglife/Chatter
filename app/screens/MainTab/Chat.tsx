@@ -81,7 +81,7 @@ const Chat = () => {
           },
         });
         setUnsplashData(response.data);
-        console.log('CHAT API SUCCESS : ', response.data);
+        // console.log('CHAT API SUCCESS : ', response.data);
       } catch (e) {
         console.log('CHAT API FAILED : ', e);
       }

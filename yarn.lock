@@ -6956,6 +6956,11 @@ react-native-sensitive-info@6.0.0-alpha.9:
   resolved "https://registry.npmjs.org/react-native-sensitive-info/-/react-native-sensitive-info-6.0.0-alpha.9.tgz"
   integrity sha512-W2R1gUHgBAmy+wVl0BvA7s01SqqTitnG4Sdj2zmck0OS5a54kq+pTnXRqDljMa2NQs4Mue2IHyvd+Tf0X1ZL6Q==
 
+react-native-share@7.3.9:
+  version "7.3.9"
+  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-7.3.9.tgz#e745421027b96e78ade9794bddaf441ff4c19718"
+  integrity sha512-doPOUSQAkiIOZarFZvwrxVmfK3789CWsuZ6SNGzNCEGt7dA349vv2uSKDFUP5M7p+GIY+YqFaD3RSIt1Oct+PQ==
+
 react-native-splash-screen@3.3.0:
   version "3.3.0"
   resolved "https://registry.npmjs.org/react-native-splash-screen/-/react-native-splash-screen-3.3.0.tgz"

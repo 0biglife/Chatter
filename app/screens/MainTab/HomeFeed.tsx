@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 import {postData} from '../../apis/postData';
-import CollapsibleView from '../../components/CollapsibleView';
 
 const MainContainer = styled.View`
   flex: 1;
@@ -39,11 +38,11 @@ const HomeFeed = () => {
 
   return (
     <MainContainer>
-      <CollapsibleView
+      {/* <CollapsibleView
         sectionTitle="공지사항"
         content="이 앱은 사용자을 위해 만들어졌습니다. 이 앱은 사용자을 위해 만들어졌습니다. 이 앱은 사용자을 위해 만들어졌습니다. 이 앱은 사용자을 위해 만들어졌습니다. 이 앱은 사용자을 위해 만들어졌습니다. 이 앱은 사용자을 위해 만들어졌습니다. 이 앱은 사용자을 위해 만들어졌습니다. 이 앱은 사용자을 위해 만들어졌습니다."
         maxLine={2}
-      />
+      /> */}
       <FlatList
         data={postData}
         renderItem={renderItem}

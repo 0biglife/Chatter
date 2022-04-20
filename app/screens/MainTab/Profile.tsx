@@ -1,10 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {FlatList} from 'react-native-gesture-handler';
 import {postData} from '../../apis/postData';
 import {Alert, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-virtualized-view';
+import BottomHalfModal from '../../components/BottomHalfModal';
+import Share from 'react-native-share';
+
 //Imported RenderItem
 import {
   CellContainer,
@@ -46,10 +49,16 @@ const ProfileView = styled.View`
 `;
 
 const ProfileImage = styled.Image`
-  /* flex: 1; */
   width: 150px;
   height: 150px;
   border-radius: 75px;
+`;
+
+const EditButton = styled.TouchableOpacity`
+  position: absolute;
+  align-self: flex-end;
+  width: 46px;
+  margin-top: 8px;
 `;
 
 const ProfileName = styled.Text`
@@ -61,7 +70,6 @@ const ProfileName = styled.Text`
 
 const InfoSection = styled.View`
   margin-top: 10px;
-  /* background-color: lightblue; */
   width: 90%;
   height: 80px;
   flex-direction: row;
@@ -71,7 +79,6 @@ const InfoSection = styled.View`
 const IntroText = styled.Text`
   font-size: 14px;
   font-weight: 300;
-  /* background-color: lightblue; */
   margin-top: 6px;
 `;
 
@@ -141,12 +148,34 @@ const BodyLine = styled.View`
 `;
 
 const Profile = () => {
+  // const [showModal, setShowModal] = useState<boolean>(false);
+
+  const CustomShare = async () => {
+    const shareOptions = {
+      message: 'test for sharing function',
+    };
+
+    try {
+      const shareResponse = await Share.open(shareOptions);
+      console.log(JSON.stringify(shareResponse));
+    } catch (e) {
+      console.log('Share Error : ', e);
+    }
+  };
+
   return (
     <SafeContainer>
       <ScrollView nestedScrollEnabled>
         <HeaderContainer>
           <ProfileBG source={require('../../assets/bg_01.jpeg')} />
           <ProfileSection>
+            <EditButton onPress={() => CustomShare()}>
+              <IonIcon
+                name="ellipsis-horizontal-sharp"
+                size={30}
+                color="black"
+              />
+            </EditButton>
             <ProfileView
               style={{
                 shadowColor: 'black',
@@ -197,6 +226,11 @@ const Profile = () => {
           </BodySection>
         </HeaderContainer>
       </ScrollView>
+      {/* <BottomHalfModal
+        onClose={() => setShowModal(false)}
+        showModal={showModal}
+        setShowModal={setShowModal}
+      /> */}
     </SafeContainer>
   );
 };

@@ -166,6 +166,11 @@ const UserProfile = () => {
       headerShadowVisible: false,
     });
   }, []);
+
+  const getRandom = (min: number, max: number) => {
+    return Math.floor(Math.random() * (max - min) + min);
+  };
+
   return (
     <SafeContainer>
       <HeaderContainer>
@@ -185,12 +190,12 @@ const UserProfile = () => {
           <InfoSection>
             <TextWrapper>
               <InnerTitle>Follower</InnerTitle>
-              <InnerSubtitle>2.7K</InnerSubtitle>
+              <InnerSubtitle>{getRandom(200, 500)}</InnerSubtitle>
             </TextWrapper>
             <CustomLine />
             <TextWrapper>
               <InnerTitle>Following</InnerTitle>
-              <InnerSubtitle>339</InnerSubtitle>
+              <InnerSubtitle>{getRandom(300, 500)}</InnerSubtitle>
             </TextWrapper>
           </InfoSection>
         </ProfileSection>

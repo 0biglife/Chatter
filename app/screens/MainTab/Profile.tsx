@@ -80,6 +80,7 @@ const Profile = () => {
       .catch(console.log);
   }, [onResponse]);
 
+  //sharing function
   const CustomShare = async () => {
     const shareOptions = {
       message: 'test for sharing function',
@@ -93,12 +94,36 @@ const Profile = () => {
     }
   };
 
-  const EditTapped = () => {
+  const EditStart = () => {
+    setName('');
     setShowEditModal(true);
   };
 
   const EditDone = () => {
-    setShowEditModal(false);
+    if (name || image) {
+      //API : 변경된 프로필 사진 서버로 전송
+      setShowEditModal(false);
+    } else {
+      Alert.alert('닉네임을 입력해주세요');
+    }
+  };
+
+  const EditCancel = () => {
+    if (name) {
+      Alert.alert('취소하시겠습니까?', '입력된 정보는 사라집니다', [
+        {
+          text: '예',
+          onPress: () => {
+            setShowEditModal(false);
+          },
+        },
+        {
+          text: '아니요',
+        },
+      ]);
+    } else {
+      setShowEditModal(false);
+    }
   };
 
   const onChangeName = useCallback(text => {
@@ -121,7 +146,7 @@ const Profile = () => {
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                 }}>
-                <ProfileTopButton onPress={() => EditDone()}>
+                <ProfileTopButton onPress={() => EditCancel()}>
                   <IonIcon name="close-sharp" size={30} color="gray" />
                 </ProfileTopButton>
                 <ProfileTopButton onPress={() => EditDone()}>
@@ -136,7 +161,7 @@ const Profile = () => {
                   height: 40,
                   alignItems: 'flex-end',
                 }}>
-                <ProfileTopButton onPress={() => EditTapped()}>
+                <ProfileTopButton onPress={() => EditStart()}>
                   <IonIcon
                     name="ellipsis-horizontal-sharp"
                     size={30}
@@ -167,7 +192,13 @@ const Profile = () => {
                 shadowRadius: 10,
                 shadowOffset: {width: 2, height: 2},
               }}>
-              <ProfileImage source={require('../../assets/grboy02.webp')} />
+              {showEditModal ? (
+                <ProfileImage
+                  source={image ? image : require('../../assets/grboy02.webp')}
+                />
+              ) : (
+                <ProfileImage source={require('../../assets/grboy02.webp')} />
+              )}
               {showEditModal ? (
                 <>
                   <EditButton onPress={() => setShowImageModal(true)}>
@@ -197,7 +228,7 @@ const Profile = () => {
                   </Modal>
                 </>
               ) : null}
-              {showEditModal ? (
+              {showEditModal ? ( //here
                 <View
                   style={{
                     width: '100%',
@@ -263,15 +294,6 @@ const Profile = () => {
     </SafeContainer>
   );
 };
-
-const Input = styled.TextInput`
-  font-size: 20px;
-  font-weight: 500;
-  color: black;
-  align-self: center;
-  padding: 2px;
-  margin-right: 8px;
-`;
 
 const EditModalContainer = styled.View`
   width: 100%;
@@ -347,8 +369,15 @@ const EditButton = styled.TouchableOpacity`
 
 const ProfileTopButton = styled.TouchableOpacity`
   padding-left: 12px;
-  padding-right: 12px;
+  padding-right: 16px;
   padding-top: 8px;
+`;
+
+const Input = styled.TextInput`
+  font-size: 20px;
+  font-weight: 500;
+  color: black;
+  align-self: center;
 `;
 
 const ProfileName = styled.Text`

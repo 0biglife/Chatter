@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>269466894941-q0fkn0uprcg2k0jjdf7c6ph0ll5lla0h.apps.googleusercontent.com</string>
+	<string>548713126457-rsfpmkd995v60doa1o63v1ss1v8e0jem.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.269466894941-q0fkn0uprcg2k0jjdf7c6ph0ll5lla0h</string>
+	<string>com.googleusercontent.apps.548713126457-rsfpmkd995v60doa1o63v1ss1v8e0jem</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBA0TdApQoRgDTF9smbup7k2gCQfPr8vFc</string>
+	<string>AIzaSyBdXwlDxPOQbhwkh354QJnKvCbxxtqwS4E</string>
 	<key>GCM_SENDER_ID</key>
-	<string>269466894941</string>
+	<string>548713126457</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.daybyday</string>
+	<string>com.chatter</string>
 	<key>PROJECT_ID</key>
-	<string>daybyday-586a2</string>
+	<string>chatter-d9c7e</string>
 	<key>STORAGE_BUCKET</key>
-	<string>daybyday-586a2.appspot.com</string>
+	<string>chatter-d9c7e.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:269466894941:ios:7ed543e6ae14310105c3b4</string>
+	<string>1:548713126457:ios:6f1fb05409e41293f48be8</string>
 </dict>
 </plist>

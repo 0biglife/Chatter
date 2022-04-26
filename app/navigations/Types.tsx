@@ -16,6 +16,11 @@ export type ChatStackParamList = {
   ChatDetail: UserData;
 };
 
+export type ProfileStackParamList = {
+  Profile: undefined;
+  EditProfile: undefined;
+};
+
 export type AuthParamList = {
   LogIn: undefined;
   SignUp: undefined;
@@ -27,4 +32,11 @@ type UserData = {
   user_name: string;
   user_location: string;
   user_profile: string;
+};
+
+export type FBPost = {
+  id: string;
+  userId: string;
+  image: string;
+  body: string;
 };

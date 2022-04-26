@@ -5,6 +5,7 @@ const initialState = {
   email: '',
   accessToken: '',
   money: 0,
+  profileImage: '',
 };
 const userSlice = createSlice({
   name: 'user',
@@ -13,6 +14,7 @@ const userSlice = createSlice({
     setUser(state, action) {
       state.email = action.payload.email;
       state.name = action.payload.name;
+      state.profileImage = action.payload.profileImage;
       state.accessToken = action.payload.accessToken;
     },
     setName(state, action) {

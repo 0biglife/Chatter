@@ -1,11 +1,7 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import {
-  FlatList,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native-gesture-handler';
+import {FlatList} from 'react-native-gesture-handler';
 import {postData} from '../../apis/postData';
 import {Alert, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-virtualized-view';
@@ -16,6 +12,9 @@ import Modal from 'react-native-modal';
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageResizer from 'react-native-image-resizer';
 
+//Firebase
+import firestore from '@react-native-firebase/firestore';
+
 //Imported RenderItem
 import {
   CellContainer,
@@ -24,14 +23,44 @@ import {
   PostImage,
   PostText,
 } from '../../components/ProfilePost';
+import {useAppDispatch} from '../../redux/store';
+import userSlice from '../../redux/slices/user';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {FBPost, ProfileStackParamList} from '../../navigations/Types';
 
 const Profile = () => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<ProfileStackParamList>>();
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [showImageModal, setShowImageModal] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
   const [imageFormdata, setImageFormData] =
     useState<{uri: string; name: string; type: string}>();
   const [image, setImage] = useState<{uri: string}>();
+  const dispatch = useAppDispatch();
+  //Firebase
+  const FBStore = firestore().collection('users');
+  const [myPost, setMyPost] = useState<FBPost[]>();
+
+  const getFirData = async () => {
+    try {
+      const response = await FBStore.get();
+      setMyPost(
+        response.docs.map(doc => ({
+          ...doc.data(),
+          id: doc.id,
+        })),
+      );
+      console.log('Profile/FireStore Success: ', myPost);
+    } catch (e) {
+      console.log('Profile/FireStore Error : ', e);
+    }
+  };
+
+  useEffect(() => {
+    getFirData();
+  }, []);
 
   //ImageData
   const onResponse = useCallback(async response => {
@@ -94,6 +123,10 @@ const Profile = () => {
     }
   };
 
+  const gotoEdit = () => {
+    navigation.navigate('EditProfile');
+  };
+
   const EditStart = () => {
     setName('');
     setShowEditModal(true);
@@ -102,6 +135,11 @@ const Profile = () => {
   const EditDone = () => {
     if (name || image) {
       //API : 변경된 프로필 사진 서버로 전송
+      dispatch(
+        userSlice.actions.setUser({
+          profileImage: image,
+        }),
+      );
       setShowEditModal(false);
     } else {
       Alert.alert('닉네임을 입력해주세요');
@@ -161,7 +199,7 @@ const Profile = () => {
                   height: 40,
                   alignItems: 'flex-end',
                 }}>
-                <ProfileTopButton onPress={() => EditStart()}>
+                <ProfileTopButton onPress={() => gotoEdit()}>
                   <IonIcon
                     name="ellipsis-horizontal-sharp"
                     size={30}
@@ -273,12 +311,12 @@ const Profile = () => {
             </BodyTopWrapper>
             <BodyLine />
             <FlatList
-              data={postData}
+              data={myPost}
               nestedScrollEnabled
               style={{marginBottom: 10}}
               renderItem={({item}) => (
                 <CellContainer>
-                  <PostImage source={require('../../assets/post01.jpeg')} />
+                  <PostImage source={{uri: item.image}} />
                   <PostedWrapper>
                     <PostText>{item.body}</PostText>
                     <PostedTime>2022.02.22</PostedTime>

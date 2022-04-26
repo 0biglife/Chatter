@@ -13,6 +13,7 @@ import {
   HomeMap,
   ChatDetail,
   UserProfile,
+  EditProfile,
 } from '../screens';
 import {useAppDispatch} from '../redux/store';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -160,6 +161,28 @@ const RootStack = () => {
     );
   };
 
+  const ProfileStack = () => {
+    return (
+      <Stack.Navigator initialRouteName="Profile">
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfile}
+          options={{
+            title: 'EditProfile',
+            // headerBackTitle: '',
+            // headerTintColor: 'black',
+            // headerShadowVisible: false,
+          }}
+        />
+      </Stack.Navigator>
+    );
+  };
+
   return isLoggedIn ? (
     <Tab.Navigator
       initialRouteName="Orders"
@@ -175,7 +198,7 @@ const RootStack = () => {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'ChatStack') {
             iconName = focused ? 'chatbox' : 'chatbox-outline';
-          } else if (route.name === 'Profile') {
+          } else if (route.name === 'ProfileStack') {
             iconName = focused ? 'person' : 'person-outline';
           }
           return <IonIcon name={iconName} size={size} color={color} />;
@@ -199,8 +222,8 @@ const RootStack = () => {
         }}
       />
       <Tab.Screen
-        name="Profile"
-        component={Profile}
+        name="ProfileStack"
+        component={ProfileStack}
         options={{
           headerShown: false,
         }}

@@ -7,7 +7,8 @@ import Chat from './MainTab/Chat';
 import Profile from './MainTab/Profile';
 import UserProfile from './MainTab/UserProfile';
 import ChatDetail from './MainTab/ChatDetail';
-import EditProfile from './MainTab/EditProfile';
+import EditModal from './MainTab/EditModal';
+import PostModal from './MainTab/PostModal';
 
 export {
   LogIn,
@@ -17,7 +18,8 @@ export {
   ChatDetail,
   Profile,
   UserProfile,
-  EditProfile,
+  EditModal,
+  PostModal,
   HomeMap,
   Settings,
 };

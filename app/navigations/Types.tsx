@@ -18,7 +18,8 @@ export type ChatStackParamList = {
 
 export type ProfileStackParamList = {
   Profile: undefined;
-  EditProfile: undefined;
+  EditModal: undefined;
+  PostModal: undefined;
 };
 
 export type AuthParamList = {

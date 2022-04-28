@@ -13,7 +13,8 @@ import {
   HomeMap,
   ChatDetail,
   UserProfile,
-  EditProfile,
+  PostModal,
+  EditModal,
 } from '../screens';
 import {useAppDispatch} from '../redux/store';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -170,14 +171,19 @@ const RootStack = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name="EditProfile"
-          component={EditProfile}
+          name="EditModal"
+          component={EditModal}
           options={{
-            title: 'EditProfile',
+            title: 'EditModal',
             // headerBackTitle: '',
             // headerTintColor: 'black',
             // headerShadowVisible: false,
           }}
+        />
+        <Stack.Screen
+          name="PostModal"
+          component={PostModal}
+          options={{headerShown: false}}
         />
       </Stack.Navigator>
     );

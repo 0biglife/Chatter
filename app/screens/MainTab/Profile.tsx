@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {FlatList} from 'react-native-gesture-handler';
 import {postData} from '../../apis/postData';
-import {Alert, Text, View} from 'react-native';
+import {Alert, Dimensions, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-virtualized-view';
 import Share from 'react-native-share';
 import Modal from 'react-native-modal';
@@ -28,11 +28,14 @@ import userSlice from '../../redux/slices/user';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {FBPost, ProfileStackParamList} from '../../navigations/Types';
+import PostView from './PostView';
+import PostModal from './PostModal';
+import EditModal from './EditModal';
+import HalfModal from '../../components/HalfModal';
 
 const Profile = () => {
-  const navigation =
-    useNavigation<NativeStackNavigationProp<ProfileStackParamList>>();
-  const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  // const navigation =
+  //   useNavigation<NativeStackNavigationProp<ProfileStackParamList>>();
   const [showImageModal, setShowImageModal] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
   const [imageFormdata, setImageFormData] =
@@ -40,22 +43,43 @@ const Profile = () => {
   const [image, setImage] = useState<{uri: string}>();
   const dispatch = useAppDispatch();
   //Firebase
-  const FBStore = firestore().collection('users');
+  const FBStore = firestore();
   const [myPost, setMyPost] = useState<FBPost[]>();
+  //Modal Control
+  const [showHalfModal, setShowHalfModal] = useState<boolean>(false);
+  const [showPostModal, setShowPostModal] = useState<boolean>(false);
+  const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
   const getFirData = async () => {
     try {
-      const response = await FBStore.get();
+      const response = await FBStore.collection('users')
+        .doc('my')
+        .collection('post')
+        .get();
       setMyPost(
         response.docs.map(doc => ({
           ...doc.data(),
           id: doc.id,
         })),
       );
-      console.log('Profile/FireStore Success: ', myPost);
+      console.log('Profile/FireStore Success: ', response.docs);
     } catch (e) {
       console.log('Profile/FireStore Error : ', e);
     }
+  };
+
+  const addPost = async () => {
+    setShowPostModal(true);
+    // try {
+    //   await FBStore.add({
+    //     image:
+    //       'https://img.wkorea.com/w/2019/12/style_5e08dbad6d22f-539x700.jpg',
+    //     body: 'test!!!',
+    //   });
+    //   console.log('test');
+    // } catch (e) {
+    //   console.log('Profile/addPost Error : ', e);
+    // }
   };
 
   useEffect(() => {
@@ -111,6 +135,7 @@ const Profile = () => {
 
   //sharing function
   const CustomShare = async () => {
+    setShowHalfModal(false);
     const shareOptions = {
       message: 'test for sharing function',
     };
@@ -123,8 +148,9 @@ const Profile = () => {
     }
   };
 
-  const gotoEdit = () => {
-    navigation.navigate('EditProfile');
+  const gotoEditModal = () => {
+    setShowHalfModal(false);
+    setShowEditModal(true);
   };
 
   const EditStart = () => {
@@ -174,55 +200,36 @@ const Profile = () => {
         <HeaderContainer>
           <ProfileBG source={require('../../assets/bg_01.jpeg')} />
           <ProfileSection>
-            {showEditModal ? (
-              <View
-                style={{
-                  position: 'absolute',
-                  width: '100%',
-                  alignSelf: 'center',
-                  height: 40,
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}>
-                <ProfileTopButton onPress={() => EditCancel()}>
-                  <IonIcon name="close-sharp" size={30} color="gray" />
-                </ProfileTopButton>
-                <ProfileTopButton onPress={() => EditDone()}>
-                  <IonIcon name="checkmark-sharp" size={30} color="gray" />
-                </ProfileTopButton>
-              </View>
-            ) : (
-              <View
-                style={{
-                  position: 'absolute',
-                  width: '100%',
-                  height: 40,
-                  alignItems: 'flex-end',
-                }}>
-                <ProfileTopButton onPress={() => gotoEdit()}>
-                  <IonIcon
-                    name="ellipsis-horizontal-sharp"
-                    size={30}
-                    color="black"
-                  />
-                </ProfileTopButton>
-              </View>
-            )}
-            {/* <Modal
-              isVisible={showEditModal}
-              backdropColor="transparent"
-              animationIn="fadeIn"
-              animationInTiming={2}
-              onBackdropPress={() => setShowEditModal(false)}>
-              <EditModalContainer>
-                <TouchableOpacity
-                  style={{alignItems: 'center', justifyContent: 'center'}}>
-                  <Text style={{fontSize: 18, backfaceVisibility: false}}>
-                    Edit Profile
-                  </Text>
-                </TouchableOpacity>
-              </EditModalContainer>
-            </Modal> */}
+            <View
+              style={{
+                position: 'absolute',
+                width: '100%',
+                height: 40,
+                alignItems: 'flex-end',
+              }}>
+              <ProfileTopButton onPress={() => setShowHalfModal(true)}>
+                <IonIcon
+                  name="ellipsis-horizontal-sharp"
+                  size={30}
+                  color="black"
+                />
+              </ProfileTopButton>
+              <HalfModal
+                showModal={showHalfModal}
+                setShowModal={setShowHalfModal}
+                firstTapped={gotoEditModal}
+                thirdTapped={CustomShare}
+              />
+              <EditModal
+                userInfo={{
+                  name: 'GRboy',
+                  image:
+                    'http://www.nbnnews.co.kr/news/photo/202106/506788_549628_956.jpg',
+                }}
+                showModal={showEditModal}
+                setShowModal={setShowEditModal}
+              />
+            </View>
             <ProfileView
               style={{
                 shadowColor: 'black',
@@ -230,64 +237,8 @@ const Profile = () => {
                 shadowRadius: 10,
                 shadowOffset: {width: 2, height: 2},
               }}>
-              {showEditModal ? (
-                <ProfileImage
-                  source={image ? image : require('../../assets/grboy02.webp')}
-                />
-              ) : (
-                <ProfileImage source={require('../../assets/grboy02.webp')} />
-              )}
-              {showEditModal ? (
-                <>
-                  <EditButton onPress={() => setShowImageModal(true)}>
-                    <IonIcon
-                      style={{
-                        position: 'absolute',
-                      }}
-                      name="add-circle"
-                      size={28}
-                      color="gray"
-                    />
-                  </EditButton>
-                  <Modal
-                    isVisible={showImageModal}
-                    backdropColor="black"
-                    animationIn="fadeIn"
-                    animationInTiming={0.1}
-                    onBackdropPress={() => setShowImageModal(false)}>
-                    <ImageModalContainer>
-                      <ImageModalButton onPress={() => onTakePhoto()}>
-                        <Text>카메라</Text>
-                      </ImageModalButton>
-                      <ImageModalButton onPress={() => onChangeFile()}>
-                        <Text>앨범</Text>
-                      </ImageModalButton>
-                    </ImageModalContainer>
-                  </Modal>
-                </>
-              ) : null}
-              {showEditModal ? ( //here
-                <View
-                  style={{
-                    width: '100%',
-                    marginTop: 14,
-                    alignContent: 'center',
-                    alignSelf: 'center',
-                  }}>
-                  <Input
-                    value={name}
-                    placeholder="GRboy"
-                    // importantForAutofill="yes"
-                    onChangeText={text => onChangeName(text)}
-                    // textContentType="name"
-                    returnKeyType="done"
-                    clearButtonMode="while-editing"
-                    autoCapitalize="none"
-                  />
-                </View>
-              ) : (
-                <ProfileName>GRboy</ProfileName>
-              )}
+              <ProfileImage source={require('../../assets/grboy02.webp')} />
+              <ProfileName>GRboy</ProfileName>
             </ProfileView>
             <IntroText>0 year-old hambie</IntroText>
             <InfoSection>
@@ -304,10 +255,14 @@ const Profile = () => {
           </ProfileSection>
           <BodySection>
             <BodyTopWrapper>
-              <BodyTitle>Time Record ( {postData.length} )</BodyTitle>
-              <AddButton onPress={() => Alert.alert('test')}>
+              <BodyTitle>Time Record ( {3} )</BodyTitle>
+              <AddButton onPress={() => addPost()}>
                 <IonIcon name="add" size={24} color="black" />
               </AddButton>
+              <PostModal
+                showModal={showPostModal}
+                setShowModal={setShowPostModal}
+              />
             </BodyTopWrapper>
             <BodyLine />
             <FlatList
@@ -333,31 +288,6 @@ const Profile = () => {
   );
 };
 
-const EditModalContainer = styled.View`
-  width: 100%;
-  height: 600px;
-  border-radius: 20px;
-  background-color: rgba(255, 255, 255, 0.8);
-`;
-
-const ImageModalContainer = styled.View`
-  background-color: lightgray;
-  border-radius: 20px;
-  align-items: center;
-  justify-content: space-around;
-  align-self: center;
-  width: 50%;
-  height: 80px;
-  flex-direction: row;
-`;
-
-const ImageModalButton = styled.TouchableOpacity`
-  flex: 1;
-  margin: 10px;
-  align-items: center;
-  justify-content: center;
-`;
-
 const SafeContainer = styled.SafeAreaView`
   flex: 1;
   background-color: transparent;
@@ -370,7 +300,7 @@ const HeaderContainer = styled.View`
 
 const ProfileBG = styled.Image`
   width: 100%;
-  height: 100%;
+  height: ${Dimensions.get('window').height}px;
   position: absolute;
   opacity: 0.9;
 `;
@@ -395,27 +325,10 @@ const ProfileImage = styled.Image`
   border-radius: 75px;
 `;
 
-const EditButton = styled.TouchableOpacity`
-  background-color: transparent;
-  width: 24px;
-  height: 24px;
-  align-items: center;
-  position: absolute;
-  margin-top: 117px;
-  margin-left: 117px;
-`;
-
 const ProfileTopButton = styled.TouchableOpacity`
   padding-left: 12px;
   padding-right: 16px;
   padding-top: 8px;
-`;
-
-const Input = styled.TextInput`
-  font-size: 20px;
-  font-weight: 500;
-  color: black;
-  align-self: center;
 `;
 
 const ProfileName = styled.Text`

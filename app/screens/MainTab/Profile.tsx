@@ -2,11 +2,9 @@ import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {FlatList} from 'react-native-gesture-handler';
-import {postData} from '../../apis/postData';
 import {Alert, Dimensions, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-virtualized-view';
 import Share from 'react-native-share';
-import Modal from 'react-native-modal';
 
 //Image Picker & Image Resizer
 import ImagePicker from 'react-native-image-crop-picker';
@@ -28,14 +26,14 @@ import userSlice from '../../redux/slices/user';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {FBPost, ProfileStackParamList} from '../../navigations/Types';
-import PostView from './PostView';
 import PostModal from './PostModal';
-import EditModal from './EditModal';
 import HalfModal from '../../components/HalfModal';
 
 const Profile = () => {
-  // const navigation =
-  //   useNavigation<NativeStackNavigationProp<ProfileStackParamList>>();
+  const navigation =
+    useNavigation<
+      NativeStackNavigationProp<ProfileStackParamList, 'Profile'>
+    >();
   const [showImageModal, setShowImageModal] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
   const [imageFormdata, setImageFormData] =
@@ -66,20 +64,6 @@ const Profile = () => {
     } catch (e) {
       console.log('Profile/FireStore Error : ', e);
     }
-  };
-
-  const addPost = async () => {
-    setShowPostModal(true);
-    // try {
-    //   await FBStore.add({
-    //     image:
-    //       'https://img.wkorea.com/w/2019/12/style_5e08dbad6d22f-539x700.jpg',
-    //     body: 'test!!!',
-    //   });
-    //   console.log('test');
-    // } catch (e) {
-    //   console.log('Profile/addPost Error : ', e);
-    // }
   };
 
   useEffect(() => {
@@ -148,9 +132,16 @@ const Profile = () => {
     }
   };
 
+  const gotoPostView = async () => {
+    setShowPostModal(true);
+  };
+
   const gotoEditModal = () => {
     setShowHalfModal(false);
-    setShowEditModal(true);
+    navigation.navigate('EditView', {
+      name: 'GRboy',
+      image: 'http://www.nbnnews.co.kr/news/photo/202106/506788_549628_956.jpg',
+    });
   };
 
   const EditStart = () => {
@@ -190,10 +181,6 @@ const Profile = () => {
     }
   };
 
-  const onChangeName = useCallback(text => {
-    setName(text.trim());
-  }, []);
-
   return (
     <SafeContainer>
       <ScrollView nestedScrollEnabled>
@@ -219,15 +206,6 @@ const Profile = () => {
                 setShowModal={setShowHalfModal}
                 firstTapped={gotoEditModal}
                 thirdTapped={CustomShare}
-              />
-              <EditModal
-                userInfo={{
-                  name: 'GRboy',
-                  image:
-                    'http://www.nbnnews.co.kr/news/photo/202106/506788_549628_956.jpg',
-                }}
-                showModal={showEditModal}
-                setShowModal={setShowEditModal}
               />
             </View>
             <ProfileView
@@ -256,7 +234,7 @@ const Profile = () => {
           <BodySection>
             <BodyTopWrapper>
               <BodyTitle>Time Record ( {3} )</BodyTitle>
-              <AddButton onPress={() => addPost()}>
+              <AddButton onPress={() => gotoPostView()}>
                 <IonIcon name="add" size={24} color="black" />
               </AddButton>
               <PostModal
@@ -270,23 +248,65 @@ const Profile = () => {
               nestedScrollEnabled
               style={{marginBottom: 10}}
               renderItem={({item}) => (
-                <CellContainer>
-                  <PostImage source={{uri: item.image}} />
-                  <PostedWrapper>
-                    <PostText>{item.body}</PostText>
-                    <PostedTime>2022.02.22</PostedTime>
-                  </PostedWrapper>
-                </CellContainer>
+                <View style={{flex: 1}}>
+                  <CellContainer>
+                    <PostImage source={{uri: item.image}} />
+                    <PostedWrapper>
+                      <PostText>{item.body}</PostText>
+                      <PostedTime>2022.02.22</PostedTime>
+                    </PostedWrapper>
+                  </CellContainer>
+                </View>
               )}
               keyExtractor={item => item.id}
               showsVerticalScrollIndicator={false}
             />
           </BodySection>
+          <BottomSection>
+            <BodyTopWrapper>
+              <BodyTitle>Place Record ( {0} )</BodyTitle>
+              {/* <AddButton onPress={() => Alert.alert('업데이트 중입니다')}>
+                <IonIcon name="add" size={24} color="black" />
+              </AddButton> */}
+            </BodyTopWrapper>
+            <BodyLine />
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: 'lightgray',
+                margin: 10,
+                borderRadius: 8,
+              }}
+            />
+            <LockedIcon onPress={() => Alert.alert('Updating 0.0.1')}>
+              <IonIcon name="lock-closed" size={30} color="gray" />
+              <Text style={{color: 'gray'}}>Locked</Text>
+            </LockedIcon>
+          </BottomSection>
         </HeaderContainer>
       </ScrollView>
     </SafeContainer>
   );
 };
+
+const LockedIcon = styled.TouchableOpacity`
+  position: absolute;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+  margin-top: 104px;
+  flex: 1;
+  flex-direction: column;
+`;
+
+const BottomSection = styled.View`
+  width: 90%;
+  height: 200px;
+  flex: 1;
+  background-color: white;
+  margin-bottom: 20px;
+  border-radius: 20px;
+`;
 
 const SafeContainer = styled.SafeAreaView`
   flex: 1;
@@ -300,7 +320,7 @@ const HeaderContainer = styled.View`
 
 const ProfileBG = styled.Image`
   width: 100%;
-  height: ${Dimensions.get('window').height}px;
+  height: 100%;
   position: absolute;
   opacity: 0.9;
 `;

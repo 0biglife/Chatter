@@ -14,7 +14,7 @@ import {
   ChatDetail,
   UserProfile,
   PostModal,
-  EditModal,
+  EditView,
 } from '../screens';
 import {useAppDispatch} from '../redux/store';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -171,10 +171,10 @@ const RootStack = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name="EditModal"
-          component={EditModal}
+          name="EditView"
+          component={EditView}
           options={{
-            title: 'EditModal',
+            headerShown: false,
             // headerBackTitle: '',
             // headerTintColor: 'black',
             // headerShadowVisible: false,

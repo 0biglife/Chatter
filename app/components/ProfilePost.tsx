@@ -4,11 +4,12 @@ import styled from 'styled-components/native';
 
 export const CellContainer = styled.View`
   align-self: center;
-  width: 94%;
+  margin-left: 12px;
+  margin-right: 12px;
+  margin-top: 12px;
   height: 100px;
   border-radius: 8px;
-  margin-top: 8px;
-  background-color: lightgray;
+  background-color: white;
   flex-direction: row;
 `;
 
@@ -16,7 +17,8 @@ export const PostImage = styled.Image`
   flex: 1;
   width: 100px;
   height: 100px;
-  border-radius: 4px;
+  border-radius: 8px;
+  margin-right: 4px;
 `;
 
 export const PostedWrapper = styled.View`
@@ -24,6 +26,10 @@ export const PostedWrapper = styled.View`
   flex-direction: column;
   align-self: flex-start;
   padding: 10px;
+  border-radius: 8px;
+  border-width: 0.5px;
+  margin-left: 2px;
+  border-color: lightgray;
 `;
 
 export const PostText = styled.Text`

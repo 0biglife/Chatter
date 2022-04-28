@@ -29,7 +29,8 @@ const GrabBox = styled.View`
 const Section = styled.TouchableOpacity`
   width: 100%;
   height: 50px;
-  margin-top: 8px;
+  margin-top: 4px;
+  margin-left: 4px;
   padding: 10px;
   border-bottom-width: 0.5px;
   border-bottom-color: lightgray;
@@ -41,7 +42,7 @@ const Title = styled.Text`
   font-size: 16px;
   font-weight: 400;
   color: black;
-  margin-left: 10px;
+  margin-left: 14px;
 `;
 
 interface HalfModal {
@@ -64,16 +65,31 @@ const HalfModal: React.FC<HalfModal> = props => {
       animationOutTiming={300}>
       <MainContainer>
         <GrabBox />
-        <Section onPress={() => props.firstTapped}>
-          <IonIcon style={{marginLeft: 6}} name="add" size={16} color="black" />
+        <Section onPress={props.firstTapped}>
+          <IonIcon
+            style={{marginLeft: 6}}
+            name="person-add-outline"
+            size={20}
+            color="black"
+          />
           <Title>프로필 편집</Title>
         </Section>
         <Section>
-          <IonIcon style={{marginLeft: 6}} name="add" size={16} color="black" />
+          <IonIcon
+            style={{marginLeft: 6}}
+            name="settings-outline"
+            size={20}
+            color="black"
+          />
           <Title>설정</Title>
         </Section>
         <Section onPress={() => props.thirdTapped}>
-          <IonIcon style={{marginLeft: 6}} name="add" size={16} color="black" />
+          <IonIcon
+            style={{marginLeft: 6}}
+            name="share-outline"
+            size={20}
+            color="black"
+          />
           <Title>공유</Title>
         </Section>
       </MainContainer>

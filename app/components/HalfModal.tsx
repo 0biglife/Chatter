@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import Modal from 'react-native-modal';
-import {Dimensions, Image, Text, TouchableOpacity} from 'react-native';
+import {Dimensions} from 'react-native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 const Width = Dimensions.get('window').width;

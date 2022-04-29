@@ -1,11 +1,11 @@
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useCallback, useEffect, useState} from 'react';
-import {Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {GiftedChat, Bubble} from 'react-native-gifted-chat';
+import {ChatStackParamList} from '../../../navigations/Types';
 
 const MainContainer = styled.View`
   flex: 1;
@@ -34,8 +34,9 @@ const ChatSection = styled.View`
 `;
 
 const ChatDetail = () => {
-  const route = useRoute<RouteProp<ChatparamList>>();
-  const navigation = useNavigation<NativeStackNavigationProp<ChatparamList>>();
+  const route = useRoute<RouteProp<ChatStackParamList>>();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<ChatStackParamList>>();
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {

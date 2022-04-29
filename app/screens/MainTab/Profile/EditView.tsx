@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
 import {Dimensions, TouchableOpacity} from 'react-native';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {ProfileStackParamList} from '../../navigations/Types';
+import {ProfileStackParamList} from '../../../navigations/Types';
 
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
@@ -112,7 +112,6 @@ const EditView = () => {
     useNavigation<
       NativeStackNavigationProp<ProfileStackParamList, 'EditView'>
     >();
-  const [userName, setUserName] = useState<string>('');
   return (
     <MainContainer>
       <HeaderSection>

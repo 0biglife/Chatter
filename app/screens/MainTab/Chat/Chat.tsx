@@ -4,9 +4,9 @@ import React, {useEffect, useState} from 'react';
 import {Dimensions} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
-import unsplashClient from '../../apis/unsplashClient';
-import {userData, userModel} from '../../apis/userData';
-import {ChatparamList} from '../../navigations/Types';
+import unsplashClient from '../../../apis/unsplashClient';
+import {userModel} from '../../../apis/sampleData/userData';
+import {ChatStackParamList} from '../../../navigations/Types';
 
 const MainConatiner = styled.View`
   flex: 1;
@@ -67,7 +67,8 @@ const BodyText = styled.Text`
 `;
 
 const Chat = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<ChatparamList>>();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<ChatStackParamList>>();
   const [unsplashData, setUnsplashData] = useState<userModel>();
 
   useEffect(() => {

@@ -2,19 +2,11 @@ import React, {useEffect} from 'react';
 import styled from 'styled-components/native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {FlatList} from 'react-native-gesture-handler';
-import {postData} from '../../apis/postData';
-import {Alert, Text, View} from 'react-native';
-//Imported RenderItem
-import {
-  CellContainer,
-  PostedTime,
-  PostedWrapper,
-  PostImage,
-  PostText,
-} from '../../components/ProfilePost';
+import {postData} from '../../../apis/sampleData/postData';
+import {Alert, Text} from 'react-native';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {MainStackParamList} from '../../navigations/Types';
+import {MainStackParamList} from '../../../navigations/Types';
 
 const SafeContainer = styled.SafeAreaView`
   flex: 1;
@@ -153,6 +145,47 @@ const LockedIcon = styled.TouchableOpacity`
   flex-direction: column;
 `;
 
+const CellContainer = styled.TouchableOpacity`
+  align-self: center;
+  margin-left: 12px;
+  margin-right: 12px;
+  margin-top: 12px;
+  margin-bottom: -6px;
+  height: 100px;
+  border-radius: 8px;
+  background-color: white;
+  flex-direction: row;
+`;
+
+const PostImage = styled.Image`
+  flex: 1;
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  margin-right: 4px;
+`;
+
+const PostedWrapper = styled.View`
+  flex: 2;
+  flex-direction: column;
+  align-self: flex-start;
+  padding: 10px;
+  border-radius: 8px;
+  border-width: 0.5px;
+  margin-left: 2px;
+  border-color: lightgray;
+`;
+
+const PostText = styled.Text`
+  flex: 4;
+`;
+
+const PostedTime = styled.Text`
+  flex: 1;
+  margin-top: 10px;
+  font-weight: 200;
+`;
+
 const UserProfile = () => {
   const route = useRoute<RouteProp<MainStackParamList>>();
   const navigation =
@@ -174,7 +207,7 @@ const UserProfile = () => {
   return (
     <SafeContainer>
       <HeaderContainer>
-        <ProfileBG source={require('../../assets/bg_01.jpeg')} />
+        <ProfileBG source={require('../../../assets/bg_01.jpeg')} />
         <ProfileSection>
           <ProfileView
             style={{
@@ -210,7 +243,7 @@ const UserProfile = () => {
               scrollEnabled={false}
               renderItem={({item}) => (
                 <CellContainer>
-                  <PostImage source={require('../../assets/post01.jpeg')} />
+                  <PostImage source={require('../../../assets/post01.jpeg')} />
                   <PostedWrapper>
                     <PostText>{item.body}</PostText>
                     <PostedTime>2022.02.22</PostedTime>

@@ -15,6 +15,7 @@ import {
   UserProfile,
   PostModal,
   EditView,
+  PostDetail,
 } from '../screens';
 import {useAppDispatch} from '../redux/store';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -75,7 +76,7 @@ const RootStack = () => {
         return Promise.reject(error); //419 아닐 때 처리
       },
     );
-  }, []);
+  }, [dispatch]);
 
   //소켓 실시간 데이터 통신
   useEffect(() => {
@@ -126,7 +127,7 @@ const RootStack = () => {
           userSlice.actions.setUser({
             name: response.data.data.name,
             email: response.data.data.email,
-            accessToken: response.data.data.accessToken,
+            accessToken: response.data.idToken,
           }),
         );
       } catch (error) {
@@ -185,6 +186,15 @@ const RootStack = () => {
           component={PostModal}
           options={{headerShown: false}}
         />
+        <Stack.Screen
+          name="PostDetail"
+          component={PostDetail}
+          options={{
+            headerTitle: '게시글',
+            headerBackTitle: '',
+            headerTintColor: 'black',
+          }}
+        />
       </Stack.Navigator>
     );
   };
@@ -192,7 +202,7 @@ const RootStack = () => {
   return isLoggedIn ? (
     <Tab.Navigator
       initialRouteName="Orders"
-      screenOptions={({navigation, route}) => ({
+      screenOptions={({route}) => ({
         tabBarShowLabel: false,
         tabBarActiveTintColor: 'gray',
         tabBarIcon: ({focused, color, size}) => {

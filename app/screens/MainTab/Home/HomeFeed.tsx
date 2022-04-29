@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
-import {postData} from '../../apis/postData';
+import {postData} from '../../../apis/sampleData/postData';
 
 const MainContainer = styled.View`
   flex: 1;

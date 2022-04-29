@@ -23,6 +23,11 @@ export type ProfileStackParamList = {
     image: string;
   };
   PostModal: undefined;
+  PostDetail: {
+    userName: string;
+    body: string;
+    image: string;
+  };
 };
 
 export type AuthParamList = {

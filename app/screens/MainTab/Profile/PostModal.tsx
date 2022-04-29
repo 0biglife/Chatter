@@ -36,7 +36,6 @@ const ImageView = styled.TouchableOpacity`
   margin-right: 4px;
   margin-top: 4px;
   height: 300px;
-  background-color: lavender;
 `;
 
 const PostImage = styled.Image`
@@ -67,7 +66,7 @@ const PostModal: React.FC<EditProps> = props => {
   );
   const [postText, setPostText] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const FBStore = firestore().collection('users').doc('my').collection('post');
+  const FBStore = firestore().collection('user').doc('1').collection('post');
 
   const cancel = () => {
     if (postText) {

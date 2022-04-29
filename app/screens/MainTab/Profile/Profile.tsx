@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {FlatList} from 'react-native-gesture-handler';
-import {Alert, Dimensions, Text, View} from 'react-native';
+import {Alert, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-virtualized-view';
 import Share from 'react-native-share';
 
@@ -13,21 +13,13 @@ import ImageResizer from 'react-native-image-resizer';
 //Firebase
 import firestore from '@react-native-firebase/firestore';
 
-//Imported RenderItem
-import {
-  CellContainer,
-  PostedTime,
-  PostedWrapper,
-  PostImage,
-  PostText,
-} from '../../components/ProfilePost';
-import {useAppDispatch} from '../../redux/store';
-import userSlice from '../../redux/slices/user';
+import {useAppDispatch} from '../../../redux/store';
+import userSlice from '../../../redux/slices/user';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {FBPost, ProfileStackParamList} from '../../navigations/Types';
+import {FBPost, ProfileStackParamList} from '../../../navigations/Types';
 import PostModal from './PostModal';
-import HalfModal from '../../components/HalfModal';
+import HalfModal from '../../../components/HalfModal';
 
 const Profile = () => {
   const navigation =
@@ -48,10 +40,10 @@ const Profile = () => {
   const [showPostModal, setShowPostModal] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
-  const getFirData = async () => {
+  const getPostData = async () => {
     try {
-      const response = await FBStore.collection('users')
-        .doc('my')
+      const response = await FBStore.collection('user')
+        .doc('1')
         .collection('post')
         .get();
       setMyPost(
@@ -60,14 +52,14 @@ const Profile = () => {
           id: doc.id,
         })),
       );
-      console.log('Profile/FireStore Success: ', response.docs);
+      console.log('Profile/getPostData Success: ', response.docs);
     } catch (e) {
-      console.log('Profile/FireStore Error : ', e);
+      console.log('Profile/getPostData Error : ', e);
     }
   };
 
   useEffect(() => {
-    getFirData();
+    getPostData();
   }, []);
 
   //ImageData
@@ -185,7 +177,7 @@ const Profile = () => {
     <SafeContainer>
       <ScrollView nestedScrollEnabled>
         <HeaderContainer>
-          <ProfileBG source={require('../../assets/bg_01.jpeg')} />
+          <ProfileBG source={require('../../../assets/bg_01.jpeg')} />
           <ProfileSection>
             <View
               style={{
@@ -215,7 +207,7 @@ const Profile = () => {
                 shadowRadius: 10,
                 shadowOffset: {width: 2, height: 2},
               }}>
-              <ProfileImage source={require('../../assets/grboy02.webp')} />
+              <ProfileImage source={require('../../../assets/grboy02.webp')} />
               <ProfileName>GRboy</ProfileName>
             </ProfileView>
             <IntroText>0 year-old hambie</IntroText>
@@ -249,7 +241,15 @@ const Profile = () => {
               style={{marginBottom: 10}}
               renderItem={({item}) => (
                 <View style={{flex: 1}}>
-                  <CellContainer>
+                  <CellContainer
+                    activeOpacity={0.6}
+                    onPress={() =>
+                      navigation.navigate('PostDetail', {
+                        image: item.image,
+                        body: item.body,
+                        userName: 'GRboy',
+                      })
+                    }>
                     <PostImage source={{uri: item.image}} />
                     <PostedWrapper>
                       <PostText>{item.body}</PostText>
@@ -265,9 +265,6 @@ const Profile = () => {
           <BottomSection>
             <BodyTopWrapper>
               <BodyTitle>Place Record ( {0} )</BodyTitle>
-              {/* <AddButton onPress={() => Alert.alert('업데이트 중입니다')}>
-                <IonIcon name="add" size={24} color="black" />
-              </AddButton> */}
             </BodyTopWrapper>
             <BodyLine />
             <View
@@ -288,6 +285,47 @@ const Profile = () => {
     </SafeContainer>
   );
 };
+
+const CellContainer = styled.TouchableOpacity`
+  align-self: center;
+  margin-left: 12px;
+  margin-right: 12px;
+  margin-top: 12px;
+  margin-bottom: -6px;
+  height: 100px;
+  border-radius: 8px;
+  background-color: white;
+  flex-direction: row;
+`;
+
+const PostImage = styled.Image`
+  flex: 1;
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  margin-right: 4px;
+`;
+
+const PostedWrapper = styled.View`
+  flex: 2;
+  flex-direction: column;
+  align-self: flex-start;
+  padding: 10px;
+  border-radius: 8px;
+  border-width: 0.5px;
+  margin-left: 2px;
+  border-color: lightgray;
+`;
+
+const PostText = styled.Text`
+  flex: 4;
+`;
+
+const PostedTime = styled.Text`
+  flex: 1;
+  margin-top: 10px;
+  font-weight: 200;
+`;
 
 const LockedIcon = styled.TouchableOpacity`
   position: absolute;

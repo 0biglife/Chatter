@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback, useRef} from 'react';
-import {Alert} from 'react-native';
+import {Alert, TextInput} from 'react-native';
 import styled from 'styled-components/native';
 //Social Login
 import {
@@ -16,6 +16,7 @@ import {useAppDispatch} from '../../redux/store/index';
 import userSlice from '../../redux/slices/user';
 import EncrytedStorage from 'react-native-encrypted-storage';
 import client from '../../apis/client';
+import {AuthParamList} from '../../navigations/Types';
 
 interface tokenType {
   aud: string;
@@ -235,6 +236,34 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
     } finally {
       setLoading(false);
     }
+
+    //하단 코드는 Firebase SignIn Test Code !
+    // try {
+    //   setLoading(true);
+    //   const response = await axios.post(
+    //     SIGNIN,
+    //     {
+    //       email: email,
+    //       password: password,
+    //       returnSecureToken: true,
+    //     },
+    //     {headers: {'Content-Type': 'application/json'}},
+    //   );
+    //   console.log('LogIn Success : ', response.data);
+    //   Alert.alert('로그인이 완료되었습니다.');
+    //   dispatch(
+    //     userSlice.actions.setUser({
+    //       email: response.data.email,
+    //       accessToken: response.data.idToken,
+    //     }),
+    //   );
+    //   await EncrytedStorage.setItem('refreshToken', response.data.refreshToken);
+    // } catch (e) {
+    //   console.log('LogIn Error : ', e);
+    //   Alert.alert('에러 발생');
+    // } finally {
+    //   setLoading(false);
+    // }
   }, [dispatch, email, loading, password]);
 
   return (

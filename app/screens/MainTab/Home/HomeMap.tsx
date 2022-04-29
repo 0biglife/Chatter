@@ -1,19 +1,19 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import NaverMapView, {Circle, Marker} from 'react-native-nmap';
 import styled from 'styled-components/native';
 import Geolocation from '@react-native-community/geolocation';
 import {ActivityIndicator, View} from 'react-native';
 import {useSelector} from 'react-redux';
-import {RootState} from '../../redux/store/reducers';
+import {RootState} from '../../../redux/store/reducers';
 import Config from 'react-native-config';
-import weatherClient from '../../apis/weatherClient';
+import weatherClient from '../../../apis/weatherClient';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import UserModal from '../../components/UserModal';
-import unsplashClient from '../../apis/unsplashClient';
-import {WeatherData} from '../../apis/WeatherData';
+import UserModal from '../../../components/UserModal';
+import unsplashClient from '../../../apis/unsplashClient';
+import {WeatherData} from '../../../apis/WeatherData';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {ChatStackParamList, MainTabParamList} from '../../navigations/Types';
+import {ChatStackParamList} from '../../../navigations/Types';
 
 const Container = styled.View`
   flex: 1;
@@ -50,14 +50,6 @@ const NextWeatherView = styled.View`
   background-color: white;
   opacity: 0.8;
   margin-right: 6px;
-`;
-
-const AreaWeatherCell = styled.TouchableOpacity`
-  flex: 1;
-  margin-left: 2px;
-  margin-right: 2px;
-  margin-top: -2px;
-  align-items: center;
 `;
 
 const HeadText = styled.Text`
@@ -196,7 +188,7 @@ const HomeMap = () => {
       user_id: 'test',
       user_location: 'test',
       user_name: 'test',
-      user_profile: require('../../assets/post01.jpeg'),
+      user_profile: require('../../../assets/post01.jpeg'),
     });
   };
 

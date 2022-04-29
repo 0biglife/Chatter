@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useRef, useEffect} from 'react';
+import React, {useState, useCallback, useRef} from 'react';
 import {ActivityIndicator, Alert, TextInput} from 'react-native';
 import styled from 'styled-components/native';
 //Redux
@@ -150,6 +150,31 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
       //try, catch 무관하게 최종적으로 항상 수행되는 코드
       setLoading(false);
     }
+
+    //하단 코드는 Firebase SignUp Test Code !
+    // const signUp = async () => {
+    //   try {
+    //     setLoading(true);
+    //     const reponse = await axios.post(
+    //       SIGNUP,
+    //       {
+    //         email: email,
+    //         password: password,
+    //         returnSecureToken: true,
+    //       },
+    //       {headers: {'Content-Type': 'application/json'}},
+    //     );
+    //     console.log('SignUp Succeed : ', reponse.data);
+    //     Alert.alert('회원가입이 완료되었습니다.');
+    //     navigation.navigate('LogIn');
+    //   } catch (e) {
+    //     console.log('SignUp Error : ', e);
+    //     Alert.alert('에러 발생', e);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+    // signUp();
   }, [email, loading, name, navigation, password]);
 
   return (

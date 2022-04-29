@@ -1,10 +1,12 @@
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import React from 'react';
-import {Image, View} from 'react-native';
+import React, {useState} from 'react';
+import {Alert, Image, Share, View} from 'react-native';
 import styled from 'styled-components/native';
 import {ProfileStackParamList} from '../../../navigations/Types';
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Ionicons';
+import HalfModal from '../../../components/HalfModal';
 
 const MainContainer = styled.View`
   flex: 1;
@@ -45,6 +47,38 @@ const PostOption = styled.TouchableOpacity`
   margin-right: 10px;
 `;
 
+const IconSection = styled.View`
+  width: 100%;
+  height: 50px;
+  background-color: beige;
+  padding: 10px;
+`;
+
+const BodySection = styled.View`
+  width: 100%;
+  background-color: aliceblue;
+  padding: 10px;
+`;
+
+const BodyText = styled.Text`
+  font-size: 16px;
+  font-weight: 300;
+  color: black;
+`;
+
+const BottomSection = styled.View`
+  width: 100%;
+  padding: 4px;
+  background-color: antiquewhite;
+  align-items: flex-end;
+`;
+
+const TimeText = styled.Text`
+  font-size: 14px;
+  font-weight: 300;
+  color: gray;
+`;
+
 interface PostDetailProps {
   body: string;
   image: string;
@@ -57,7 +91,32 @@ const PostDetail: React.FC<PostDetailProps> = () => {
     useNavigation<
       NativeStackNavigationProp<ProfileStackParamList, 'PostDetail'>
     >();
-  console.log('test: ', route);
+  const [showModal, setShowModal] = useState<boolean>(false);
+
+  const fix = () => {
+    Alert.alert('fix');
+  };
+
+  const remove = () => {
+    Alert.alert('remove');
+  };
+
+  const share = async () => {
+    setShowModal(false);
+
+    Alert.alert('share');
+    // const shareOptions = {
+    //   message: 'test for sharing function',
+    // };
+
+    // try {
+    //   const shareResponse = await Share.open(shareOptions);
+    //   console.log(JSON.stringify(shareResponse));
+    // } catch (e) {
+    //   console.log('Share Error : ', e);
+    // }
+  };
+
   return (
     <MainContainer>
       <HeaderSection>
@@ -74,14 +133,29 @@ const PostDetail: React.FC<PostDetailProps> = () => {
             <LocationText>Songpa, Seoul</LocationText>
           </View>
         </View>
-        <PostOption>
+        <PostOption onPress={() => setShowModal(true)}>
           <IonIcon name="ellipsis-horizontal-sharp" size={28} color="black" />
         </PostOption>
+        <HalfModal
+          type={2}
+          showModal={showModal}
+          setShowModal={setShowModal}
+          firstTapped={fix}
+          secondTapped={remove}
+          thirdTapped={share}
+        />
       </HeaderSection>
       <Image
         style={{width: '100%', height: 300}}
         source={{uri: route.params.image}}
       />
+      <IconSection></IconSection>
+      <BodySection>
+        <BodyText>{route.params.body}</BodyText>
+      </BodySection>
+      <BottomSection>
+        <TimeText>2022.02.02</TimeText>
+      </BottomSection>
     </MainContainer>
   );
 };

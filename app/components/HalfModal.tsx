@@ -9,7 +9,7 @@ const Height = Dimensions.get('window').height / 2;
 
 const MainContainer = styled.View`
   background-color: white;
-  top: 45%;
+  top: 50%;
   align-self: center;
   width: ${Width}px;
   height: ${Height}px;
@@ -46,9 +46,11 @@ const Title = styled.Text`
 `;
 
 interface HalfModal {
+  type: number;
   showModal: boolean;
   setShowModal: any;
   firstTapped: () => void;
+  secondTapped: () => void;
   thirdTapped: () => void;
 }
 
@@ -65,33 +67,70 @@ const HalfModal: React.FC<HalfModal> = props => {
       animationOutTiming={300}>
       <MainContainer>
         <GrabBox />
-        <Section onPress={props.firstTapped}>
-          <IonIcon
-            style={{marginLeft: 6}}
-            name="person-add-outline"
-            size={20}
-            color="black"
-          />
-          <Title>프로필 편집</Title>
-        </Section>
-        <Section>
-          <IonIcon
-            style={{marginLeft: 6}}
-            name="settings-outline"
-            size={20}
-            color="black"
-          />
-          <Title>설정</Title>
-        </Section>
-        <Section onPress={() => props.thirdTapped}>
-          <IonIcon
-            style={{marginLeft: 6}}
-            name="share-outline"
-            size={20}
-            color="black"
-          />
-          <Title>공유</Title>
-        </Section>
+        <>
+          {props.type === 1 && (
+            <>
+              <Section onPress={props.firstTapped}>
+                <IonIcon
+                  style={{marginLeft: 6}}
+                  name="person-add-outline"
+                  size={20}
+                  color="black"
+                />
+                <Title>프로필 편집</Title>
+              </Section>
+              <Section onPress={props.secondTapped}>
+                <IonIcon
+                  style={{marginLeft: 6}}
+                  name="settings-outline"
+                  size={20}
+                  color="black"
+                />
+                <Title>설정</Title>
+              </Section>
+              <Section onPress={() => props.thirdTapped}>
+                <IonIcon
+                  style={{marginLeft: 6}}
+                  name="share-outline"
+                  size={20}
+                  color="black"
+                />
+                <Title>공유</Title>
+              </Section>
+            </>
+          )}
+          {props.type === 2 && (
+            <>
+              <Section onPress={props.firstTapped}>
+                <IonIcon
+                  style={{marginLeft: 6}}
+                  name="cut-outline"
+                  size={20}
+                  color="black"
+                />
+                <Title>수정</Title>
+              </Section>
+              <Section onPress={props.secondTapped}>
+                <IonIcon
+                  style={{marginLeft: 6}}
+                  name="remove-circle-outline"
+                  size={20}
+                  color="black"
+                />
+                <Title>삭제</Title>
+              </Section>
+              <Section onPress={() => props.thirdTapped}>
+                <IonIcon
+                  style={{marginLeft: 6}}
+                  name="share-outline"
+                  size={20}
+                  color="black"
+                />
+                <Title>공유</Title>
+              </Section>
+            </>
+          )}
+        </>
       </MainContainer>
     </Modal>
   );

@@ -28,6 +28,7 @@ export type ProfileStackParamList = {
     body: string;
     image: string;
   };
+  Setting: undefined;
 };
 
 export type AuthParamList = {

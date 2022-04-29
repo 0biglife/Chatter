@@ -10,6 +10,7 @@ import ChatDetail from './MainTab/Chat/ChatDetail';
 import EditView from './MainTab/Profile/EditView';
 import PostModal from './MainTab/Profile/PostModal';
 import PostDetail from './MainTab/Profile/PostDetail';
+import Setting from './MainTab/Profile/Setting';
 
 export {
   LogIn,
@@ -24,4 +25,5 @@ export {
   PostDetail,
   HomeMap,
   Settings,
+  Setting,
 };

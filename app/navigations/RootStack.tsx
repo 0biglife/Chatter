@@ -16,6 +16,7 @@ import {
   PostModal,
   EditView,
   PostDetail,
+  Setting,
 } from '../screens';
 import {useAppDispatch} from '../redux/store';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -127,7 +128,7 @@ const RootStack = () => {
           userSlice.actions.setUser({
             name: response.data.data.name,
             email: response.data.data.email,
-            accessToken: response.data.idToken,
+            accessToken: response.data.data.accessToken,
           }),
         );
       } catch (error) {
@@ -191,6 +192,15 @@ const RootStack = () => {
           component={PostDetail}
           options={{
             headerTitle: '게시글',
+            headerBackTitle: '',
+            headerTintColor: 'black',
+          }}
+        />
+        <Stack.Screen
+          name="Setting"
+          component={Setting}
+          options={{
+            headerTitle: '설정',
             headerBackTitle: '',
             headerTintColor: 'black',
           }}

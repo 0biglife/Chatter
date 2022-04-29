@@ -173,6 +173,11 @@ const Profile = () => {
     }
   };
 
+  const gotoSetting = () => {
+    navigation.navigate('Setting');
+    setShowHalfModal(false);
+  };
+
   return (
     <SafeContainer>
       <ScrollView nestedScrollEnabled>
@@ -194,9 +199,11 @@ const Profile = () => {
                 />
               </ProfileTopButton>
               <HalfModal
+                type={1}
                 showModal={showHalfModal}
                 setShowModal={setShowHalfModal}
                 firstTapped={gotoEditModal}
+                secondTapped={gotoSetting}
                 thirdTapped={CustomShare}
               />
             </View>

@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import styled from 'styled-components/native';
-import Modal from 'react-native-modal';
 import {Alert, Dimensions, TouchableOpacity} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
@@ -143,5 +142,5 @@ const PostModify = () => {
     </MainContainer>
   );
 };
-
+ 
 export default PostModify;

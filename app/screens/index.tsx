@@ -11,6 +11,7 @@ import EditView from './MainTab/Profile/EditView';
 import PostModal from './MainTab/Profile/PostModal';
 import PostDetail from './MainTab/Profile/PostDetail';
 import Setting from './MainTab/Profile/Setting';
+import PostModify from './MainTab/Profile/PostModify';
 
 export {
   LogIn,
@@ -23,6 +24,7 @@ export {
   EditView,
   PostModal,
   PostDetail,
+  PostModify,
   HomeMap,
   Settings,
   Setting,

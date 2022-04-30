@@ -17,6 +17,7 @@ import {
   EditView,
   PostDetail,
   Setting,
+  PostModify,
 } from '../screens';
 import {useAppDispatch} from '../redux/store';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -180,6 +181,14 @@ const RootStack = () => {
             // headerBackTitle: '',
             // headerTintColor: 'black',
             // headerShadowVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name="PostModify"
+          component={PostModify}
+          options={{
+            headerShown: false,
+            // presentation: 'fullScreenModal',
           }}
         />
         <Stack.Screen

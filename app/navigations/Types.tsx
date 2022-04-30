@@ -28,6 +28,10 @@ export type ProfileStackParamList = {
     body: string;
     image: string;
   };
+  PostModify: {
+    body: string;
+    image: string;
+  };
   Setting: undefined;
 };
 

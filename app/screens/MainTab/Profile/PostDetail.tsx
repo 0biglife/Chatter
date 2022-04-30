@@ -1,12 +1,12 @@
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
-import {Alert, Image, Share, View} from 'react-native';
+import {Alert, Image, View} from 'react-native';
 import styled from 'styled-components/native';
 import {ProfileStackParamList} from '../../../navigations/Types';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import Icon from 'react-native-vector-icons/Ionicons';
 import HalfModal from '../../../components/HalfModal';
+import firestore from '@react-native-firebase/firestore';
 
 const MainContainer = styled.View`
   flex: 1;
@@ -92,13 +92,21 @@ const PostDetail: React.FC<PostDetailProps> = () => {
       NativeStackNavigationProp<ProfileStackParamList, 'PostDetail'>
     >();
   const [showModal, setShowModal] = useState<boolean>(false);
+  const FBStore = firestore().collection('user').doc('1').collection('post');
 
-  const fix = () => {
-    Alert.alert('fix');
+  const modify = () => {
+    navigation.navigate('PostModify', {
+      image: route.params.image,
+      body: route.params.body,
+    });
+    setShowModal(false);
   };
 
   const remove = () => {
+    FBStore.doc('iaON8v7jv04Lns8ZYYVX').delete();
     Alert.alert('remove');
+    setShowModal(false);
+    navigation.navigate('Profile');
   };
 
   const share = async () => {
@@ -140,7 +148,7 @@ const PostDetail: React.FC<PostDetailProps> = () => {
           type={2}
           showModal={showModal}
           setShowModal={setShowModal}
-          firstTapped={fix}
+          firstTapped={modify}
           secondTapped={remove}
           thirdTapped={share}
         />

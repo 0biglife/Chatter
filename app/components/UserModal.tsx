@@ -32,23 +32,50 @@ const ImageSection = styled.TouchableOpacity``;
 
 const ProfileImage = styled.Image`
   background-color: lightcoral;
-  width: 80px;
-  height: 80px;
-  border-radius: 45px;
+  width: 84px;
+  height: 84px;
+  border-radius: 42px;
   margin-left: 30px;
   margin-top: 20px;
   margin-bottom: 20px;
 `;
 
-const InfoSection = styled.View`
+const InfoWrapper = styled.View`
   flex: 2;
   height: 90px;
-  margin: 20px;
+  margin-left: 10px;
+  margin-right: 20px;
+  flex-direction: column;
+`;
+
+const InfoSection = styled.View`
+  flex: 2;
   flex-direction: row;
+  justify-content: space-between;
+  margin-left: 14px;
+  margin-right: 20px;
+  margin-bottom: 6px;
+`;
+
+const ButtonSection = styled.TouchableOpacity`
+  background-color: white;
+  border-width: 0.5px;
+  border-color: gray;
+  flex: 1;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 4px;
+  border-radius: 6px;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ButtonText = styled.Text`
+  font-size: 15px;
+  color: black;
 `;
 
 const TitleSection = styled.View`
-  flex: 1;
   justify-content: center;
   align-items: center;
 `;
@@ -56,19 +83,20 @@ const TitleSection = styled.View`
 const DataSection = styled.View`
   justify-content: center;
   align-items: center;
-  flex: 2;
+  margin-left: 8px;
+  margin-right: 8px;
 `;
 
 const Title = styled.Text`
-  font-size: 16px;
-  font-weight: 300;
+  font-size: 15px;
+  font-weight: 400;
   color: black;
   margin-top: 4px;
   margin-bottom: 4px;
 `;
 
 const DataText = styled.Text`
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   color: black;
   margin-top: 4px;
@@ -79,12 +107,13 @@ interface ModalProps {
   showModal: boolean;
   setShowModal: any;
   userInfo: string;
+  userLocation: string;
   userProfile: string;
-  moveToProfile: () => void;
+  gotoProfile: () => void;
 }
 
 const UserModal = (props: ModalProps) => {
-  // console.log('Modal Data : ', props.userProfile);
+  console.log('test : ', props);
   return (
     <MainContainer>
       <Modal
@@ -95,21 +124,24 @@ const UserModal = (props: ModalProps) => {
         onBackdropPress={() => props.setShowModal(false)}>
         <ModalContainer>
           <InnerContainer>
-            <ImageSection onPress={() => props.moveToProfile}>
+            <ImageSection activeOpacity={0.6} onPress={() => props.gotoProfile}>
               <ProfileImage source={{uri: props.userProfile}} />
             </ImageSection>
-            <InfoSection>
-              <TitleSection>
-                <Title>사용자</Title>
-                <Title>주 소</Title>
-                <Title>좌 표</Title>
-              </TitleSection>
-              <DataSection>
-                <DataText>{props.userInfo}</DataText>
-                <DataText>{props.userInfo}</DataText>
-                <DataText>{props.userInfo}</DataText>
-              </DataSection>
-            </InfoSection>
+            <InfoWrapper>
+              <InfoSection>
+                <TitleSection>
+                  <Title>사용자</Title>
+                  <Title>거주지</Title>
+                </TitleSection>
+                <DataSection>
+                  <DataText>{props.userInfo}</DataText>
+                  <DataText numberOfLines={1}>{props.userLocation}</DataText>
+                </DataSection>
+              </InfoSection>
+              <ButtonSection onPress={() => props.gotoProfile}>
+                <ButtonText>프로필 방문</ButtonText>
+              </ButtonSection>
+            </InfoWrapper>
           </InnerContainer>
         </ModalContainer>
       </Modal>

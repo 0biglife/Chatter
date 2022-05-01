@@ -29,8 +29,9 @@ import useSocket from '../hooks/useSocket';
 import orderSlice from '../redux/slices/order';
 import usePermissions from '../hooks/usePermissions';
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import {MainTabParamList} from './Types';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<MainTabParamList>();
 const Stack = createNativeStackNavigator();
 
 const RootStack = () => {

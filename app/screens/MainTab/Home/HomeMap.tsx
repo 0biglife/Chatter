@@ -10,10 +10,10 @@ import weatherClient from '../../../apis/weatherClient';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import UserModal from '../../../components/UserModal';
 import unsplashClient from '../../../apis/unsplashClient';
-import {WeatherData} from '../../../apis/WeatherData';
-import {useNavigation} from '@react-navigation/native';
+import {WeatherData} from '../../../apis/sampleData/WeatherData';
+import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {ChatStackParamList} from '../../../navigations/Types';
+import {ChatStackParamList, MainTabParamList} from '../../../navigations/Types';
 
 const Container = styled.View`
   flex: 1;
@@ -62,14 +62,19 @@ const HeadText = styled.Text`
 const WeatherText = styled.Text`
   font-size: 12px;
   font-weight: 400;
+  margin-top: 2px;
   color: black;
 `;
 
 const distance = 0.1; // 1km -> 0.01
 
+type HomeMapProp = CompositeNavigationProp<
+  NativeStackNavigationProp<ChatStackParamList>,
+  NativeStackNavigationProp<MainTabParamList>
+>;
+
 const HomeMap = () => {
-  const navigation =
-    useNavigation<NativeStackNavigationProp<ChatStackParamList>>();
+  const navigation = useNavigation();
   //User Control
   const orders = useSelector((state: RootState) => state.order.orders);
   const [myPosition, setMyPosition] = useState<{
@@ -78,8 +83,10 @@ const HomeMap = () => {
   } | null>(null);
   //User -> Modal
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [markerUser, setMarkerUser] = useState<string>('');
-  const [profileUrl, setProfileUrl] = useState<string>('');
+  const [userInfo, setUserInfo] = useState<string>('');
+  const [userLoca, setUserLoca] = useState<string>('');
+  const [userImage, setUserImage] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
   //Weather Control
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [myWeather, setMyWeather] = useState<string>('');
@@ -103,30 +110,6 @@ const HomeMap = () => {
         distanceFilter: 400,
       },
     );
-    // const getAreaWeather = async () => {
-    //   try {
-    //     for (let i = 0; i < Angle.length; i++) {
-    //       const response = await weatherClient.get(
-    //         `/weather?lat=${
-    //           myPosition!.latitude + distance * Math.cos(Angle[i])
-    //         }&lon=${
-    //           myPosition!.longitude + distance * Math.sin(Angle[i])
-    //         }&appid=${Config.WEATHER_APIKEY}`,
-    //       );
-    //       setAreaWeather(response.data.weather[0].main);
-    //       if (areaWeather === 'Clouds') {
-    //         setAreaIconName('cloudy-outline');
-    //       } else if (areaWeather === 'Mist') {
-    //         setAreaIconName('filter');
-    //       } else {
-    //         setAreaIconName('cloudy');
-    //       }
-    //       console.log('getAreaWeather API : ', i, areaWeather);
-    //     }
-    //   } catch (e) {
-    //     console.log('Around Area Weather API error : ', e);
-    //   }
-    // };
     const getWeather = async () => {
       try {
         const response = await weatherClient.get(
@@ -142,32 +125,17 @@ const HomeMap = () => {
           setIconName('rainy-outline');
         } else if (myWeather === 'Clear') {
           setIconName('sunny-outline');
-        } else {
-          // <ActivityIndicator />;
         }
+        // else {
+        //   // <ActivityIndicator />;
+        // }
         // getAreaWeather();
       } catch (e) {
         console.log('Weather API error : ', e);
       }
     };
-
-    //unsplash api
-    const getRandomImage = async () => {
-      try {
-        const response = await unsplashClient.get('/users/Loi/', {
-          params: {
-            client_id: '3eVYYY9UEOTwk4CcDUgHt9uSSP_MJiAO3E1hcna-i1Q',
-          },
-        });
-        setProfileUrl(response.data.profile_image.large);
-        console.log('UNSPLASH SUCCESSED');
-      } catch (e) {
-        console.log('UNSPLASH FAILED : ', e);
-      }
-    };
     getWeather();
-    getRandomImage();
-  }, []);
+  }, [myPosition?.latitude, myPosition?.longitude, myWeather]);
 
   if (!myPosition || !myPosition.latitude) {
     return (
@@ -177,19 +145,35 @@ const HomeMap = () => {
     );
   }
 
-  const markerFunc = (userInfo: string) => {
-    setShowModal(true);
-    setMarkerUser(userInfo);
+  const getRandomImage = async () => {
+    try {
+      setLoading(true);
+      const response = await unsplashClient.get('/photos/random', {
+        params: {
+          count: 1,
+          client_id: '3eVYYY9UEOTwk4CcDUgHt9uSSP_MJiAO3E1hcna-i1Q',
+        },
+      });
+      setUserImage(response.data[0].links.download);
+      setUserInfo(response.data[0].user.last_name);
+      setUserLoca(response.data[0].user.location);
+      // console.log('SUCCED!! : ', response.data[0].links.download);
+    } catch (e) {
+      console.log('UNSPLASH FAILED : ', e);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const modalProfileTapped = () => {
-    navigation.navigate('UserProfile', {
-      id: 122,
-      user_id: 'test',
-      user_location: 'test',
-      user_name: 'test',
-      user_profile: require('../../../assets/post01.jpeg'),
-    });
+  const markerTapped = () => {
+    setShowModal(true);
+    getRandomImage();
+  };
+
+  const gotoProfile = () => {
+    console.log('test');
+    setShowModal(false);
+    navigation.navigate('UserProfile');
   };
 
   //rainy-outline,cloudy-outline,md-cloudy-night-outline(night)
@@ -232,18 +216,23 @@ const HomeMap = () => {
               pinColor="red"
               width={30}
               height={40}
-              onClick={() => markerFunc(orderPosition.orderId)}
+              onClick={() => markerTapped()}
             />
           </>
         ))}
       </NaverMapView>
-      <UserModal
-        showModal={showModal}
-        setShowModal={setShowModal}
-        userInfo={markerUser}
-        userProfile={profileUrl}
-        moveToProfile={modalProfileTapped}
-      />
+      {loading ? (
+        <ActivityIndicator color="black" size="large" />
+      ) : (
+        <UserModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          userInfo={userInfo}
+          userLocation={userLoca}
+          userProfile={userImage}
+          gotoProfile={gotoProfile}
+        />
+      )}
       <HeaderView>
         <WeatherView>
           <HeadText>현재날씨</HeadText>

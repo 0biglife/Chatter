@@ -186,8 +186,14 @@ const PostedTime = styled.Text`
   font-weight: 200;
 `;
 
-const UserProfile = () => {
-  const route = useRoute<RouteProp<MainStackParamList>>();
+interface UserProfileProps {
+  user_name: string;
+  user_profile: string;
+  user_location: string;
+}
+
+const UserProfile: React.FC<UserProfileProps> = () => {
+  const route = useRoute<RouteProp<MainStackParamList, 'UserProfile'>>();
   const navigation =
     useNavigation<NativeStackNavigationProp<MainStackParamList>>();
   useEffect(() => {

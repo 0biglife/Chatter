@@ -83,7 +83,7 @@ const Setting = () => {
         <ButtonText>로그아웃</ButtonText>
       </ButtonContainer>
       <ButtonContainer onPress={onSecession}>
-        <ButtonText>회원탍퇴</ButtonText>
+        <ButtonText>회원탈퇴</ButtonText>
       </ButtonContainer>
     </MainContainer>
   );

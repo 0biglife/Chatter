@@ -6825,6 +6825,11 @@ react-native-config@1.4.5:
   resolved "https://registry.npmjs.org/react-native-config/-/react-native-config-1.4.5.tgz"
   integrity sha512-5oiAsoW88SOYDg/0cleJ2vJDqv98FJUbFQYEnH4sdMtEn3AAT3lb7BkTGW8HO/t3Vk9VOruwxUUnO4tzuxzCsw==
 
+react-native-css-vh-vw@^1.0.4:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/react-native-css-vh-vw/-/react-native-css-vh-vw-1.0.5.tgz#dfa8e2fde22fa6a36e43101c713f2dcd13a00cad"
+  integrity sha512-pY0gIB1xc1xLp3VH6mji7zHfiOc7BpFFCtOTpMeyjfoQ4CacmcCD6vTZuM2ReuK+oXdWrbx7CquTHxl44aHcBA==
+
 react-native-device-info@8.4.8:
   version "8.4.8"
   resolved "https://registry.npmjs.org/react-native-device-info/-/react-native-device-info-8.4.8.tgz"
@@ -6965,6 +6970,13 @@ react-native-share@7.3.9:
   version "7.3.9"
   resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-7.3.9.tgz#e745421027b96e78ade9794bddaf441ff4c19718"
   integrity sha512-doPOUSQAkiIOZarFZvwrxVmfK3789CWsuZ6SNGzNCEGt7dA349vv2uSKDFUP5M7p+GIY+YqFaD3RSIt1Oct+PQ==
+
+react-native-slider-picker@1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/react-native-slider-picker/-/react-native-slider-picker-1.1.4.tgz#e79741ba1d62d48dd338766aae62d0eb645efd5f"
+  integrity sha512-ln5qfFh0TSzqTfRgRKrZddO+l45KNZ3MYibWApdm7rkstJsTUN/uVWjQgXuU5fBGdYtOfCvk6s5XcV0R/kA4+A==
+  dependencies:
+    react-native-css-vh-vw "^1.0.4"
 
 react-native-splash-screen@3.3.0:
   version "3.3.0"

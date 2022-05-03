@@ -1,10 +1,9 @@
-/* eslint-disable react/self-closing-comp */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import NaverMapView, {Circle, Marker} from 'react-native-nmap';
 import styled from 'styled-components/native';
 import Geolocation from '@react-native-community/geolocation';
-import {ActivityIndicator, TouchableOpacity, View} from 'react-native';
+import {ActivityIndicator} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../redux/store/reducers';
 import Config from 'react-native-config';
@@ -15,8 +14,7 @@ import unsplashClient from '../../../apis/UnsplashAPI/unsplashClient';
 import {WeatherState} from '../../../apis/WeatherAPI/weatherState';
 import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import { ChatStackParamList, MainTabParamList } from '../../../navigations/Types';
-import UnixTimeStamp from '../../../components/UnixTimeStamp';
+import {ChatStackParamList, MainTabParamList} from '../../../navigations/Types';
 
 const Container = styled.View`
   flex: 1;
@@ -39,6 +37,8 @@ const WeatherView = styled.View`
   border-color: lightgray;
   opacity: 0.8;
   align-items: center;
+  justify-content: center;
+  flex-direction: column;
   margin-left: 6px;
   margin-right: 4px;
 `;
@@ -57,7 +57,7 @@ const InfoView = styled.View`
   border-width: 1px;
   border-color: lightgray;
   background-color: white;
-  opacity: 0.8;
+  opacity: 0.85;
   margin-right: 6px;
   padding: 10px;
 `;
@@ -66,11 +66,9 @@ const HeadText = styled.Text`
   font-size: 13px;
   font-weight: 400;
   color: black;
-  margin: 12px;
 `;
 
 const TitleView = styled.View`
-  background-color: aliceblue;
   flex-direction: column;
   justify-content: space-around;
   margin-right: 10px;
@@ -78,12 +76,9 @@ const TitleView = styled.View`
 
 const Title = styled.Text`
   font-size: 13px;
-  font-weight: 500;
 `;
 
 const TextView = styled.View`
-  background-color: beige;
-  flex: 1;
   flex-direction: column;
   justify-content: space-around;
 `;
@@ -91,6 +86,46 @@ const TextView = styled.View`
 const DataText = styled.Text`
   font-size: 13px;
   font-weight: 300;
+`;
+
+const SliderView = styled.View`
+  flex: 1;
+  margin-left: 10px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const SliderHeader = styled.Text`
+  font-size: 13px;
+  font-weight: 500;
+`;
+
+const Sliders = styled.View`
+  width: 100%;
+  height: 40px;
+  border-radius: 6px;
+  margin-top: 10px;
+  flex-direction: row;
+`;
+
+const FirstButton = styled.TouchableOpacity`
+  flex: 1;
+  background-color: rgba(255, 200, 120, 0.6);
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+`;
+
+const SecondButton = styled.TouchableOpacity`
+  flex: 1;
+  background-color: rgba(255, 200, 120, 0.8);
+`;
+
+const ThirdButton = styled.TouchableOpacity`
+  flex: 1;
+  background-color: rgba(255, 200, 120, 1);
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 `;
 
 type HomeMapProp = CompositeNavigationProp<
@@ -106,7 +141,8 @@ const HomeMap = () => {
     latitude: number;
     longitude: number;
   } | null>(null);
-  const [radius, setRadius] = useState<number>(0.1);
+  const [transparency, setTransparency] = useState<number>(0.2);
+  const [radius, setRadius] = useState<number>(0.5);
   const [distance, setDistance] = useState<string>('');
   const [hour, setHour] = useState<number>(0);
   const [minute, setMinute] = useState<number>(0);
@@ -120,10 +156,6 @@ const HomeMap = () => {
   const [weatherData, setWeatherData] = useState<WeatherState | null>(null);
   const [myWeather, setMyWeather] = useState<string>('');
   const [iconName, setIconName] = useState<string>('');
-
-  useEffect(() => {
-    // console.log('Marker Added : ', orders.length);
-  }, [orders]);
 
   //현위치(서울특별시 중구) 날씨 정보 지정
   useEffect(() => {
@@ -153,7 +185,6 @@ const HomeMap = () => {
         var minutes = date.getMinutes();
         setHour(hours);
         setMinute(minutes);
-        console.log('date test: ', hours, minutes);
         if (myWeather === 'Clouds') {
           setIconName('cloudy-outline');
         } else if (myWeather === 'Mist') {
@@ -200,7 +231,6 @@ const HomeMap = () => {
       setUserImage(response.data[0].links.download);
       setUserInfo(response.data[0].user.last_name);
       setUserLoca(response.data[0].user.location);
-      // console.log('SUCCED!! : ', response.data[0].links.download);
     } catch (e) {
       console.log('UNSPLASH FAILED : ', e);
     } finally {
@@ -209,7 +239,7 @@ const HomeMap = () => {
   };
 
   //마커 모달 생성
-  const markerTapped = (orderPosition) => {
+  const markerTapped = orderPosition => {
     // var date = new Date(weatherData?.sys.sunrise. * 1000);
     var dis_x = myPosition.latitude - orderPosition.start.latitude;
     var dis_y = myPosition.longitude - orderPosition.start.longitude;
@@ -227,8 +257,18 @@ const HomeMap = () => {
     navigation.navigate('UserProfile');
   };
 
-  const Tapped = () => {
-    setRadius(0.05);
+  const RadiusPicker = (picker: number) => {
+    if (picker === 0) {
+      setRadius(0.5);
+      setTransparency(0.15);
+    } else if (picker === 1) {
+      setRadius(1);
+      setTransparency(0.28);
+    } else if (picker === 2) {
+      setRadius(2);
+      setTransparency(0.35);
+    }
+    console.log('rest: ', transparency);
   };
 
   return (
@@ -256,8 +296,8 @@ const HomeMap = () => {
             latitude: myPosition.latitude,
             longitude: myPosition.longitude,
           }}
-          radius={radius * 100000}
-          color={'rgba(255,150,0,0.15)'}
+          radius={radius * 10000}
+          color={`rgba(255,150,0,${transparency})`}
         />
         {orders.map(orderPosition => (
           <>
@@ -293,7 +333,7 @@ const HomeMap = () => {
           {!myWeather ? (
             <ActivityIndicator style={{marginTop: 10}} />
           ) : (
-            <IonIcon name={iconName} size={30} />
+            <IonIcon style={{marginTop: 8}} name={iconName} size={30} />
           )}
           <WeatherText>{myWeather}</WeatherText>
         </WeatherView>
@@ -312,11 +352,23 @@ const HomeMap = () => {
             </DataText>
             <DataText>{orders.length} 명</DataText>
           </TextView>
-          {/* <HeadText style={{alignSelf: 'center'}}>{orders.length}</HeadText>
-          <HeadText style={{alignSelf: 'center'}}>{hour}</HeadText>
-          <TouchableOpacity
-            style={{width: 100, height: 100, flex: 1, backgroundColor: 'red'}}
-            onPress={Tapped}></TouchableOpacity> */}
+          <SliderView>
+            <SliderHeader>반경 범위 : {radius} km</SliderHeader>
+            <Sliders>
+              <FirstButton
+                onPress={() => RadiusPicker(0)}
+                activeOpacity={0.7}
+              />
+              <SecondButton
+                onPress={() => RadiusPicker(1)}
+                activeOpacity={0.7}
+              />
+              <ThirdButton
+                onPress={() => RadiusPicker(2)}
+                activeOpacity={0.7}
+              />
+            </Sliders>
+          </SliderView>
         </InfoView>
       </HeaderView>
     </Container>

@@ -7,7 +7,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthParamList} from '../../navigations/Types';
 //Axios
 import {AxiosError} from 'axios';
-import client from '../../apis/client';
+import client from '../../apis/MarkerAPI/client';
 
 interface tokenType {
   aud: string;
@@ -151,30 +151,31 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
       setLoading(false);
     }
 
-    //하단 코드는 Firebase SignUp Test Code !
-    // const signUp = async () => {
-    //   try {
-    //     setLoading(true);
-    //     const reponse = await axios.post(
-    //       SIGNUP,
-    //       {
-    //         email: email,
-    //         password: password,
-    //         returnSecureToken: true,
-    //       },
-    //       {headers: {'Content-Type': 'application/json'}},
-    //     );
-    //     console.log('SignUp Succeed : ', reponse.data);
-    //     Alert.alert('회원가입이 완료되었습니다.');
-    //     navigation.navigate('LogIn');
-    //   } catch (e) {
-    //     console.log('SignUp Error : ', e);
-    //     Alert.alert('에러 발생', e);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-    // signUp();
+    //Firebase 회원가입 구현
+    /* const signUp = async () => {
+      try {
+        setLoading(true);
+        const reponse = await axios.post(
+          SIGNUP,
+          {
+            email: email,
+            password: password,
+            returnSecureToken: true,
+          },
+          {headers: {'Content-Type': 'application/json'}},
+        );
+        console.log('SignUp Succeed : ', reponse.data);
+        Alert.alert('회원가입이 완료되었습니다.');
+        navigation.navigate('LogIn');
+      } catch (e) {
+        console.log('SignUp Error : ', e);
+        Alert.alert('에러 발생', e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    signUp();
+    */
   }, [email, loading, name, navigation, password]);
 
   return (

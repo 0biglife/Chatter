@@ -1,6 +1,4 @@
-import {useNavigation} from '@react-navigation/native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import Modal from 'react-native-modal';
 import styled from 'styled-components/native';
 
@@ -57,24 +55,6 @@ const InfoSection = styled.View`
   margin-bottom: 6px;
 `;
 
-const ButtonSection = styled.TouchableOpacity`
-  background-color: white;
-  border-width: 0.5px;
-  border-color: gray;
-  flex: 1;
-  margin-left: 10px;
-  margin-right: 10px;
-  margin-bottom: 4px;
-  border-radius: 6px;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ButtonText = styled.Text`
-  font-size: 15px;
-  color: black;
-`;
-
 const TitleSection = styled.View`
   justify-content: center;
   align-items: center;
@@ -110,10 +90,10 @@ interface ModalProps {
   userLocation: string;
   userProfile: string;
   gotoProfile: () => void;
+  getDistance: string;
 }
 
 const UserModal = (props: ModalProps) => {
-  console.log('test : ', props);
   return (
     <MainContainer>
       <Modal
@@ -132,15 +112,19 @@ const UserModal = (props: ModalProps) => {
                 <TitleSection>
                   <Title>사용자</Title>
                   <Title>거주지</Title>
+                  <Title>거 리</Title>
                 </TitleSection>
                 <DataSection>
                   <DataText>{props.userInfo}</DataText>
                   <DataText numberOfLines={1}>{props.userLocation}</DataText>
+                  <DataText>
+                    {props.getDistance
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                    m{' '}
+                  </DataText>
                 </DataSection>
               </InfoSection>
-              <ButtonSection onPress={() => props.gotoProfile}>
-                <ButtonText>프로필 방문</ButtonText>
-              </ButtonSection>
             </InfoWrapper>
           </InnerContainer>
         </ModalContainer>

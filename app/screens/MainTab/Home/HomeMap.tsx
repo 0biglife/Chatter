@@ -1,19 +1,22 @@
+/* eslint-disable react/self-closing-comp */
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import NaverMapView, {Circle, Marker} from 'react-native-nmap';
 import styled from 'styled-components/native';
 import Geolocation from '@react-native-community/geolocation';
-import {ActivityIndicator, View} from 'react-native';
+import {ActivityIndicator, TouchableOpacity, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../redux/store/reducers';
 import Config from 'react-native-config';
-import weatherClient from '../../../apis/weatherClient';
+import weatherClient from '../../../apis/WeatherAPI/weatherClient';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import UserModal from '../../../components/UserModal';
-import unsplashClient from '../../../apis/unsplashClient';
-import {WeatherData} from '../../../apis/sampleData/WeatherData';
+import unsplashClient from '../../../apis/UnsplashAPI/unsplashClient';
+import {WeatherState} from '../../../apis/WeatherAPI/weatherState';
 import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {ChatStackParamList, MainTabParamList} from '../../../navigations/Types';
+import { ChatStackParamList, MainTabParamList } from '../../../navigations/Types';
+import UnixTimeStamp from '../../../components/UnixTimeStamp';
 
 const Container = styled.View`
   flex: 1;
@@ -26,7 +29,6 @@ const HeaderView = styled.View`
   justify-content: space-around;
   width: 100%;
   height: 96px;
-  /* background-color: lightblue; */
 `;
 
 const WeatherView = styled.View`
@@ -41,32 +43,55 @@ const WeatherView = styled.View`
   margin-right: 4px;
 `;
 
-const NextWeatherView = styled.View`
+const WeatherText = styled.Text`
+  font-size: 13px;
+  font-weight: 400;
+  margin-top: 2px;
+  color: black;
+`;
+
+const InfoView = styled.View`
   flex: 1;
-  flex-direction: column;
+  flex-direction: row;
   border-radius: 16px;
   border-width: 1px;
   border-color: lightgray;
   background-color: white;
   opacity: 0.8;
   margin-right: 6px;
+  padding: 10px;
 `;
 
 const HeadText = styled.Text`
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
   color: black;
   margin: 12px;
 `;
 
-const WeatherText = styled.Text`
-  font-size: 12px;
-  font-weight: 400;
-  margin-top: 2px;
-  color: black;
+const TitleView = styled.View`
+  background-color: aliceblue;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-right: 10px;
 `;
 
-const distance = 0.1; // 1km -> 0.01
+const Title = styled.Text`
+  font-size: 13px;
+  font-weight: 500;
+`;
+
+const TextView = styled.View`
+  background-color: beige;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-around;
+`;
+
+const DataText = styled.Text`
+  font-size: 13px;
+  font-weight: 300;
+`;
 
 type HomeMapProp = CompositeNavigationProp<
   NativeStackNavigationProp<ChatStackParamList>,
@@ -81,6 +106,10 @@ const HomeMap = () => {
     latitude: number;
     longitude: number;
   } | null>(null);
+  const [radius, setRadius] = useState<number>(0.1);
+  const [distance, setDistance] = useState<string>('');
+  const [hour, setHour] = useState<number>(0);
+  const [minute, setMinute] = useState<number>(0);
   //User -> Modal
   const [showModal, setShowModal] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<string>('');
@@ -88,13 +117,15 @@ const HomeMap = () => {
   const [userImage, setUserImage] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   //Weather Control
-  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [weatherData, setWeatherData] = useState<WeatherState | null>(null);
   const [myWeather, setMyWeather] = useState<string>('');
   const [iconName, setIconName] = useState<string>('');
-  // const [areaWeather, setAreaWeather] = useState<Array<string>>();
-  // const [areaIconName, setAreaIconName] = useState<Array<string>>();
-  // const Angle = [0, 45, 90, 135, 180, 225];
 
+  useEffect(() => {
+    // console.log('Marker Added : ', orders.length);
+  }, [orders]);
+
+  //현위치(서울특별시 중구) 날씨 정보 지정
   useEffect(() => {
     Geolocation.getCurrentPosition(
       info => {
@@ -117,6 +148,12 @@ const HomeMap = () => {
         );
         setWeatherData(response.data);
         setMyWeather(response.data.weather[0].main);
+        var date = new Date(weatherData!.sys.sunset * 1000);
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        setHour(hours);
+        setMinute(minutes);
+        console.log('date test: ', hours, minutes);
         if (myWeather === 'Clouds') {
           setIconName('cloudy-outline');
         } else if (myWeather === 'Mist') {
@@ -135,7 +172,12 @@ const HomeMap = () => {
       }
     };
     getWeather();
-  }, [myPosition?.latitude, myPosition?.longitude, myWeather]);
+  }, [
+    myPosition?.latitude,
+    myPosition?.longitude,
+    myWeather,
+    weatherData?.sys.sunset,
+  ]);
 
   if (!myPosition || !myPosition.latitude) {
     return (
@@ -145,6 +187,7 @@ const HomeMap = () => {
     );
   }
 
+  //마커마다 유저 임의 정보 지정
   const getRandomImage = async () => {
     try {
       setLoading(true);
@@ -165,19 +208,29 @@ const HomeMap = () => {
     }
   };
 
-  const markerTapped = () => {
+  //마커 모달 생성
+  const markerTapped = (orderPosition) => {
+    // var date = new Date(weatherData?.sys.sunrise. * 1000);
+    var dis_x = myPosition.latitude - orderPosition.start.latitude;
+    var dis_y = myPosition.longitude - orderPosition.start.longitude;
+    var dist =
+      Math.sqrt(Math.abs(dis_x * dis_x) + Math.abs(dis_y * dis_y)) * 10000;
+    var calDist = dist.toFixed(0);
+    setDistance(calDist);
     setShowModal(true);
     getRandomImage();
   };
 
+  //모달에서 화면 전환
   const gotoProfile = () => {
-    console.log('test');
     setShowModal(false);
     navigation.navigate('UserProfile');
   };
 
-  //rainy-outline,cloudy-outline,md-cloudy-night-outline(night)
-  //partly-sunny-outline(구름 가린 햇빛),sunny-outline(태양), snow-outline(눈)
+  const Tapped = () => {
+    setRadius(0.05);
+  };
+
   return (
     <Container>
       <NaverMapView
@@ -203,7 +256,7 @@ const HomeMap = () => {
             latitude: myPosition.latitude,
             longitude: myPosition.longitude,
           }}
-          radius={distance * 100000}
+          radius={radius * 100000}
           color={'rgba(255,150,0,0.15)'}
         />
         {orders.map(orderPosition => (
@@ -216,7 +269,7 @@ const HomeMap = () => {
               pinColor="red"
               width={30}
               height={40}
-              onClick={() => markerTapped()}
+              onClick={() => markerTapped(orderPosition)}
             />
           </>
         ))}
@@ -231,6 +284,7 @@ const HomeMap = () => {
           userLocation={userLoca}
           userProfile={userImage}
           gotoProfile={gotoProfile}
+          getDistance={distance}
         />
       )}
       <HeaderView>
@@ -243,28 +297,27 @@ const HomeMap = () => {
           )}
           <WeatherText>{myWeather}</WeatherText>
         </WeatherView>
-        <NextWeatherView>
-          <HeadText style={{alignSelf: 'center'}}>
-            반경 1km 우천 예정지역
-          </HeadText>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              flex: 1,
-            }}>
-            {/* {Angle.map(() => (
-              <AreaWeatherCell>
-                {!areaWeather ? (
-                  <ActivityIndicator />
-                ) : (
-                  <IonIcon name={areaIconName} size={30} />
-                )}
-                <WeatherText>{areaWeather}</WeatherText>
-              </AreaWeatherCell>
-            ))} */}
-          </View>
-        </NextWeatherView>
+        <InfoView>
+          <TitleView>
+            <Title>위도 경도</Title>
+            <Title>일몰 시간</Title>
+            <Title>생존자 수</Title>
+          </TitleView>
+          <TextView>
+            <DataText>
+              {weatherData?.coord.lat + ' ' + weatherData?.coord.lon}
+            </DataText>
+            <DataText>
+              {hour}시 {minute}분
+            </DataText>
+            <DataText>{orders.length} 명</DataText>
+          </TextView>
+          {/* <HeadText style={{alignSelf: 'center'}}>{orders.length}</HeadText>
+          <HeadText style={{alignSelf: 'center'}}>{hour}</HeadText>
+          <TouchableOpacity
+            style={{width: 100, height: 100, flex: 1, backgroundColor: 'red'}}
+            onPress={Tapped}></TouchableOpacity> */}
+        </InfoView>
       </HeaderView>
     </Container>
   );

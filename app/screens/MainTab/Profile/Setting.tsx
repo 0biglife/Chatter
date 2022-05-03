@@ -3,7 +3,7 @@ import React, {useCallback} from 'react';
 import {Alert} from 'react-native';
 import {useSelector} from 'react-redux';
 import styled from 'styled-components/native';
-import client from '../../../apis/client';
+import client from '../../../apis/MarkerAPI/client';
 import userSlice from '../../../redux/slices/user';
 import {useAppDispatch} from '../../../redux/store';
 import {RootState} from '../../../redux/store/reducers';

@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {Dimensions} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
-import unsplashClient from '../../../apis/unsplashClient';
+import unsplashClient from '../../../apis/UnsplashAPI/unsplashClient';
 import {userModel} from '../../../apis/sampleData/userData';
 import {ChatStackParamList} from '../../../navigations/Types';
 

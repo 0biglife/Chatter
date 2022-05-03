@@ -40,27 +40,26 @@ const Profile = () => {
   const [showPostModal, setShowPostModal] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
-  const getPostData = async () => {
-    try {
-      const response = await FBStore.collection('user')
-        .doc('1')
-        .collection('post')
-        .get();
-      setMyPost(
-        response.docs.map(doc => ({
-          ...doc.data(),
-          id: doc.id,
-        })),
-      );
-      console.log('Profile/getPostData Success: ', response.docs);
-    } catch (e) {
-      console.log('Profile/getPostData Error : ', e);
-    }
-  };
-
   useEffect(() => {
+    const getPostData = async () => {
+      try {
+        const response = await FBStore.collection('user')
+          .doc('1')
+          .collection('post')
+          .get();
+        setMyPost(
+          response.docs.map(doc => ({
+            ...doc.data(),
+            id: doc.id,
+          })),
+        );
+        console.log('Profile/getPostData Success: ', response.docs);
+      } catch (e) {
+        console.log('Profile/getPostData Error : ', e);
+      }
+    };
     getPostData();
-  }, []);
+  }, [showPostModal]);
 
   //ImageData
   const onResponse = useCallback(async response => {

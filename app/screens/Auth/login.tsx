@@ -1,11 +1,12 @@
-import React, {useState, useEffect, useCallback, useRef} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState, useCallback, useRef} from 'react';
 import {Alert, TextInput} from 'react-native';
 import styled from 'styled-components/native';
 //Social Login
-import {
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
+// import {
+//   GoogleSignin,
+//   statusCodes,
+// } from '@react-native-google-signin/google-signin';
 
 //Redux
 import DismissKeyboardView from '../../components/DismissKeyboardView';
@@ -15,7 +16,7 @@ import {AxiosError} from 'axios';
 import {useAppDispatch} from '../../redux/store/index';
 import userSlice from '../../redux/slices/user';
 import EncrytedStorage from 'react-native-encrypted-storage';
-import client from '../../apis/client';
+import client from '../../apis/MarkerAPI/client';
 import {AuthParamList} from '../../navigations/Types';
 
 interface tokenType {
@@ -45,22 +46,22 @@ const Container = styled.View`
   justify-content: center;
 `;
 
-const SocialButtonWrapper = styled.View`
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  margin-top: 10px;
-`;
+// const SocialButtonWrapper = styled.View`
+//   justify-content: center;
+//   align-items: center;
+//   flex-direction: row;
+//   margin-top: 10px;
+// `;
 
-const SocialButton = styled.TouchableOpacity`
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
-  background-color: lightgray;
-  margin: 10px;
-  justify-content: center;
-  align-items: center;
-`;
+// const SocialButton = styled.TouchableOpacity`
+//   width: 60px;
+//   height: 60px;
+//   border-radius: 30px;
+//   background-color: lightgray;
+//   margin: 10px;
+//   justify-content: center;
+//   align-items: center;
+// `;
 
 const LoginButton = styled.TouchableOpacity`
   min-width: 85%;
@@ -122,6 +123,8 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
+  //소셜 로그인 구현(구글)
+  /*
   useEffect(() => {
     // GoogleSignin.configure({
     //   webClientId:
@@ -179,6 +182,7 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
       }
     }
   };
+  */
 
   const isActiveReady = () => {
     return email.includes('@') && password.length > 1
@@ -237,33 +241,34 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
       setLoading(false);
     }
 
-    //하단 코드는 Firebase SignIn Test Code !
-    // try {
-    //   setLoading(true);
-    //   const response = await axios.post(
-    //     SIGNIN,
-    //     {
-    //       email: email,
-    //       password: password,
-    //       returnSecureToken: true,
-    //     },
-    //     {headers: {'Content-Type': 'application/json'}},
-    //   );
-    //   console.log('LogIn Success : ', response.data);
-    //   Alert.alert('로그인이 완료되었습니다.');
-    //   dispatch(
-    //     userSlice.actions.setUser({
-    //       email: response.data.email,
-    //       accessToken: response.data.idToken,
-    //     }),
-    //   );
-    //   await EncrytedStorage.setItem('refreshToken', response.data.refreshToken);
-    // } catch (e) {
-    //   console.log('LogIn Error : ', e);
-    //   Alert.alert('에러 발생');
-    // } finally {
-    //   setLoading(false);
-    // }
+    //Firebase 로그인 구현
+    /* try {
+      setLoading(true);
+      const response = await axios.post(
+        SIGNIN,
+        {
+          email: email,
+          password: password,
+          returnSecureToken: true,
+        },
+        {headers: {'Content-Type': 'application/json'}},
+      );
+      console.log('LogIn Success : ', response.data);
+      Alert.alert('로그인이 완료되었습니다.');
+      dispatch(
+        userSlice.actions.setUser({
+          email: response.data.email,
+          accessToken: response.data.idToken,
+        }),
+      );
+      await EncrytedStorage.setItem('refreshToken', response.data.refreshToken);
+    } catch (e) {
+      console.log('LogIn Error : ', e);
+      Alert.alert('에러 발생');
+    } finally {
+      setLoading(false);
+    }
+    */
   }, [dispatch, email, loading, password]);
 
   return (
@@ -316,14 +321,14 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
           <SignUpTextView onPress={() => navigation.navigate('SignUp')}>
             <SignUpText>Sign up here</SignUpText>
           </SignUpTextView>
-          <SocialButtonWrapper>
+          {/* <SocialButtonWrapper>
             <SocialButton onPress={() => GoogleSignIn}>
               <ButtonText>G</ButtonText>
             </SocialButton>
             <SocialButton>
               <ButtonText>A</ButtonText>
             </SocialButton>
-          </SocialButtonWrapper>
+          </SocialButtonWrapper> */}
         </Container>
       </SafeAreaContainer>
     </DismissKeyboardView>

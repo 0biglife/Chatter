@@ -22,7 +22,7 @@ import {
 import {useAppDispatch} from '../redux/store';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {AxiosError} from 'axios';
-import client from '../apis/client';
+import client from '../apis/MarkerAPI/client';
 import userSlice from '../redux/slices/user';
 import {Alert} from 'react-native';
 import useSocket from '../hooks/useSocket';
@@ -221,7 +221,6 @@ const RootStack = () => {
 
   return isLoggedIn ? (
     <Tab.Navigator
-      initialRouteName="Orders"
       screenOptions={({route}) => ({
         tabBarShowLabel: false,
         tabBarActiveTintColor: 'gray',

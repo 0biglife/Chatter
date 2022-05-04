@@ -1,12 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useCallback, useRef} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {Alert, TextInput} from 'react-native';
 import styled from 'styled-components/native';
 //Social Login
-// import {
-//   GoogleSignin,
-//   statusCodes,
-// } from '@react-native-google-signin/google-signin';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 
 //Redux
 import DismissKeyboardView from '../../components/DismissKeyboardView';
@@ -18,21 +18,6 @@ import userSlice from '../../redux/slices/user';
 import EncrytedStorage from 'react-native-encrypted-storage';
 import client from '../../apis/MarkerAPI/client';
 import {AuthParamList} from '../../navigations/Types';
-
-interface tokenType {
-  aud: string;
-  auth_time: number;
-  c_hash: string;
-  email: string;
-  email_verified: string;
-  exp: number;
-  iat: number;
-  is_private_email: string;
-  iss: string;
-  nonce: string;
-  nonce_supported: boolean;
-  sub: string;
-}
 
 const SafeAreaContainer = styled.SafeAreaView`
   flex: 1;
@@ -46,25 +31,8 @@ const Container = styled.View`
   justify-content: center;
 `;
 
-// const SocialButtonWrapper = styled.View`
-//   justify-content: center;
-//   align-items: center;
-//   flex-direction: row;
-//   margin-top: 10px;
-// `;
-
-// const SocialButton = styled.TouchableOpacity`
-//   width: 60px;
-//   height: 60px;
-//   border-radius: 30px;
-//   background-color: lightgray;
-//   margin: 10px;
-//   justify-content: center;
-//   align-items: center;
-// `;
-
 const LoginButton = styled.TouchableOpacity`
-  min-width: 85%;
+  width: 85%;
   height: 48px;
   border-radius: 24px;
   justify-content: center;
@@ -109,9 +77,9 @@ const Input = styled.TextInput`
   margin-right: 8px;
 `;
 
-type LogInProps = NativeStackScreenProps<AuthParamList, 'LogIn'>;
+type LogInProps = NativeStackScreenProps<AuthParamList, 'SignIn'>;
 
-const LogIn: React.FC<LogInProps> = ({navigation}) => {
+const SignIn: React.FC<LogInProps> = ({navigation}) => {
   //Data Model
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -318,21 +286,13 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
             onPress={onSubmit}>
             <ButtonText>Login</ButtonText>
           </LoginButton>
-          <SignUpTextView onPress={() => navigation.navigate('SignUp')}>
+          <SignUpTextView onPress={() => navigation.navigate('Permission')}>
             <SignUpText>Sign up here</SignUpText>
           </SignUpTextView>
-          {/* <SocialButtonWrapper>
-            <SocialButton onPress={() => GoogleSignIn}>
-              <ButtonText>G</ButtonText>
-            </SocialButton>
-            <SocialButton>
-              <ButtonText>A</ButtonText>
-            </SocialButton>
-          </SocialButtonWrapper> */}
         </Container>
       </SafeAreaContainer>
     </DismissKeyboardView>
   );
 };
 
-export default LogIn;
+export default SignIn;

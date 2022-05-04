@@ -1,5 +1,6 @@
-import LogIn from './Auth/login';
-import SignUp from './Auth/signup';
+import SignIn from './Auth/SignIn';
+import SignUp from './Auth/SignUp';
+import Permission from './Auth/Permission';
 import HomeMap from './MainTab/Home/HomeMap';
 import Settings from './MainTab/Settings';
 import HomeFeed from './MainTab/Home/HomeFeed';
@@ -14,8 +15,9 @@ import Setting from './MainTab/Profile/Setting';
 import PostModify from './MainTab/Profile/PostModify';
 
 export {
-  LogIn,
+  SignIn,
   SignUp,
+  Permission,
   HomeFeed,
   Chat,
   ChatDetail,

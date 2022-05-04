@@ -135,7 +135,7 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
       console.log('SignUp : Succeed');
       console.log('SignUp Response : ', response.data);
       Alert.alert('회원가입이 완료되었습니다.');
-      navigation.navigate('LogIn');
+      navigation.navigate('SignIn');
     } catch (error) {
       //error는 unknown이기 때문에 우리가 타입을 지정을 해서 추론해야한다!
       //따라서 이 에러가 네트워크 에러인지 문법에러인지 타입스크립트 활용 가능.

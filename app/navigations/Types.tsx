@@ -4,6 +4,11 @@ export type MainStackParamList = {
   ChatDetail: UserData;
 };
 
+export type HomeMapStackParamList = {
+  HomeMap: undefined;
+  UesrProfile: UserData;
+};
+
 export type MainTabParamList = {
   HomeFeed: undefined;
   HomeMap: undefined;
@@ -36,8 +41,9 @@ export type ProfileStackParamList = {
 };
 
 export type AuthParamList = {
-  LogIn: undefined;
+  SignIn: undefined;
   SignUp: undefined;
+  Permission: undefined;
 };
 
 type UserData = {

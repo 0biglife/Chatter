@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import NaverMapView, {Circle, Marker} from 'react-native-nmap';
 import styled from 'styled-components/native';
 import Geolocation from '@react-native-community/geolocation';
-import {ActivityIndicator} from 'react-native';
+import {ActivityIndicator, Alert} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../redux/store/reducers';
 import Config from 'react-native-config';
@@ -12,9 +12,19 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import UserModal from '../../../components/UserModal';
 import unsplashClient from '../../../apis/UnsplashAPI/unsplashClient';
 import {WeatherState} from '../../../apis/WeatherAPI/weatherState';
-import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
+import {
+  CompositeNavigationProp,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {ChatStackParamList, MainTabParamList} from '../../../navigations/Types';
+import {
+  ChatStackParamList,
+  HomeMapStackParamList,
+  MainTabParamList,
+} from '../../../navigations/Types';
+import {NavigationActions} from 'react-navigation';
 
 const Container = styled.View`
   flex: 1;
@@ -128,13 +138,9 @@ const ThirdButton = styled.TouchableOpacity`
   border-bottom-right-radius: 10px;
 `;
 
-type HomeMapProp = CompositeNavigationProp<
-  NativeStackNavigationProp<ChatStackParamList>,
-  NativeStackNavigationProp<MainTabParamList>
->;
-
 const HomeMap = () => {
   const navigation = useNavigation();
+  //<NativeStackNavigationProp<HomeMapStackParamList>>();
   //User Control
   const orders = useSelector((state: RootState) => state.order.orders);
   const [myPosition, setMyPosition] = useState<{
@@ -254,7 +260,8 @@ const HomeMap = () => {
   //모달에서 화면 전환
   const gotoProfile = () => {
     setShowModal(false);
-    navigation.navigate('UserProfile');
+    // navigation.navigate();
+    Alert.alert('test');
   };
 
   const RadiusPicker = (picker: number) => {

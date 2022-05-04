@@ -5,7 +5,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {RootState} from '../redux/store/reducers';
 import {useSelector} from 'react-redux';
 import {
-  LogIn,
+  SignIn,
   SignUp,
   HomeFeed,
   Chat,
@@ -18,6 +18,7 @@ import {
   PostDetail,
   Setting,
   PostModify,
+  Permission,
 } from '../screens';
 import {useAppDispatch} from '../redux/store';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -86,7 +87,6 @@ const RootStack = () => {
     //서버로부터 데이터 받을 때는 콜백 방식 필수
     //useCallback => ()
     const socketCallBack = (data: any) => {
-      // console.log('RootStack Socket Callback : ', data);
       dispatch(orderSlice.actions.addOrder(data));
     };
     if (socket && isLoggedIn) {
@@ -103,7 +103,6 @@ const RootStack = () => {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      console.log('RootStack - isLoggedIn', isLoggedIn);
       disconnect();
     }
   }, [isLoggedIn, disconnect]);
@@ -146,6 +145,17 @@ const RootStack = () => {
     //useEffect는 async 불가기 때문에 별개 함수로 선언하고 호출하는 방식으로 구현
     getTokenAndRefresh();
   }, [dispatch]);
+
+  const HomeMapStack = () => {
+    return (
+      <Stack.Navigator
+        initialRouteName="HomeMap"
+        screenOptions={{headerShown: false}}>
+        <Stack.Screen name="HomeMap" component={HomeMap} />
+        <Stack.Screen name="UserProfile" component={UserProfile} />
+      </Stack.Navigator>
+    );
+  };
 
   const ChatStack = () => {
     return (
@@ -227,10 +237,10 @@ const RootStack = () => {
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
 
-          if (route.name === 'HomeMap') {
-            iconName = focused ? 'map' : 'map-outline';
-          } else if (route.name === 'HomeFeed') {
+          if (route.name === 'HomeFeed') {
             iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === 'HomeMapStack') {
+            iconName = focused ? 'map' : 'map-outline';
           } else if (route.name === 'ChatStack') {
             iconName = focused ? 'chatbox' : 'chatbox-outline';
           } else if (route.name === 'ProfileStack') {
@@ -245,8 +255,8 @@ const RootStack = () => {
         options={{title: '뉴스피드'}}
       />
       <Tab.Screen
-        name="HomeMap"
-        component={HomeMap}
+        name="HomeMapStack"
+        component={HomeMapStack}
         options={{headerShown: false}}
       />
       <Tab.Screen
@@ -271,8 +281,9 @@ const RootStack = () => {
         headerTintColor: 'black',
         headerShadowVisible: false,
       }}>
-      <Stack.Screen name="LogIn" component={LogIn} />
+      <Stack.Screen name="SignIn" component={SignIn} />
       <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="Permission" component={Permission} />
     </Stack.Navigator>
   );
 };

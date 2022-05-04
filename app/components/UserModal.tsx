@@ -104,7 +104,7 @@ const UserModal = (props: ModalProps) => {
         onBackdropPress={() => props.setShowModal(false)}>
         <ModalContainer>
           <InnerContainer>
-            <ImageSection activeOpacity={0.6} onPress={() => props.gotoProfile}>
+            <ImageSection activeOpacity={0.6} onPress={props.gotoProfile}>
               <ProfileImage source={{uri: props.userProfile}} />
             </ImageSection>
             <InfoWrapper>

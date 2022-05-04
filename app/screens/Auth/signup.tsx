@@ -1,5 +1,5 @@
 import React, {useState, useCallback, useRef} from 'react';
-import {ActivityIndicator, Alert, TextInput} from 'react-native';
+import {ActivityIndicator, Alert, Image, TextInput} from 'react-native';
 import styled from 'styled-components/native';
 //Redux
 import DismissKeyboardView from '../../components/DismissKeyboardView';
@@ -8,6 +8,10 @@ import {AuthParamList} from '../../navigations/Types';
 //Axios
 import {AxiosError} from 'axios';
 import client from '../../apis/MarkerAPI/client';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import ImageResizer from 'react-native-image-resizer';
+import ImagePicker from 'react-native-image-crop-picker';
+import {useAppDispatch} from '../../redux/store';
 
 interface tokenType {
   aud: string;
@@ -33,7 +37,25 @@ const Container = styled.View`
   flex: 1;
   background-color: white;
   align-items: center;
-  justify-content: center;
+  margin-top: 20px;
+  /* justify-content: center; */
+`;
+
+const ImageView = styled.TouchableOpacity`
+  width: 140px;
+  height: 140px;
+  margin-bottom: 20px;
+`;
+
+const AddIconView = styled.View`
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 20px;
+  margin-left: 108px;
+  margin-top: 94px;
+  padding-right: 2px;
+  background-color: white;
 `;
 
 const LoginButton = styled.TouchableOpacity`
@@ -71,6 +93,8 @@ const Input = styled.TextInput`
 type SignUpProps = NativeStackScreenProps<AuthParamList, 'SignUp'>;
 
 const SignUp: React.FC<SignUpProps> = ({navigation}) => {
+  const dispatch = useAppDispatch();
+  const [image, setImage] = useState<{uri: string}>();
   //Data Model
   const [email, setEmail] = useState<string>('');
   const [name, setName] = useState<string>('');
@@ -81,6 +105,50 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
   const passwordRef = useRef<TextInput | null>(null);
   //Logic
   const [loading, setLoading] = useState<boolean>(false);
+
+  const onResponse = useCallback(async response => {
+    return ImageResizer.createResizedImage(
+      response.path,
+      600,
+      600,
+      response.mime.includes('jpeg') ? 'JPEG' : 'PNG',
+      100,
+      0,
+    ).then(r => {
+      console.log(r.uri, r.name);
+      setImage({
+        uri: `data:${response.mime};base64,${response.data}`,
+      });
+      //만약 서버에 요청하는 로직이라면 이런 식으로 감싸서 post 요청해야함
+      /*
+      setImage({
+        uri: r.uri,
+        name: r.name,
+        type: response.mime,
+      });
+      */
+    });
+  }, []);
+
+  const onTakePhoto = useCallback(() => {
+    return ImagePicker.openCamera({
+      includeBase64: true,
+      includeExif: true,
+      saveToPhotos: true,
+    })
+      .then(onResponse)
+      .catch(console.log);
+  }, [onResponse]);
+
+  const onChangeFile = useCallback(() => {
+    return ImagePicker.openPicker({
+      includeExif: true, //카메라 가로/세로 대응
+      includeBase64: true, //미리보기 띄우기 가능
+      mediaType: 'photo',
+    })
+      .then(onResponse)
+      .catch(console.log);
+  }, [onResponse]);
 
   const onChangeEmail = useCallback(text => {
     setEmail(text.trim());
@@ -135,6 +203,9 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
       console.log('SignUp : Succeed');
       console.log('SignUp Response : ', response.data);
       Alert.alert('회원가입이 완료되었습니다.');
+
+      //서버로 image post 요청하는 로직
+
       navigation.navigate('SignIn');
     } catch (error) {
       //error는 unknown이기 때문에 우리가 타입을 지정을 해서 추론해야한다!
@@ -151,7 +222,7 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
       setLoading(false);
     }
 
-    //Firebase 회원가입 구현
+    // 회원가입 구현
     /* const signUp = async () => {
       try {
         setLoading(true);
@@ -182,6 +253,22 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
     <DismissKeyboardView>
       <SafeAreaContainer>
         <Container>
+          <ImageView onPress={onChangeFile}>
+            <Image
+              style={{width: 140, height: 140, borderRadius: 70}}
+              source={
+                image ? image : require('../../assets/profileDefault.jpeg')
+              }
+            />
+            <AddIconView>
+              <IonIcon
+                style={{marginTop: -2}}
+                name="add-circle"
+                size={34}
+                color="gray"
+              />
+            </AddIconView>
+          </ImageView>
           <InputContainer>
             <Input
               placeholder="이메일을 입력해주세요"

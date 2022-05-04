@@ -88,7 +88,7 @@ const HalfModal: React.FC<HalfModal> = props => {
                 />
                 <Title>설정</Title>
               </Section>
-              <Section onPress={() => props.thirdTapped}>
+              <Section onPress={props.thirdTapped}>
                 <IonIcon
                   style={{marginLeft: 6}}
                   name="share-outline"
@@ -119,7 +119,7 @@ const HalfModal: React.FC<HalfModal> = props => {
                 />
                 <Title>삭제</Title>
               </Section>
-              <Section onPress={() => props.thirdTapped}>
+              <Section onPress={props.thirdTapped}>
                 <IonIcon
                   style={{marginLeft: 6}}
                   name="share-outline"

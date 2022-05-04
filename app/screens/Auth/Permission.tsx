@@ -28,6 +28,7 @@ const Title = styled.Text`
   font-size: 20px;
   font-weight: 700;
   margin-left: 10px;
+  color: black;
 `;
 
 const SubTitle = styled.Text`

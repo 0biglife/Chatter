@@ -9,7 +9,7 @@ import Profile from './MainTab/Profile/Profile';
 import UserProfile from './MainTab/Profile/UserProfile';
 import ChatDetail from './MainTab/Chat/ChatDetail';
 import EditView from './MainTab/Profile/EditView';
-import PostModal from './MainTab/Profile/PostModal';
+import Posting from './MainTab/Profile/Posting';
 import PostDetail from './MainTab/Profile/PostDetail';
 import Setting from './MainTab/Profile/Setting';
 import PostModify from './MainTab/Profile/PostModify';
@@ -24,7 +24,7 @@ export {
   Profile,
   UserProfile,
   EditView,
-  PostModal,
+  Posting,
   PostDetail,
   PostModify,
   HomeMap,

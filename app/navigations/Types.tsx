@@ -27,7 +27,7 @@ export type ProfileStackParamList = {
     name: string;
     image: string;
   };
-  PostModal: undefined;
+  Posting: undefined;
   PostDetail: {
     userName: string;
     body: string;

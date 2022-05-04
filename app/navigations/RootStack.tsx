@@ -13,12 +13,12 @@ import {
   HomeMap,
   ChatDetail,
   UserProfile,
-  PostModal,
   EditView,
   PostDetail,
   Setting,
   PostModify,
   Permission,
+  Posting,
 } from '../screens';
 import {useAppDispatch} from '../redux/store';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -189,9 +189,7 @@ const RootStack = () => {
           component={EditView}
           options={{
             headerShown: false,
-            // headerBackTitle: '',
-            // headerTintColor: 'black',
-            // headerShadowVisible: false,
+            presentation: 'fullScreenModal',
           }}
         />
         <Stack.Screen
@@ -203,9 +201,9 @@ const RootStack = () => {
           }}
         />
         <Stack.Screen
-          name="PostModal"
-          component={PostModal}
-          options={{headerShown: false}}
+          name="Posting"
+          component={Posting}
+          options={{headerShown: false, presentation: 'fullScreenModal'}}
         />
         <Stack.Screen
           name="PostDetail"

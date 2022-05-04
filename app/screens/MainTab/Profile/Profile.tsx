@@ -18,8 +18,9 @@ import userSlice from '../../../redux/slices/user';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {FBPost, ProfileStackParamList} from '../../../navigations/Types';
-import PostModal from './PostModal';
 import HalfModal from '../../../components/HalfModal';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../redux/store/reducers';
 
 const Profile = () => {
   const navigation =
@@ -37,8 +38,9 @@ const Profile = () => {
   const [myPost, setMyPost] = useState<FBPost[]>();
   //Modal Control
   const [showHalfModal, setShowHalfModal] = useState<boolean>(false);
-  const [showPostModal, setShowPostModal] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  const getImage = useSelector((state: RootState) => state.user.profileImage);
+  const getName = useSelector((state: RootState) => state.user.name);
 
   useEffect(() => {
     const getPostData = async () => {
@@ -53,19 +55,18 @@ const Profile = () => {
             id: doc.id,
           })),
         );
-        console.log('Profile/getPostData Success: ', response.docs);
+        const imageResponse = await FBStore.collection('user').doc('1').get();
+        setImage(imageResponse._data.image);
+        console.log('Profile/getPostData Success: ', imageResponse);
       } catch (e) {
         console.log('Profile/getPostData Error : ', e);
       }
     };
     getPostData();
-  }, [showPostModal]);
+  }, []);
 
   //ImageData
   const onResponse = useCallback(async response => {
-    console.log('response width : ', response.width);
-    console.log('response height : ', response.height);
-    console.log('response exif : ', response.exif);
     setImage({
       uri: `data:${response.mime};base64,${response.data}`,
     });
@@ -110,28 +111,28 @@ const Profile = () => {
 
   //sharing function
   const CustomShare = async () => {
-    setShowHalfModal(false);
     const shareOptions = {
       message: 'test for sharing function',
     };
-
     try {
       const shareResponse = await Share.open(shareOptions);
       console.log(JSON.stringify(shareResponse));
     } catch (e) {
       console.log('Share Error : ', e);
+    } finally {
+      setShowHalfModal(false);
     }
   };
 
-  const gotoPostView = async () => {
-    setShowPostModal(true);
+  const gotoPostView = () => {
+    navigation.navigate('Posting');
   };
 
   const gotoEditModal = () => {
     setShowHalfModal(false);
     navigation.navigate('EditView', {
-      name: 'GRboy',
-      image: 'http://www.nbnnews.co.kr/news/photo/202106/506788_549628_956.jpg',
+      name: getName,
+      image: getImage,
     });
   };
 
@@ -142,7 +143,6 @@ const Profile = () => {
 
   const EditDone = () => {
     if (name || image) {
-      //API : 변경된 프로필 사진 서버로 전송
       dispatch(
         userSlice.actions.setUser({
           profileImage: image,
@@ -176,7 +176,6 @@ const Profile = () => {
     navigation.navigate('Setting');
     setShowHalfModal(false);
   };
-
   return (
     <SafeContainer>
       <ScrollView nestedScrollEnabled>
@@ -209,12 +208,12 @@ const Profile = () => {
             <ProfileView
               style={{
                 shadowColor: 'black',
-                shadowOpacity: 0.3,
+                shadowOpacity: 0.5,
                 shadowRadius: 10,
                 shadowOffset: {width: 2, height: 2},
               }}>
-              <ProfileImage source={require('../../../assets/grboy02.webp')} />
-              <ProfileName>GRboy</ProfileName>
+              <ProfileImage source={{uri: image}} />
+              <ProfileName>{getName}</ProfileName>
             </ProfileView>
             <IntroText>0 year-old hambie</IntroText>
             <InfoSection>
@@ -235,10 +234,6 @@ const Profile = () => {
               <AddButton onPress={() => gotoPostView()}>
                 <IonIcon name="add" size={24} color="black" />
               </AddButton>
-              <PostModal
-                showModal={showPostModal}
-                setShowModal={setShowPostModal}
-              />
             </BodyTopWrapper>
             <BodyLine />
             <FlatList
@@ -253,7 +248,7 @@ const Profile = () => {
                       navigation.navigate('PostDetail', {
                         image: item.image,
                         body: item.body,
-                        userName: 'GRboy',
+                        userName: getName,
                       })
                     }>
                     <PostImage source={{uri: item.image}} />

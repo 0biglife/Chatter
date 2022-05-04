@@ -14,7 +14,8 @@ const DismissKeyboardView: React.FC<{style?: StyleProp<ViewStyle>}> = ({
     <KeyboardAwareScrollView
       {...props}
       style={props.style}
-      contentContainerStyle={{height: '100%'}}>
+      contentContainerStyle={{height: '100%'}}
+      scrollEnabled={false}>
       {children}
     </KeyboardAwareScrollView>
   </TouchableWithoutFeedback>

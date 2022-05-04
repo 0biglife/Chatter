@@ -12,6 +12,8 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import ImageResizer from 'react-native-image-resizer';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useAppDispatch} from '../../redux/store';
+import {AuthBGImage, AuthBGView} from './SignIn';
+import {AuthBackIcon} from './Permission';
 
 interface tokenType {
   aud: string;
@@ -28,23 +30,20 @@ interface tokenType {
   sub: string;
 }
 
-const SafeAreaContainer = styled.SafeAreaView`
-  flex: 1;
-  background-color: ${prop => prop.theme.color.bg};
-`;
-
 const Container = styled.View`
-  flex: 1;
+  width: 94%;
+  height: 560px;
+  border-radius: 36px;
   background-color: white;
   align-items: center;
   margin-top: 20px;
-  /* justify-content: center; */
 `;
 
 const ImageView = styled.TouchableOpacity`
   width: 140px;
   height: 140px;
   margin-bottom: 20px;
+  margin-top: 40px;
 `;
 
 const AddIconView = styled.View`
@@ -88,6 +87,24 @@ const Input = styled.TextInput`
   padding: 15px;
   height: 48px;
   margin-right: 8px;
+`;
+
+const InformContainer = styled.View`
+  width: 88%;
+  height: 70px;
+  border-radius: 24px;
+  margin-bottom: 10px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const InformText = styled.Text`
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 400;
+  border-radius: 10px;
+  margin-bottom: 4px;
 `;
 
 type SignUpProps = NativeStackScreenProps<AuthParamList, 'SignUp'>;
@@ -172,7 +189,7 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
       return Alert.alert('이메일을 입력해주세요');
     }
     if (!name || !name.trim()) {
-      return Alert.alert('이름을 입력해주세요');
+      return Alert.alert('닉네임(이름X) 입력해주세요');
     }
     if (!password || !password.trim()) {
       return Alert.alert('비밀번호를 입력하세요');
@@ -251,7 +268,11 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
 
   return (
     <DismissKeyboardView>
-      <SafeAreaContainer>
+      <AuthBGView>
+        <AuthBGImage source={require('../../assets/bg_01.jpeg')} />
+        <AuthBackIcon onPress={() => navigation.goBack()}>
+          <IonIcon name="chevron-back-sharp" color="white" size={50} />
+        </AuthBackIcon>
         <Container>
           <ImageView onPress={onChangeFile}>
             <Image
@@ -288,7 +309,7 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
           </InputContainer>
           <InputContainer>
             <Input
-              placeholder="이름을 입력해주세요"
+              placeholder="닉네임(이름X)을 입력해주세요"
               onChangeText={text => onChangeName(text)}
               importantForAutofill="yes"
               textContentType="name"
@@ -331,8 +352,16 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
               <ButtonText>Sign Up</ButtonText>
             )}
           </LoginButton>
+          <InformContainer>
+            <InformText>
+              ⚠️Chatter는 신변 보호를 위하여 실명 등록이 불가합니다⚠️
+            </InformText>
+            <InformText>
+              본인을 대변할 닉네임을 신중하게 입력해주세요.
+            </InformText>
+          </InformContainer>
         </Container>
-      </SafeAreaContainer>
+      </AuthBGView>
     </DismissKeyboardView>
   );
 };

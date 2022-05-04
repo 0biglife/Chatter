@@ -11,15 +11,26 @@ import {
   checkMultiple,
   requestMultiple,
 } from 'react-native-permissions';
+import {AuthBGImage, AuthBGView} from './SignIn';
+
+export const AuthBackIcon = styled.TouchableOpacity`
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  top: 40px;
+  left: 6px;
+`;
 
 const Container = styled.SafeAreaView`
-  width: 100%;
-  height: 100%;
+  width: 94%;
+  height: 500px;
+  border-radius: 36px;
+  justify-content: center;
+  align-items: center;
   background-color: ${prop => prop.theme.color.bg};
 `;
 
 const TitleContainer = styled.View`
-  margin-top: 140px;
   margin-left: 30px;
   margin-right: 30px;
 `;
@@ -144,33 +155,47 @@ const permissionAuth: React.FC<PermissioinAuthProps> = ({navigation}) => {
   };
 
   return (
-    <Container>
-      <TitleContainer>
-        <Title>접근 권한 승인</Title>
-        <SubTitle>해당 서비스 이용을 위한 접근 권한을 허용합니다.</SubTitle>
-        <SubscriptionWrapper>
-          <SubscriptionView>
-            <IonIcon name="phone-portrait" size={22} color="gray" />
-            <SubScriptionText>연락처 접근 권한을 허용합니다.</SubScriptionText>
-          </SubscriptionView>
-          <SubscriptionView>
-            <IonIcon name="camera" size={22} color="gray" />
-            <SubScriptionText>카메라 접근 권한을 허용합니다.</SubScriptionText>
-          </SubscriptionView>
-          <SubscriptionView>
-            <IonIcon name="book" size={22} color="gray" />
-            <SubScriptionText>갤러리 접근 권한을 허용합니다.</SubScriptionText>
-          </SubscriptionView>
-          <SubscriptionView>
-            <IonIcon name="mic" size={22} color="gray" />
-            <SubScriptionText>마이크 접근 권한을 허용합니다.</SubScriptionText>
-          </SubscriptionView>
-          <ButtonContainer onPress={() => requestMultiplePermissions()}>
-            <ButtonText>권한 허용</ButtonText>
-          </ButtonContainer>
-        </SubscriptionWrapper>
-      </TitleContainer>
-    </Container>
+    <AuthBGView>
+      <AuthBGImage source={require('../../assets/bg_01.jpeg')} />
+      <AuthBackIcon onPress={() => navigation.goBack()}>
+        <IonIcon name="chevron-back-sharp" color="white" size={50} />
+      </AuthBackIcon>
+      <Container>
+        <TitleContainer>
+          <Title>접근 권한 승인</Title>
+          <SubTitle>해당 서비스 이용을 위한 접근 권한을 허용합니다.</SubTitle>
+          <SubscriptionWrapper>
+            <SubscriptionView>
+              <IonIcon name="phone-portrait" size={22} color="gray" />
+              <SubScriptionText>
+                연락처 접근 권한을 허용합니다.
+              </SubScriptionText>
+            </SubscriptionView>
+            <SubscriptionView>
+              <IonIcon name="camera" size={22} color="gray" />
+              <SubScriptionText>
+                카메라 접근 권한을 허용합니다.
+              </SubScriptionText>
+            </SubscriptionView>
+            <SubscriptionView>
+              <IonIcon name="book" size={22} color="gray" />
+              <SubScriptionText>
+                갤러리 접근 권한을 허용합니다.
+              </SubScriptionText>
+            </SubscriptionView>
+            <SubscriptionView>
+              <IonIcon name="mic" size={22} color="gray" />
+              <SubScriptionText>
+                마이크 접근 권한을 허용합니다.
+              </SubScriptionText>
+            </SubscriptionView>
+            <ButtonContainer onPress={() => requestMultiplePermissions()}>
+              <ButtonText>권한 허용</ButtonText>
+            </ButtonContainer>
+          </SubscriptionWrapper>
+        </TitleContainer>
+      </Container>
+    </AuthBGView>
   );
 };
 

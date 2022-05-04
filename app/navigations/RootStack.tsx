@@ -275,9 +275,7 @@ const RootStack = () => {
   ) : (
     <Stack.Navigator
       screenOptions={{
-        headerTitle: '',
-        headerTintColor: 'black',
-        headerShadowVisible: false,
+        headerShown: false,
       }}>
       <Stack.Screen name="SignIn" component={SignIn} />
       <Stack.Screen name="SignUp" component={SignUp} />

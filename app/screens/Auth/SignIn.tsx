@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect, useCallback, useRef} from 'react';
-import {Alert, TextInput} from 'react-native';
+import {Alert, Image, Text, TextInput, View} from 'react-native';
 import styled from 'styled-components/native';
 //Social Login
 import {
@@ -19,13 +19,23 @@ import EncrytedStorage from 'react-native-encrypted-storage';
 import client from '../../apis/MarkerAPI/client';
 import {AuthParamList} from '../../navigations/Types';
 
-const SafeAreaContainer = styled.SafeAreaView`
+export const AuthBGView = styled.View`
   flex: 1;
-  background-color: ${prop => prop.theme.color.bg};
+  justify-content: center;
+  align-items: center;
+`;
+
+export const AuthBGImage = styled.Image`
+  width: 100%;
+  height: 100%;
+  position: absolute;
 `;
 
 const Container = styled.View`
-  flex: 1;
+  align-self: center;
+  width: 94%;
+  height: 340px;
+  border-radius: 36px;
   background-color: white;
   align-items: center;
   justify-content: center;
@@ -241,8 +251,21 @@ const SignIn: React.FC<LogInProps> = ({navigation}) => {
 
   return (
     <DismissKeyboardView>
-      <SafeAreaContainer>
+      <AuthBGView>
+        <AuthBGImage source={require('../../assets/bg_01.jpeg')} />
         <Container>
+          <Text
+            style={{
+              fontSize: 32,
+              fontWeight: '700',
+              marginBottom: 6,
+              marginTop: 4,
+            }}>
+            C H A T T E R
+          </Text>
+          <Text style={{fontSize: 14, fontWeight: '300', marginBottom: 6}}>
+            Welcome to our New Society
+          </Text>
           <InputContainer>
             <Input
               placeholder="이메일을 입력해주세요"
@@ -290,7 +313,7 @@ const SignIn: React.FC<LogInProps> = ({navigation}) => {
             <SignUpText>Sign up here</SignUpText>
           </SignUpTextView>
         </Container>
-      </SafeAreaContainer>
+      </AuthBGView>
     </DismissKeyboardView>
   );
 };

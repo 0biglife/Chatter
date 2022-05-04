@@ -63,7 +63,7 @@ const Posting = () => {
   const [isActive, setIsActive] = useState<boolean>(false);
   const [postText, setPostText] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const FBStore = firestore().collection('user').doc('1').collection('post');
+  const FBStore = firestore().collection('user').doc('1').collection('post').do;
 
   const onResponse = useCallback(async response => {
     return ImageResizer.createResizedImage(

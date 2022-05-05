@@ -4,13 +4,18 @@ export type MainStackParamList = {
   ChatDetail: UserData;
 };
 
+export type HomeFeedStackParamList = {
+  HomeFeed: undefined;
+  SearchResults: undefined;
+};
+
 export type HomeMapStackParamList = {
   HomeMap: undefined;
   UesrProfile: UserData;
 };
 
 export type MainTabParamList = {
-  HomeFeed: undefined;
+  HomeFeed: HomeFeedStackParamList;
   HomeMap: undefined;
   Chat: ChatStackParamList;
   Profile: undefined;

@@ -63,7 +63,7 @@ const Posting = () => {
   const [isActive, setIsActive] = useState<boolean>(false);
   const [postText, setPostText] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const FBStore = firestore().collection('user').doc('1').collection('post').do;
+  const FBStore = firestore().collection('user').doc('1').collection('post');
 
   const onResponse = useCallback(async response => {
     return ImageResizer.createResizedImage(
@@ -126,9 +126,7 @@ const Posting = () => {
   };
 
   const isActiveReady = () => {
-    return image && postText.length > 1
-      ? setIsActive(true)
-      : setIsActive(false);
+    return postText.length > 1 ? setIsActive(true) : setIsActive(false);
   };
 
   const complete = async () => {
@@ -136,15 +134,16 @@ const Posting = () => {
       setLoading(true);
       await FBStore.add({
         body: postText,
-        image: image,
-      });
+        image:
+          'https://i.pinimg.com/736x/31/b0/96/31b0965acfb3438474bb47c6e4d1f221.jpg',
+      }).then(data => console.log('aa: ', data));
       console.log('test');
     } catch (e) {
       console.log('PostModal/Post Error : ', e);
     } finally {
       setLoading(false);
-      navigation.goBack();
     }
+    navigation.goBack();
   };
 
   return (

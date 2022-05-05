@@ -19,6 +19,7 @@ import {
   PostModify,
   Permission,
   Posting,
+  SearchResults,
 } from '../screens';
 import {useAppDispatch} from '../redux/store';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -146,6 +147,29 @@ const RootStack = () => {
     getTokenAndRefresh();
   }, [dispatch]);
 
+  const HomeFeedStack = () => {
+    return (
+      <Stack.Navigator
+        initialRouteName="HomeFeed"
+        screenOptions={{
+          headerBackTitle: '',
+          headerTintColor: 'black',
+          headerShadowVisible: false,
+        }}>
+        <Stack.Screen
+          name="HomeFeed"
+          component={HomeFeed}
+          options={{headerTitle: 'Home'}}
+        />
+        <Stack.Screen
+          name="SearchResults"
+          component={SearchResults}
+          options={{headerTitle: 'Search'}}
+        />
+      </Stack.Navigator>
+    );
+  };
+
   const HomeMapStack = () => {
     return (
       <Stack.Navigator
@@ -235,7 +259,7 @@ const RootStack = () => {
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
 
-          if (route.name === 'HomeFeed') {
+          if (route.name === 'HomeFeedStack') {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'HomeMapStack') {
             iconName = focused ? 'map' : 'map-outline';
@@ -248,9 +272,11 @@ const RootStack = () => {
         },
       })}>
       <Tab.Screen
-        name="HomeFeed"
-        component={HomeFeed}
-        options={{title: '뉴스피드'}}
+        name="HomeFeedStack"
+        component={HomeFeedStack}
+        options={{
+          headerShown: false,
+        }}
       />
       <Tab.Screen
         name="HomeMapStack"

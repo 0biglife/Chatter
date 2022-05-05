@@ -4,6 +4,7 @@ import Permission from './Auth/Permission';
 import HomeMap from './MainTab/Home/HomeMap';
 import Settings from './MainTab/Settings';
 import HomeFeed from './MainTab/Home/HomeFeed';
+import SearchResults from './MainTab/Home/SearchResults';
 import Chat from './MainTab/Chat/Chat';
 import Profile from './MainTab/Profile/Profile';
 import UserProfile from './MainTab/Profile/UserProfile';
@@ -19,6 +20,7 @@ export {
   SignUp,
   Permission,
   HomeFeed,
+  SearchResults,
   Chat,
   ChatDetail,
   Profile,

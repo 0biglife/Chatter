@@ -42,7 +42,7 @@ const Container = styled.View`
 `;
 
 const LoginButton = styled.TouchableOpacity`
-  width: 85%;
+  width: 90%;
   height: 48px;
   border-radius: 24px;
   justify-content: center;
@@ -76,7 +76,7 @@ const InputContainer = styled.View`
   border-color: lightgray;
   border-width: 1.2px;
   border-radius: 24px;
-  min-width: 85%;
+  min-width: 90%;
   margin-top: 10px;
   align-self: center;
 `;

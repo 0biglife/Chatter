@@ -45,7 +45,7 @@ const WeatherView = styled.View`
   border-radius: 16px;
   border-width: 1px;
   border-color: lightgray;
-  opacity: 0.8;
+  opacity: 0.9;
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -67,7 +67,7 @@ const InfoView = styled.View`
   border-width: 1px;
   border-color: lightgray;
   background-color: white;
-  opacity: 0.85;
+  opacity: 0.9;
   margin-right: 6px;
   padding: 10px;
 `;
@@ -281,6 +281,7 @@ const HomeMap = () => {
   return (
     <Container>
       <NaverMapView
+        mapType={1}
         style={{width: '100%', height: '100%'}}
         zoomControl={false}
         center={{
@@ -352,7 +353,9 @@ const HomeMap = () => {
           </TitleView>
           <TextView>
             <DataText>
-              {weatherData?.coord.lat + ' ' + weatherData?.coord.lon}
+              {weatherData?.coord.lat.toFixed(3) +
+                ' ' +
+                weatherData?.coord.lon.toFixed(3)}
             </DataText>
             <DataText>
               {hour}시 {minute}분

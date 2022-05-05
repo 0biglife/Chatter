@@ -58,7 +58,7 @@ const AddIconView = styled.View`
 `;
 
 const LoginButton = styled.TouchableOpacity`
-  min-width: 85%;
+  min-width: 90%;
   height: 48px;
   border-radius: 24px;
   justify-content: center;
@@ -78,7 +78,7 @@ const InputContainer = styled.View`
   border-color: lightgray;
   border-width: 1.2px;
   border-radius: 24px;
-  min-width: 85%;
+  min-width: 90%;
   margin-top: 10px;
   align-self: center;
 `;
@@ -309,7 +309,7 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
           </InputContainer>
           <InputContainer>
             <Input
-              placeholder="닉네임(이름X)을 입력해주세요"
+              placeholder="실명이 아닌 닉네임을 입력해주세요"
               onChangeText={text => onChangeName(text)}
               importantForAutofill="yes"
               textContentType="name"

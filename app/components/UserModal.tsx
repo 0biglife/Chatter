@@ -29,7 +29,7 @@ const InnerContainer = styled.View`
 const ImageSection = styled.TouchableOpacity``;
 
 const ProfileImage = styled.Image`
-  background-color: lightcoral;
+  background-color: black;
   width: 84px;
   height: 84px;
   border-radius: 42px;

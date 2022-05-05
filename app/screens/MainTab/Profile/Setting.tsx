@@ -11,7 +11,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 
 const MainContainer = styled.View`
   flex: 1;
-  background-color: aliceblue;
+  background-color: black;
   flex-direction: column;
   justify-content: flex-end;
   padding: 10px;

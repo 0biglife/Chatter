@@ -206,6 +206,12 @@ const UserProfile: React.FC<UserProfileProps> = () => {
     });
   }, []);
 
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: route.params.user_name,
+    });
+  }, []);
+
   const getRandom = (min: number, max: number) => {
     return Math.floor(Math.random() * (max - min) + min);
   };
@@ -249,7 +255,7 @@ const UserProfile: React.FC<UserProfileProps> = () => {
               scrollEnabled={false}
               renderItem={({item}) => (
                 <CellContainer>
-                  <PostImage source={require('../../../assets/post01.jpeg')} />
+                  <PostImage source={{uri: route.params.user_profile}} />
                   <PostedWrapper>
                     <PostText>{item.body}</PostText>
                     <PostedTime>2022.02.22</PostedTime>

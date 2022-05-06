@@ -7,6 +7,7 @@ export type MainStackParamList = {
 export type HomeFeedStackParamList = {
   HomeFeed: undefined;
   SearchResults: undefined;
+  UserProfile: UserData;
 };
 
 export type HomeMapStackParamList = {

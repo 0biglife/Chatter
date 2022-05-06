@@ -166,6 +166,7 @@ const RootStack = () => {
           component={SearchResults}
           options={{headerTitle: 'Search'}}
         />
+        <Stack.Screen name="UserProfile" component={UserProfile} />
       </Stack.Navigator>
     );
   };

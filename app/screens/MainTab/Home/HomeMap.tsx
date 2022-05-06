@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import NaverMapView, {Circle, Marker} from 'react-native-nmap';
 import styled from 'styled-components/native';
 import Geolocation from '@react-native-community/geolocation';
-import {ActivityIndicator, Alert} from 'react-native';
+import {ActivityIndicator, Alert, StatusBar} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../redux/store/reducers';
 import Config from 'react-native-config';

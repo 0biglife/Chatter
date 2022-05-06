@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
-import {Dimensions} from 'react-native';
+import {Dimensions, StatusBar} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 import unsplashClient from '../../../apis/UnsplashAPI/unsplashClient';
@@ -106,6 +106,7 @@ const Chat = () => {
               user_id: item.user.id,
               user_name: item.user.username,
               user_profile: item.user.profile_image.large,
+              user_location: '',
             })
           }>
           <ProfileImage source={{uri: item.user.profile_image.large}} />

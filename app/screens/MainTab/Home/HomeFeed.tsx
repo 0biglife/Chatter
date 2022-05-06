@@ -7,6 +7,7 @@ import Config from 'react-native-config';
 import {useNavigation} from '@react-navigation/native';
 import {HomeFeedStackParamList} from '../../../navigations/Types';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {ActivityIndicator} from 'react-native';
 
 const MainContainer = styled.View`
   flex: 1;
@@ -30,7 +31,7 @@ export const SearchBar = styled.TextInput`
 const CellContainer = styled.View`
   align-self: center;
   width: 96%;
-  height: 380px;
+  height: 390px;
   background-color: white;
   border-color: lightgray;
   border-width: 0.5px;
@@ -46,7 +47,7 @@ const HeaderSection = styled.View`
 
 const ProfileView = styled.TouchableOpacity`
   width: 80px;
-  height: 100%;
+  height: 80px;
   align-items: center;
   justify-content: center;
 `;
@@ -61,7 +62,7 @@ const InfoView = styled.View`
   justify-content: center;
   flex-direction: column;
   width: 200px;
-  height: 100%;
+  height: 80px;
   padding-right: 10px;
   padding-left: 4px;
 `;
@@ -84,7 +85,6 @@ const ImageSection = styled.Image`
 
 const BodySection = styled.View`
   width: 100%;
-  height: 60px;
   padding: 10px;
 `;
 
@@ -97,38 +97,49 @@ const HomeFeed = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<HomeFeedStackParamList>>();
   const [data, setData] = useState();
+  const [loading, setLoading] = useState<boolean>(false);
 
   // 1. Unsplash API 요청으로 프로필 정보, 사진 정보 가져오기
   // 1. 2번을 배열로 넣어서 Profile, Post로 분리하여 화면에 뿌려주기
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const response = await unsplashClient.get('/photos/random', {
-          params: {
-            count: 3,
-            client_id: `${Config.UNSPLASH_ACCESSTOKEN}`,
-          },
-        });
-        console.log('HomeFeed/getUser Succeed : ', response.data);
-        setData(response.data);
-      } catch (e) {
-        console.log('HomeFeed/getUser Error : ', e);
-      }
-    };
+  const getUser = async () => {
+    try {
+      setLoading(true);
+      const response = await unsplashClient.get('/photos/random', {
+        params: {
+          count: 3,
+          client_id: `${Config.UNSPLASH_ACCESSTOKEN}`,
+        },
+      });
+      console.log('HomeFeed/getUser Succeed : ', response.data);
+      setData(response.data);
+    } catch (e) {
+      console.log('HomeFeed/getUser Error : ', e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     getUser();
   }, []);
 
   const renderItem = ({item}) => {
     return (
-      <CellContainer>
+      <CellContainer
+        style={{
+          height: item.user.bio ? 390 : 320,
+          shadowColor: 'black',
+          shadowOpacity: 0.2,
+          shadowRadius: 2,
+          shadowOffset: {width: 3, height: 3},
+        }}>
         <HeaderSection>
           <ProfileView
             activeOpacity={0.2}
             onPress={() =>
               navigation.navigate('UserProfile', {
                 id: item.id,
-                user_id: item.user_id,
+                user_id: item.user.id,
                 user_name: item.user.name,
                 user_location: item.user.location,
                 user_profile: item.user.profile_image.large,
@@ -161,12 +172,24 @@ const HomeFeed = () => {
         size={20}
         color="black"
       />
-      <FlatList
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        showsVerticalScrollIndicator={false}
-      />
+      {loading ? (
+        <ActivityIndicator
+          style={{
+            justifyContent: 'center',
+            alignContent: 'center',
+            marginTop: '70%',
+          }}
+          size="small"
+          color="black"
+        />
+      ) : (
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
     </MainContainer>
   );
 };

@@ -47,17 +47,10 @@ const PostOption = styled.TouchableOpacity`
   margin-right: 10px;
 `;
 
-const IconSection = styled.View`
-  width: 100%;
-  height: 50px;
-  background-color: beige;
-  padding: 10px;
-`;
-
 const BodySection = styled.View`
   width: 100%;
-  background-color: aliceblue;
   padding: 10px;
+  background-color: aliceblue;
 `;
 
 const BodyText = styled.Text`
@@ -69,8 +62,8 @@ const BodyText = styled.Text`
 const BottomSection = styled.View`
   width: 100%;
   padding: 4px;
-  background-color: antiquewhite;
   align-items: flex-end;
+  background-color: antiquewhite;
 `;
 
 const TimeText = styled.Text`
@@ -157,7 +150,6 @@ const PostDetail: React.FC<PostDetailProps> = () => {
         style={{width: '100%', height: 300}}
         source={{uri: route.params.image}}
       />
-      <IconSection></IconSection>
       <BodySection>
         <BodyText>{route.params.body}</BodyText>
       </BodySection>

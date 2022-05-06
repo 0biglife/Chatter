@@ -7,6 +7,7 @@ import styled from 'styled-components/native';
 import unsplashClient from '../../../apis/UnsplashAPI/unsplashClient';
 import {userModel} from '../../../apis/sampleData/userData';
 import {ChatStackParamList} from '../../../navigations/Types';
+import Config from 'react-native-config';
 
 const MainConatiner = styled.View`
   flex: 1;
@@ -32,7 +33,6 @@ const ImageSection = styled.TouchableOpacity`
   margin-left: 6px;
   background-color: lightgray;
 `;
-``;
 const ProfileImage = styled.Image`
   flex: 1;
   width: 70px;
@@ -78,7 +78,7 @@ const Chat = () => {
         const response = await unsplashClient.get('/photos/random', {
           params: {
             count: 12,
-            client_id: '3eVYYY9UEOTwk4CcDUgHt9uSSP_MJiAO3E1hcna-i1Q',
+            client_id: `${Config.UNSPLASH_ACCESSTOKEN}`,
           },
         });
         setUnsplashData(response.data);

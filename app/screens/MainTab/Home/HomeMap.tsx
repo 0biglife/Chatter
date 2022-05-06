@@ -139,7 +139,8 @@ const ThirdButton = styled.TouchableOpacity`
 `;
 
 const HomeMap = () => {
-  const navigation = useNavigation();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<HomeMapStackParamList>>();
   //<NativeStackNavigationProp<HomeMapStackParamList>>();
   //User Control
   const orders = useSelector((state: RootState) => state.order.orders);
@@ -260,8 +261,13 @@ const HomeMap = () => {
   //모달에서 화면 전환
   const gotoProfile = () => {
     setShowModal(false);
-    // navigation.navigate();
-    Alert.alert('test');
+    navigation.navigate('UserProfile', {
+      id: 1,
+      user_id: '1',
+      user_location: userLoca,
+      user_name: userInfo,
+      user_profile: userImage,
+    });
   };
 
   const RadiusPicker = (picker: number) => {

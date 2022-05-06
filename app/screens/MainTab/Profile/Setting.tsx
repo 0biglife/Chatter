@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {AxiosError} from 'axios';
 import React, {useCallback} from 'react';
 import {Alert} from 'react-native';
@@ -8,12 +9,12 @@ import userSlice from '../../../redux/slices/user';
 import {useAppDispatch} from '../../../redux/store';
 import {RootState} from '../../../redux/store/reducers';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import {AuthBGImage, AuthBGView} from '../../Auth/SignIn';
 
 const MainContainer = styled.View`
   flex: 1;
   background-color: black;
   flex-direction: column;
-  justify-content: flex-end;
   padding: 10px;
 `;
 
@@ -79,12 +80,15 @@ const Setting = () => {
 
   return (
     <MainContainer>
-      <ButtonContainer onPress={onLogOut}>
-        <ButtonText>로그아웃</ButtonText>
-      </ButtonContainer>
-      <ButtonContainer onPress={onSecession}>
-        <ButtonText>회원탈퇴</ButtonText>
-      </ButtonContainer>
+      <AuthBGView style={{justifyContent: 'flex-end'}}>
+        <AuthBGImage source={require('../../../assets/bg_01.jpeg')} />
+        <ButtonContainer onPress={onLogOut}>
+          <ButtonText>로그아웃</ButtonText>
+        </ButtonContainer>
+        <ButtonContainer onPress={onSecession}>
+          <ButtonText>회원탈퇴</ButtonText>
+        </ButtonContainer>
+      </AuthBGView>
     </MainContainer>
   );
 };

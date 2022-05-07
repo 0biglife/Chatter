@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
@@ -106,7 +107,8 @@ const HomeFeed = () => {
       setLoading(true);
       const response = await unsplashClient.get('/photos/random', {
         params: {
-          count: 3,
+          count: 12,
+          query: 'war',
           client_id: `${Config.UNSPLASH_ACCESSTOKEN}`,
         },
       });
@@ -130,7 +132,7 @@ const HomeFeed = () => {
           height: item.user.bio ? 390 : 320,
           shadowColor: 'black',
           shadowOpacity: 0.2,
-          shadowRadius: 2,
+          shadowRadius: 3,
           shadowOffset: {width: 3, height: 3},
         }}>
         <HeaderSection>
@@ -152,7 +154,13 @@ const HomeFeed = () => {
             <Location>{item.user.location}</Location>
           </InfoView>
         </HeaderSection>
-        <ImageSection source={{uri: item.urls.full}} />
+        <ImageSection
+          style={{
+            borderBottomLeftRadius: item.user.bio ? 0 : 10,
+            borderBottomRightRadius: item.user.bio ? 0 : 10,
+          }}
+          source={{uri: item.urls.full}}
+        />
         <BodySection>
           <BodyText numberOfLines={3}>{item.user.bio}</BodyText>
         </BodySection>

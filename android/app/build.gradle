@@ -208,6 +208,9 @@ android {
 
 dependencies {
     
+    //react-native-firebase/storage
+    implementation project(path: ":@react-native-firebase_storage")
+
     //react-native-google-signin / for android
     //https://dev.to/suyashvash/google-authsignin-in-react-native-without-firebase-43n
 

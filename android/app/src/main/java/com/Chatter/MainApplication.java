@@ -12,6 +12,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import androidx.multidex.MultiDexApplication;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
+//react-native-firebase/storage
+import io.invertase.firebase.storage.ReactNativeFirebaseStoragePackage;
 
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 
@@ -33,6 +35,11 @@ public class MainApplication extends Application implements ReactApplication {
           // packages.add( new SplashScreenReactPackage());
 
           return packages;
+          /* //for react-native-firebase/storage
+          return Arrays.asList(
+    new MainReactPackage(),
+    new ReactNativeFirebaseStoragePackage(),
+           */
         }
 
         @Override

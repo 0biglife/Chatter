@@ -30,6 +30,8 @@ target 'Chatter' do
   pod 'Firebase/Messaging'
   # pod 'Firebase/Auth'
   # pod 'Firebase/Firestore'
+  pod 'RNFBStorage', :path => '../node_modules/@react-native-firebase/storage'
+  pod 'RNFBAuth', :path => '../node_modules/@react-native-firebase/auth'
   
   # react-native-nmap
   pod 'NMapsMap'

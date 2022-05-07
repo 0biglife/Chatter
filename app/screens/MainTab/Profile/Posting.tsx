@@ -1,10 +1,19 @@
 import React, {useCallback, useState} from 'react';
 import styled from 'styled-components/native';
-import {Alert, Dimensions, TouchableOpacity} from 'react-native';
+import {
+  Alert,
+  Dimensions,
+  Platform,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import {useNavigation} from '@react-navigation/native';
 import ImageResizer from 'react-native-image-resizer';
 import ImagePicker from 'react-native-image-crop-picker';
+import storage from '@react-native-firebase/storage';
+import {FB} from '../../../apis/Firebase/firebase';
 
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
@@ -59,10 +68,15 @@ const PostBody = styled.TextInput`
 
 const Posting = () => {
   const navigation = useNavigation();
-  const [image, setImage] = useState<{uri: string}>();
-  const [isActive, setIsActive] = useState<boolean>(false);
+  // const [image, setImage] = useState<{uri: string}>();
+  //Data Upload
+  const [image, setImage] = useState<string>('');
+  const [uploading, setUploading] = useState<boolean>(false);
+  const [transferred, setTranferred] = useState<number>(0);
   const [postText, setPostText] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  //Action
+  const [isActive, setIsActive] = useState<boolean>(false);
   const FBStore = firestore().collection('user').doc('1').collection('post');
 
   const onResponse = useCallback(async response => {
@@ -74,12 +88,19 @@ const Posting = () => {
       100,
       0,
     ).then(r => {
-      console.log(r.uri, r.name);
-      setImage({
-        uri: `data:${response.mime};base64,${response.data}`,
-      });
+      //Image 변환 필요 시
+      // console.log('Posting Image Data : ', r.uri, r.name);
+      // setImage({
+      //   uri: `data:${response.mime};base64,${response.data}`,
+      // });
+
+      const imageUri = Platform.OS === 'ios' ? r.uri : r.path;
+      setImage(imageUri);
+      console.log('upload Image : ', image);
+
       //만약 서버에 요청하는 로직이라면 이런 식으로 감싸서 post 요청해야함
       /*
+      //업로드할 때에는 multipart/form-data 로 해야함
       setImage({
         uri: r.uri,
         name: r.name,
@@ -110,7 +131,7 @@ const Posting = () => {
   }, [onResponse]);
 
   const cancel = () => {
-    if (postText) {
+    if (image || postText) {
       Alert.alert('알림', '작업을 취소하시겠습니까?', [
         {
           text: '아니오',
@@ -126,18 +147,48 @@ const Posting = () => {
   };
 
   const isActiveReady = () => {
-    return postText.length > 1 ? setIsActive(true) : setIsActive(false);
+    return image ? setIsActive(true) : setIsActive(false);
+  };
+
+  const uploadImage = async () => {
+    let fileName = image.substring(image.lastIndexOf('/') + 1);
+    console.log('Substirng - filename: ', fileName);
+
+    setUploading(true);
+    setTranferred(0);
+
+    //업로드 현황을 위한 task
+    const task = storage().ref(fileName).putFile(image);
+
+    task.on('state_changed', taskSnapshot => {
+      console.log(
+        `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
+      );
+
+      setTranferred(
+        Math.round(
+          (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100,
+        ),
+      );
+    });
+
+    try {
+      //ref라는 이름으로 파일 uri를 put해주는 역할
+      await task;
+      setUploading(false);
+      Alert.alert('알림', '게시물이 전송되었습니다');
+    } catch (e) {
+      console.log('UploadImage Error : ', e);
+    }
+
+    setImage('');
+    setPostText('');
+    navigation.goBack();
   };
 
   const complete = async () => {
     try {
       setLoading(true);
-      await FBStore.add({
-        body: postText,
-        image:
-          'https://i.pinimg.com/736x/31/b0/96/31b0965acfb3438474bb47c6e4d1f221.jpg',
-      }).then(data => console.log('aa: ', data));
-      console.log('test');
     } catch (e) {
       console.log('PostModal/Post Error : ', e);
     } finally {
@@ -157,7 +208,7 @@ const Posting = () => {
         </HeaderText>
         <TouchableOpacity
           disabled={!isActive || loading}
-          onPress={() => complete()}>
+          onPress={() => uploadImage()}>
           <HeaderText style={{color: isActive ? 'black' : 'gray'}}>
             완료
           </HeaderText>
@@ -165,7 +216,11 @@ const Posting = () => {
       </HeaderSection>
       <ImageView onPress={onChangeFile}>
         <PostImage
-          source={image ? image : require('../../../assets/postDefault.png')}
+          source={{
+            uri: image
+              ? image
+              : 'https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg',
+          }}
         />
       </ImageView>
       <PostBody
@@ -180,6 +235,12 @@ const Posting = () => {
         multiline={true}
         numberOfLines={4}
       />
+      {uploading ? (
+        <View
+          style={{alignSelf: 'center', justifyContent: 'flex-end', margin: 20}}>
+          <Text>{transferred} % Completed</Text>
+        </View>
+      ) : null}
     </MainContainer>
   );
 };

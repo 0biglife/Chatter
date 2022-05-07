@@ -269,7 +269,9 @@ const RootStack = () => {
           } else if (route.name === 'ProfileStack') {
             iconName = focused ? 'person' : 'person-outline';
           }
-          return <IonIcon name={iconName} size={size} color={color} />;
+          return (
+            <IonIcon name={iconName.toString()} size={size} color={color} />
+          );
         },
       })}>
       <Tab.Screen

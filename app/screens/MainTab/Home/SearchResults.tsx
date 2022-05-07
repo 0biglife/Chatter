@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import {SearchBar} from './HomeFeed';
@@ -70,6 +71,12 @@ const SearchResults = () => {
     return (
       <CellContainer
         activeOpacity={0.4}
+        style={{
+          shadowColor: 'black',
+          shadowOpacity: 0.2,
+          shadowRadius: 3,
+          shadowOffset: {width: 3, height: 3},
+        }}
         onPress={() =>
           navigation.navigate('UserProfile', {
             id: item.id,

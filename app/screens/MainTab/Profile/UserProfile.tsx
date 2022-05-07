@@ -224,7 +224,7 @@ const UserProfile: React.FC<UserProfileProps> = () => {
           <ProfileView
             style={{
               shadowColor: 'black',
-              shadowOpacity: 0.3,
+              shadowOpacity: 0.6,
               shadowRadius: 10,
               shadowOffset: {width: 2, height: 2},
             }}>

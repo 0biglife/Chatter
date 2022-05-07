@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import NaverMapView, {Circle, Marker} from 'react-native-nmap';
 import styled from 'styled-components/native';
 import Geolocation from '@react-native-community/geolocation';
-import {ActivityIndicator, Alert, StatusBar} from 'react-native';
+import {ActivityIndicator} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../redux/store/reducers';
 import Config from 'react-native-config';
@@ -12,19 +12,9 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import UserModal from '../../../components/UserModal';
 import unsplashClient from '../../../apis/UnsplashAPI/unsplashClient';
 import {WeatherState} from '../../../apis/WeatherAPI/weatherState';
-import {
-  CompositeNavigationProp,
-  RouteProp,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {
-  ChatStackParamList,
-  HomeMapStackParamList,
-  MainTabParamList,
-} from '../../../navigations/Types';
-import {NavigationActions} from 'react-navigation';
+import {HomeMapStackParamList} from '../../../navigations/Types';
 
 const Container = styled.View`
   flex: 1;
@@ -314,18 +304,16 @@ const HomeMap = () => {
           color={`rgba(255,150,0,${transparency})`}
         />
         {orders.map(orderPosition => (
-          <>
-            <Marker
-              coordinate={{
-                latitude: orderPosition.start.latitude,
-                longitude: orderPosition.start.longitude,
-              }}
-              pinColor="red"
-              width={30}
-              height={40}
-              onClick={() => markerTapped(orderPosition)}
-            />
-          </>
+          <Marker
+            coordinate={{
+              latitude: orderPosition.start.latitude,
+              longitude: orderPosition.start.longitude,
+            }}
+            pinColor="red"
+            width={30}
+            height={40}
+            onClick={() => markerTapped(orderPosition)}
+          />
         ))}
       </NaverMapView>
       {loading ? (
@@ -347,7 +335,11 @@ const HomeMap = () => {
           {!myWeather ? (
             <ActivityIndicator style={{marginTop: 10}} />
           ) : (
-            <IonIcon style={{marginTop: 8}} name={iconName} size={30} />
+            <IonIcon
+              style={{marginTop: 8}}
+              name={iconName.toString()}
+              size={30}
+            />
           )}
           <WeatherText>{myWeather}</WeatherText>
         </WeatherView>

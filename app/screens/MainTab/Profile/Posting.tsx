@@ -8,12 +8,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
+import firestore, {firebase} from '@react-native-firebase/firestore';
 import {useNavigation} from '@react-navigation/native';
 import ImageResizer from 'react-native-image-resizer';
 import ImagePicker from 'react-native-image-crop-picker';
 import storage from '@react-native-firebase/storage';
-import {FB} from '../../../apis/Firebase/firebase';
 
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
@@ -68,7 +67,6 @@ const PostBody = styled.TextInput`
 
 const Posting = () => {
   const navigation = useNavigation();
-  // const [image, setImage] = useState<{uri: string}>();
   //Data Upload
   const [image, setImage] = useState<string>('');
   const [uploading, setUploading] = useState<boolean>(false);
@@ -77,7 +75,6 @@ const Posting = () => {
   const [loading, setLoading] = useState<boolean>(false);
   //Action
   const [isActive, setIsActive] = useState<boolean>(false);
-  const FBStore = firestore().collection('user').doc('1').collection('post');
 
   const onResponse = useCallback(async response => {
     return ImageResizer.createResizedImage(
@@ -88,12 +85,7 @@ const Posting = () => {
       100,
       0,
     ).then(r => {
-      //Image 변환 필요 시
-      // console.log('Posting Image Data : ', r.uri, r.name);
-      // setImage({
-      //   uri: `data:${response.mime};base64,${response.data}`,
-      // });
-
+      //for Firebase Storage
       const imageUri = Platform.OS === 'ios' ? r.uri : r.path;
       setImage(imageUri);
       console.log('upload Image : ', image);
@@ -101,6 +93,10 @@ const Posting = () => {
       //만약 서버에 요청하는 로직이라면 이런 식으로 감싸서 post 요청해야함
       /*
       //업로드할 때에는 multipart/form-data 로 해야함
+
+      setImage({
+        uri: `data:${response.mime};base64,${response.data}`,
+      });
       setImage({
         uri: r.uri,
         name: r.name,
@@ -150,15 +146,46 @@ const Posting = () => {
     return image ? setIsActive(true) : setIsActive(false);
   };
 
+  const postDone = async () => {
+    const imageUrl = await uploadImage();
+    console.log('postDone Image Url : ', imageUrl);
+    console.log('postDone Postbody : ', postText);
+
+    firebase
+      .firestore()
+      .collection('posts')
+      .add({
+        body: postText,
+        postImg: imageUrl,
+        postTime: firestore.Timestamp.fromDate(new Date()),
+      })
+      .then(res => {
+        console.log('postDone firestore Done ! : ', res);
+        Alert.alert('알림', '게시글이 등록되었습니다');
+        setPostText('');
+        navigation.goBack();
+      })
+      .catch(e => {
+        console.log('postDone Error : ', e);
+      });
+  };
+
   const uploadImage = async () => {
     let fileName = image.substring(image.lastIndexOf('/') + 1);
     console.log('Substirng - filename: ', fileName);
+
+    //파일명 오버라이딩을 위한 Date 문자열 추가
+    const extension = fileName.split('.').pop();
+    const name = fileName.split('.').slice(0, -1).join('.');
+    fileName = name + Date.now() + '.' + extension;
 
     setUploading(true);
     setTranferred(0);
 
     //업로드 현황을 위한 task
-    const task = storage().ref(fileName).putFile(image);
+    //ref라는 이름으로 파일 uri를 put해주는 역할
+    const storageRef = storage().ref(`photos/${fileName}`);
+    const task = storageRef.putFile(image);
 
     task.on('state_changed', taskSnapshot => {
       console.log(
@@ -173,28 +200,16 @@ const Posting = () => {
     });
 
     try {
-      //ref라는 이름으로 파일 uri를 put해주는 역할
       await task;
+      const url = await storageRef.getDownloadURL();
       setUploading(false);
-      Alert.alert('알림', '게시물이 전송되었습니다');
+      setImage('');
+
+      return url;
     } catch (e) {
       console.log('UploadImage Error : ', e);
+      return null;
     }
-
-    setImage('');
-    setPostText('');
-    navigation.goBack();
-  };
-
-  const complete = async () => {
-    try {
-      setLoading(true);
-    } catch (e) {
-      console.log('PostModal/Post Error : ', e);
-    } finally {
-      setLoading(false);
-    }
-    navigation.goBack();
   };
 
   return (
@@ -207,8 +222,8 @@ const Posting = () => {
           게시글 추가
         </HeaderText>
         <TouchableOpacity
-          disabled={!isActive || loading}
-          onPress={() => uploadImage()}>
+          // disabled={!isActive || loading}
+          onPress={() => postDone()}>
           <HeaderText style={{color: isActive ? 'black' : 'gray'}}>
             완료
           </HeaderText>
@@ -237,7 +252,12 @@ const Posting = () => {
       />
       {uploading ? (
         <View
-          style={{alignSelf: 'center', justifyContent: 'flex-end', margin: 20}}>
+          style={{
+            alignSelf: 'center',
+            justifyContent: 'flex-end',
+            margin: 20,
+            height: 40,
+          }}>
           <Text>{transferred} % Completed</Text>
         </View>
       ) : null}

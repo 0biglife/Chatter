@@ -48,9 +48,15 @@ const PostOption = styled.TouchableOpacity`
 `;
 
 const BodySection = styled.View`
-  width: 100%;
+  min-width: 96%;
   padding: 10px;
-  background-color: aliceblue;
+  margin: 10px;
+  align-self: center;
+  min-height: 100px;
+  border-width: 0.5px;
+  border-color: lightgray;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.1);
 `;
 
 const BodyText = styled.Text`
@@ -60,15 +66,19 @@ const BodyText = styled.Text`
 `;
 
 const BottomSection = styled.View`
-  width: 100%;
+  width: 96%;
   padding: 4px;
   align-items: flex-end;
-  background-color: antiquewhite;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.1);
 `;
 
 const TimeText = styled.Text`
   font-size: 14px;
   font-weight: 300;
+  margin-right: 10px;
   color: gray;
 `;
 
@@ -97,7 +107,7 @@ const PostDetail: React.FC<PostDetailProps> = () => {
 
   const remove = () => {
     FBStore.doc('iaON8v7jv04Lns8ZYYVX').delete();
-    Alert.alert('remove');
+    Alert.alert('기록이 삭제되었습니다.');
     setShowModal(false);
     navigation.navigate('Profile');
   };
@@ -146,15 +156,15 @@ const PostDetail: React.FC<PostDetailProps> = () => {
           thirdTapped={share}
         />
       </HeaderSection>
-      <Image
+      {/* <Image
         style={{width: '100%', height: 300}}
         source={{uri: route.params.image}}
-      />
+      /> */}
       <BodySection>
         <BodyText>{route.params.body}</BodyText>
       </BodySection>
       <BottomSection>
-        <TimeText>2022.02.02</TimeText>
+        <TimeText>{route.params.created}</TimeText>
       </BottomSection>
     </MainContainer>
   );

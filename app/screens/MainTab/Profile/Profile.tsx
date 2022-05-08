@@ -21,6 +21,7 @@ import {FBPost, ProfileStackParamList} from '../../../navigations/Types';
 import HalfModal from '../../../components/HalfModal';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../redux/store/reducers';
+import {postData} from '../../../apis/sampleData/postData';
 
 const Profile = () => {
   const navigation =
@@ -48,6 +49,7 @@ const Profile = () => {
         const response = await FBStore.collection('user')
           .doc('1')
           .collection('post')
+          .orderBy('created', 'desc')
           .get();
         setMyPost(
           response.docs.map(doc => ({
@@ -124,7 +126,11 @@ const Profile = () => {
     }
   };
 
-  const gotoPostView = () => {
+  const gotoTimePostView = () => {
+    navigation.navigate('Posting');
+  };
+
+  const gotoSpacePostView = () => {
     navigation.navigate('Posting');
   };
 
@@ -230,8 +236,8 @@ const Profile = () => {
           </ProfileSection>
           <BodySection>
             <BodyTopWrapper>
-              <BodyTitle>Time Record ( {3} )</BodyTitle>
-              <AddButton onPress={() => gotoPostView()}>
+              <BodyTitle>Time Record ( {postData.length} )</BodyTitle>
+              <AddButton onPress={() => gotoTimePostView()}>
                 <IonIcon name="add" size={24} color="black" />
               </AddButton>
             </BodyTopWrapper>
@@ -241,20 +247,27 @@ const Profile = () => {
               nestedScrollEnabled
               style={{marginBottom: 10}}
               renderItem={({item}) => (
-                <View style={{flex: 1}}>
+                <View style={{flex: 1, marginBottom: 8}}>
                   <CellContainer
+                    style={{
+                      shadowColor: 'black',
+                      shadowOpacity: 0.1,
+                      shadowRadius: 2,
+                      shadowOffset: {width: 2, height: 2},
+                    }}
                     activeOpacity={0.6}
                     onPress={() =>
                       navigation.navigate('PostDetail', {
                         image: item.image,
                         body: item.body,
                         userName: getName,
+                        created: item.created,
                       })
                     }>
                     <PostImage source={{uri: item.image}} />
                     <PostedWrapper>
                       <PostText>{item.body}</PostText>
-                      <PostedTime>2022.02.22</PostedTime>
+                      <PostedTime>{item.created}</PostedTime>
                     </PostedWrapper>
                   </CellContainer>
                 </View>
@@ -266,6 +279,9 @@ const Profile = () => {
           <BottomSection>
             <BodyTopWrapper>
               <BodyTitle>Place Record ( {0} )</BodyTitle>
+              <AddButton onPress={() => gotoSpacePostView()}>
+                <IonIcon name="add" size={24} color="black" />
+              </AddButton>
             </BodyTopWrapper>
             <BodyLine />
             <View
@@ -291,7 +307,7 @@ const CellContainer = styled.TouchableOpacity`
   align-self: center;
   margin-left: 12px;
   margin-right: 12px;
-  margin-top: 12px;
+  margin-top: 4px;
   margin-bottom: -6px;
   height: 100px;
   border-radius: 8px;

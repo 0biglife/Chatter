@@ -38,6 +38,7 @@ export type ProfileStackParamList = {
     userName: string;
     body: string;
     image: string;
+    created: string;
   };
   PostModify: {
     body: string;
@@ -65,4 +66,11 @@ export type FBPost = {
   userId: string;
   image: string;
   body: string;
+  created: string;
+};
+
+export type PostState = {
+  body: string;
+  postImg: string;
+  postTime: string;
 };

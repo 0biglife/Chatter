@@ -61,14 +61,6 @@ type UserData = {
   user_profile: string;
 };
 
-export type FBPost = {
-  id: string;
-  userId: string;
-  image: string;
-  body: string;
-  created: string;
-};
-
 export type PostState = {
   body: string;
   postImg: string;

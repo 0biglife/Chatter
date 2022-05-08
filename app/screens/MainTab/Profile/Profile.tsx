@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
@@ -17,7 +18,7 @@ import {useAppDispatch} from '../../../redux/store';
 import userSlice from '../../../redux/slices/user';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {FBPost, ProfileStackParamList} from '../../../navigations/Types';
+import {PostState, ProfileStackParamList} from '../../../navigations/Types';
 import HalfModal from '../../../components/HalfModal';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../redux/store/reducers';
@@ -35,8 +36,10 @@ const Profile = () => {
   const [image, setImage] = useState<{uri: string}>();
   const dispatch = useAppDispatch();
   //Firebase
-  const FBStore = firestore();
-  const [myPost, setMyPost] = useState<FBPost[]>();
+  const [post, setPost] = useState<PostState[]>();
+  const [postBody, setPostBody] = useState<string>('');
+  const [postImage, setPostImage] = useState<string>('');
+  const [postTime_, setPostTime_] = useState<string>('');
   //Modal Control
   const [showHalfModal, setShowHalfModal] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
@@ -46,70 +49,28 @@ const Profile = () => {
   useEffect(() => {
     const getPostData = async () => {
       try {
-        const response = await FBStore.collection('user')
-          .doc('1')
-          .collection('post')
-          .orderBy('created', 'desc')
-          .get();
-        setMyPost(
-          response.docs.map(doc => ({
-            ...doc.data(),
-            id: doc.id,
-          })),
-        );
-        const imageResponse = await FBStore.collection('user').doc('1').get();
-        setImage(imageResponse._data.image);
-        console.log('Profile/getPostData Success: ', imageResponse);
+        const list: PostState[] = [];
+        await firestore()
+          .collection('posts')
+          .orderBy('postTime', 'desc')
+          .get()
+          .then(querySnapShot => {
+            querySnapShot.forEach(doc => {
+              const {body, postImg} = doc.data();
+              list.push({
+                body,
+                postImg,
+              });
+            });
+          });
+        setPost(list);
+        console.log('test : ', post);
       } catch (e) {
         console.log('Profile/getPostData Error : ', e);
       }
     };
     getPostData();
   }, []);
-
-  //ImageData
-  const onResponse = useCallback(async response => {
-    setImage({
-      uri: `data:${response.mime};base64,${response.data}`,
-    });
-    return ImageResizer.createResizedImage(
-      response.path,
-      600,
-      600,
-      response.mime.includes('jpeg') ? 'JPEG' : 'PNG',
-      100,
-      0, //이 자리는 rotation 값(orientation을 이용해 추후 코딩)
-      // orientation === 3 ? -90 ~ // 3일 때 90도 돌려라 라는 방식 등등
-    ).then(r => {
-      console.log(r.uri, r.name);
-      setShowImageModal(false);
-      setImageFormData({
-        uri: r.uri,
-        name: r.name,
-        type: response.mime,
-      });
-    });
-  }, []);
-
-  const onTakePhoto = useCallback(() => {
-    return ImagePicker.openCamera({
-      includeBase64: true,
-      includeExif: true,
-      saveToPhotos: true,
-    })
-      .then(onResponse)
-      .catch(console.log);
-  }, [onResponse]);
-
-  const onChangeFile = useCallback(() => {
-    return ImagePicker.openPicker({
-      includeExif: true, //카메라 가로/세로 대응
-      includeBase64: true, //미리보기 띄우기 가능
-      mediaType: 'photo',
-    })
-      .then(onResponse)
-      .catch(console.log);
-  }, [onResponse]);
 
   //sharing function
   const CustomShare = async () => {
@@ -140,42 +101,6 @@ const Profile = () => {
       name: getName,
       image: getImage,
     });
-  };
-
-  const EditStart = () => {
-    setName('');
-    setShowEditModal(true);
-  };
-
-  const EditDone = () => {
-    if (name || image) {
-      dispatch(
-        userSlice.actions.setUser({
-          profileImage: image,
-        }),
-      );
-      setShowEditModal(false);
-    } else {
-      Alert.alert('닉네임을 입력해주세요');
-    }
-  };
-
-  const EditCancel = () => {
-    if (name) {
-      Alert.alert('취소하시겠습니까?', '입력된 정보는 사라집니다', [
-        {
-          text: '예',
-          onPress: () => {
-            setShowEditModal(false);
-          },
-        },
-        {
-          text: '아니요',
-        },
-      ]);
-    } else {
-      setShowEditModal(false);
-    }
   };
 
   const gotoSetting = () => {
@@ -243,7 +168,7 @@ const Profile = () => {
             </BodyTopWrapper>
             <BodyLine />
             <FlatList
-              data={myPost}
+              data={post}
               nestedScrollEnabled
               style={{marginBottom: 10}}
               renderItem={({item}) => (
@@ -264,10 +189,10 @@ const Profile = () => {
                         created: item.created,
                       })
                     }>
-                    <PostImage source={{uri: item.image}} />
+                    <PostImage source={{uri: item.postImg}} />
                     <PostedWrapper>
                       <PostText>{item.body}</PostText>
-                      <PostedTime>{item.created}</PostedTime>
+                      <PostedTime>{item.postTime}</PostedTime>
                     </PostedWrapper>
                   </CellContainer>
                 </View>
@@ -279,9 +204,9 @@ const Profile = () => {
           <BottomSection>
             <BodyTopWrapper>
               <BodyTitle>Place Record ( {0} )</BodyTitle>
-              <AddButton onPress={() => gotoSpacePostView()}>
+              {/* <AddButton onPress={() => gotoSpacePostView()}>
                 <IonIcon name="add" size={24} color="black" />
-              </AddButton>
+              </AddButton> */}
             </BodyTopWrapper>
             <BodyLine />
             <View
@@ -356,7 +281,7 @@ const LockedIcon = styled.TouchableOpacity`
 
 const BottomSection = styled.View`
   width: 90%;
-  height: 200px;
+  height: 250px;
   flex: 1;
   background-color: white;
   margin-bottom: 20px;

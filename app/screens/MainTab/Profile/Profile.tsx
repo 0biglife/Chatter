@@ -7,70 +7,70 @@ import {Alert, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-virtualized-view';
 import Share from 'react-native-share';
 
-//Image Picker & Image Resizer
-import ImagePicker from 'react-native-image-crop-picker';
-import ImageResizer from 'react-native-image-resizer';
-
 //Firebase
 import firestore from '@react-native-firebase/firestore';
 
-import {useAppDispatch} from '../../../redux/store';
-import userSlice from '../../../redux/slices/user';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {PostState, ProfileStackParamList} from '../../../navigations/Types';
 import HalfModal from '../../../components/HalfModal';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../redux/store/reducers';
-import {postData} from '../../../apis/sampleData/postData';
 
 const Profile = () => {
   const navigation =
     useNavigation<
       NativeStackNavigationProp<ProfileStackParamList, 'Profile'>
     >();
-  const [showImageModal, setShowImageModal] = useState<boolean>(false);
-  const [name, setName] = useState<string>('');
-  const [imageFormdata, setImageFormData] =
-    useState<{uri: string; name: string; type: string}>();
   const [image, setImage] = useState<{uri: string}>();
-  const dispatch = useAppDispatch();
   //Firebase
   const [post, setPost] = useState<PostState[]>();
-  const [postBody, setPostBody] = useState<string>('');
-  const [postImage, setPostImage] = useState<string>('');
-  const [postTime_, setPostTime_] = useState<string>('');
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   //Modal Control
   const [showHalfModal, setShowHalfModal] = useState<boolean>(false);
-  const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const getImage = useSelector((state: RootState) => state.user.profileImage);
   const getName = useSelector((state: RootState) => state.user.name);
 
-  useEffect(() => {
-    const getPostData = async () => {
-      try {
-        const list: PostState[] = [];
-        await firestore()
-          .collection('posts')
-          .orderBy('postTime', 'desc')
-          .get()
-          .then(querySnapShot => {
-            querySnapShot.forEach(doc => {
-              const {body, postImg} = doc.data();
-              list.push({
-                body,
-                postImg,
-              });
+  const getPostData = async () => {
+    try {
+      const list: PostState[] = [];
+      await firestore()
+        .collection('posts')
+        .orderBy('postTime', 'desc')
+        .get()
+        .then(querySnapShot => {
+          querySnapShot.forEach(doc => {
+            const {body, postImg, postTime} = doc.data();
+            list.push({
+              id: doc.id,
+              body,
+              postImg,
+              postTime,
             });
           });
-        setPost(list);
-        console.log('test : ', post);
-      } catch (e) {
-        console.log('Profile/getPostData Error : ', e);
-      }
-    };
+        });
+      setPost(list);
+    } catch (e) {
+      console.log('Profile/getPostData Error : ', e);
+    }
+  };
+
+  const getProfile = async () => {
+    try {
+      const response = await firestore().collection('profile').get();
+      setImage(response.docs[0]._data.profileImg);
+      // console.log('ss : ', response.docs[0]._data.profileImg);
+    } catch (e) {
+      console.log('Profile/getProfile Error : ', e);
+    }
+  };
+
+  useEffect(() => {
     getPostData();
-  }, []);
+    getProfile();
+  }, [firestore]);
+
+  useEffect(() => {}, []);
 
   //sharing function
   const CustomShare = async () => {
@@ -79,7 +79,6 @@ const Profile = () => {
     };
     try {
       const shareResponse = await Share.open(shareOptions);
-      console.log(JSON.stringify(shareResponse));
     } catch (e) {
       console.log('Share Error : ', e);
     } finally {
@@ -107,6 +106,18 @@ const Profile = () => {
     navigation.navigate('Setting');
     setShowHalfModal(false);
   };
+
+  const wait = (timeout: number) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  };
+
+  const refreshing = async () => {
+    setIsRefreshing(true);
+    wait(1400).then(() => setIsRefreshing(false));
+    await getPostData();
+    console.log('test');
+  };
+
   return (
     <SafeContainer>
       <ScrollView nestedScrollEnabled>
@@ -143,7 +154,13 @@ const Profile = () => {
                 shadowRadius: 10,
                 shadowOffset: {width: 2, height: 2},
               }}>
-              <ProfileImage source={{uri: image}} />
+              <ProfileImage
+                source={{
+                  uri: image
+                    ? image
+                    : require('../../../assets/profileDefault.jpeg'),
+                }}
+              />
               <ProfileName>{getName}</ProfileName>
             </ProfileView>
             <IntroText>0 year-old hambie</IntroText>
@@ -161,7 +178,7 @@ const Profile = () => {
           </ProfileSection>
           <BodySection>
             <BodyTopWrapper>
-              <BodyTitle>Time Record ( {postData.length} )</BodyTitle>
+              <BodyTitle>Time Record ( {post?.length} )</BodyTitle>
               <AddButton onPress={() => gotoTimePostView()}>
                 <IonIcon name="add" size={24} color="black" />
               </AddButton>
@@ -183,10 +200,11 @@ const Profile = () => {
                     activeOpacity={0.6}
                     onPress={() =>
                       navigation.navigate('PostDetail', {
-                        image: item.image,
+                        id: item.id,
+                        image: item.postImg,
                         body: item.body,
                         userName: getName,
-                        created: item.created,
+                        postTime: item.postTime,
                       })
                     }>
                     <PostImage source={{uri: item.postImg}} />
@@ -199,6 +217,8 @@ const Profile = () => {
               )}
               keyExtractor={item => item.id}
               showsVerticalScrollIndicator={false}
+              onRefresh={() => refreshing()}
+              refreshing={isRefreshing}
             />
           </BodySection>
           <BottomSection>

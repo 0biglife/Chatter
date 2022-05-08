@@ -35,10 +35,11 @@ export type ProfileStackParamList = {
   };
   Posting: undefined;
   PostDetail: {
+    id: string;
     userName: string;
     body: string;
     image: string;
-    created: string;
+    postTime: string;
   };
   PostModify: {
     body: string;
@@ -62,6 +63,7 @@ type UserData = {
 };
 
 export type PostState = {
+  id: string;
   body: string;
   postImg: string;
   postTime: string;

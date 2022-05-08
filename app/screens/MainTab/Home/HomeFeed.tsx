@@ -25,7 +25,7 @@ export const SearchBar = styled.TextInput`
   margin-bottom: 8px;
   border-color: lightgray;
   border-width: 1px;
-  font-size: 16px;
+  font-sze: 16px;
   color: black;
 `;
 
@@ -112,7 +112,6 @@ const HomeFeed = () => {
           client_id: `${Config.UNSPLASH_ACCESSTOKEN}`,
         },
       });
-      console.log('HomeFeed/getUser Succeed : ', response.data);
       setData(response.data);
     } catch (e) {
       console.log('HomeFeed/getUser Error : ', e);

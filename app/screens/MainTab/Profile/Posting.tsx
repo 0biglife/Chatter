@@ -8,11 +8,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import firestore, {firebase} from '@react-native-firebase/firestore';
+import {firebase} from '@react-native-firebase/firestore';
 import {useNavigation} from '@react-navigation/native';
 import ImageResizer from 'react-native-image-resizer';
 import ImagePicker from 'react-native-image-crop-picker';
 import storage from '@react-native-firebase/storage';
+import {useAppDispatch} from '../../../redux/store';
+import userSlice from '../../../redux/slices/user';
 
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
@@ -67,6 +69,7 @@ const PostBody = styled.TextInput`
 
 const Posting = () => {
   const navigation = useNavigation();
+  const dispatch = useAppDispatch();
   //Data Upload
   const [image, setImage] = useState<string>('');
   const [uploading, setUploading] = useState<boolean>(false);
@@ -88,7 +91,6 @@ const Posting = () => {
       //for Firebase Storage
       const imageUri = Platform.OS === 'ios' ? r.uri : r.path;
       setImage(imageUri);
-      console.log('upload Image : ', image);
 
       //만약 서버에 요청하는 로직이라면 이런 식으로 감싸서 post 요청해야함
       /*
@@ -148,8 +150,8 @@ const Posting = () => {
 
   const postDone = async () => {
     const imageUrl = await uploadImage();
-    console.log('postDone Image Url : ', imageUrl);
-    console.log('postDone Postbody : ', postText);
+    const date = new Date();
+    const dateStr = `${date.getFullYear()}.${date.getMonth()}.${date.getDay()}`;
 
     firebase
       .firestore()
@@ -157,10 +159,9 @@ const Posting = () => {
       .add({
         body: postText,
         postImg: imageUrl,
-        postTime: firestore.Timestamp.fromDate(new Date()),
+        postTime: dateStr,
       })
       .then(res => {
-        console.log('postDone firestore Done ! : ', res);
         Alert.alert('알림', '게시글이 등록되었습니다');
         setPostText('');
         navigation.goBack();
@@ -172,7 +173,6 @@ const Posting = () => {
 
   const uploadImage = async () => {
     let fileName = image.substring(image.lastIndexOf('/') + 1);
-    console.log('Substirng - filename: ', fileName);
 
     //파일명 오버라이딩을 위한 Date 문자열 추가
     const extension = fileName.split('.').pop();
@@ -188,9 +188,9 @@ const Posting = () => {
     const task = storageRef.putFile(image);
 
     task.on('state_changed', taskSnapshot => {
-      console.log(
-        `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
-      );
+      // console.log(
+      //   `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
+      // );
 
       setTranferred(
         Math.round(
@@ -230,13 +230,15 @@ const Posting = () => {
         </TouchableOpacity>
       </HeaderSection>
       <ImageView onPress={onChangeFile}>
-        <PostImage
-          source={{
-            uri: image
-              ? image
-              : 'https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg',
-          }}
-        />
+        {image ? (
+          <PostImage source={{uri: image}} />
+        ) : (
+          <PostImage
+            source={{
+              uri: 'https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg',
+            }}
+          />
+        )}
       </ImageView>
       <PostBody
         value={postText}

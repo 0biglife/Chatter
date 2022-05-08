@@ -1,7 +1,7 @@
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
-import {Alert, Image, View} from 'react-native';
+import {Alert, Image, Share, View} from 'react-native';
 import styled from 'styled-components/native';
 import {ProfileStackParamList} from '../../../navigations/Types';
 import IonIcon from 'react-native-vector-icons/Ionicons';
@@ -83,19 +83,19 @@ const TimeText = styled.Text`
 `;
 
 interface PostDetailProps {
+  id: string;
   body: string;
   image: string;
   userName: string;
 }
 
-const PostDetail: React.FC<PostDetailProps> = () => {
+const PostDetail = () => {
   const route = useRoute<RouteProp<ProfileStackParamList, 'PostDetail'>>();
   const navigation =
     useNavigation<
       NativeStackNavigationProp<ProfileStackParamList, 'PostDetail'>
     >();
   const [showModal, setShowModal] = useState<boolean>(false);
-  const FBStore = firestore().collection('user').doc('1').collection('post');
 
   const modify = () => {
     navigation.navigate('PostModify', {
@@ -106,26 +106,26 @@ const PostDetail: React.FC<PostDetailProps> = () => {
   };
 
   const remove = () => {
-    FBStore.doc('iaON8v7jv04Lns8ZYYVX').delete();
-    Alert.alert('기록이 삭제되었습니다.');
+    firestore().collection('posts').doc(route.params.id).delete();
+
+    Alert.alert('알림',  '기록이 삭제되었습니다.');
     setShowModal(false);
     navigation.navigate('Profile');
   };
 
   const share = async () => {
-    setShowModal(false);
+    // setShowModal(false);
 
-    Alert.alert('share');
-    // const shareOptions = {
-    //   message: 'test for sharing function',
-    // };
+    const shareOptions = {
+      message: 'test for sharing function',
+    };
 
-    // try {
-    //   const shareResponse = await Share.open(shareOptions);
-    //   console.log(JSON.stringify(shareResponse));
-    // } catch (e) {
-    //   console.log('Share Error : ', e);
-    // }
+    try {
+      const shareResponse = await Share.open(shareOptions);
+      console.log(JSON.stringify(shareResponse));
+    } catch (e) {
+      console.log('Share Error : ', e);
+    }
   };
 
   return (
@@ -156,15 +156,20 @@ const PostDetail: React.FC<PostDetailProps> = () => {
           thirdTapped={share}
         />
       </HeaderSection>
-      {/* <Image
-        style={{width: '100%', height: 300}}
+      <Image
+        style={{
+          width: '97%',
+          height: 300,
+          alignSelf: 'center',
+          borderRadius: 10,
+        }}
         source={{uri: route.params.image}}
-      /> */}
+      />
       <BodySection>
         <BodyText>{route.params.body}</BodyText>
       </BodySection>
       <BottomSection>
-        <TimeText>{route.params.created}</TimeText>
+        <TimeText>{route.params.postTime}</TimeText>
       </BottomSection>
     </MainContainer>
   );

@@ -14,7 +14,6 @@ import ImageResizer from 'react-native-image-resizer';
 import ImagePicker from 'react-native-image-crop-picker';
 import storage from '@react-native-firebase/storage';
 import {useAppDispatch} from '../../../redux/store';
-import userSlice from '../../../redux/slices/user';
 
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;

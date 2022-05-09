@@ -12,24 +12,26 @@ import firestore from '@react-native-firebase/firestore';
 
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {PostState, ProfileStackParamList} from '../../../navigations/Types';
+import {
+  PostState,
+  ProfileStackParamList,
+  ProfileState,
+} from '../../../navigations/Types';
 import HalfModal from '../../../components/HalfModal';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../../redux/store/reducers';
 
 const Profile = () => {
   const navigation =
     useNavigation<
       NativeStackNavigationProp<ProfileStackParamList, 'Profile'>
     >();
-  const [image, setImage] = useState<{uri: string}>();
   //Firebase
   const [post, setPost] = useState<PostState[]>();
+  const [user, setUser] = useState<ProfileState>();
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   //Modal Control
   const [showHalfModal, setShowHalfModal] = useState<boolean>(false);
-  const getImage = useSelector((state: RootState) => state.user.profileImage);
-  const getName = useSelector((state: RootState) => state.user.name);
+  // const getImage = useSelector((state: RootState) => state.user.profileImage);
+  // const getName = useSelector((state: RootState) => state.user.name);
 
   const getPostData = async () => {
     try {
@@ -57,9 +59,24 @@ const Profile = () => {
 
   const getProfile = async () => {
     try {
-      const response = await firestore().collection('profile').get();
-      setImage(response.docs[0]._data.profileImg);
-      // console.log('ss : ', response.docs[0]._data.profileImg);
+      await firestore()
+        .collection('profile')
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.docs.map(doc => {
+            const {email, userName, profileImg} = doc.data();
+            if (doc.exists) {
+              setUser({
+                email: email,
+                userName: userName,
+                profileImage: profileImg,
+              });
+            } else {
+              console.log('no data exist !');
+            }
+          });
+        });
+      console.log('userInfo test : ', user);
     } catch (e) {
       console.log('Profile/getProfile Error : ', e);
     }
@@ -68,7 +85,7 @@ const Profile = () => {
   useEffect(() => {
     getPostData();
     getProfile();
-  }, [firestore]);
+  }, []);
 
   useEffect(() => {}, []);
 
@@ -97,8 +114,8 @@ const Profile = () => {
   const gotoEditModal = () => {
     setShowHalfModal(false);
     navigation.navigate('EditView', {
-      name: getName,
-      image: getImage,
+      name: user!.userName,
+      image: user!.profileImage,
     });
   };
 
@@ -156,12 +173,12 @@ const Profile = () => {
               }}>
               <ProfileImage
                 source={{
-                  uri: image
-                    ? image
+                  uri: user?.profileImage
+                    ? user?.profileImage
                     : require('../../../assets/profileDefault.jpeg'),
                 }}
               />
-              <ProfileName>{getName}</ProfileName>
+              <ProfileName>{user?.userName}</ProfileName>
             </ProfileView>
             <IntroText>0 year-old hambie</IntroText>
             <InfoSection>
@@ -203,7 +220,7 @@ const Profile = () => {
                         id: item.id,
                         image: item.postImg,
                         body: item.body,
-                        userName: getName,
+                        userName: user!.userName,
                         postTime: item.postTime,
                       })
                     }>

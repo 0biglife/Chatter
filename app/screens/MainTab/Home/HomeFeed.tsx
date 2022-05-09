@@ -25,7 +25,7 @@ export const SearchBar = styled.TextInput`
   margin-bottom: 8px;
   border-color: lightgray;
   border-width: 1px;
-  font-sze: 16px;
+  font-size: 16px;
   color: black;
 `;
 

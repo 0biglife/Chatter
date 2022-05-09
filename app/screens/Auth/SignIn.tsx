@@ -219,7 +219,7 @@ const SignIn: React.FC<LogInProps> = ({navigation}) => {
       setLoading(false);
     }
 
-    //Firebase 로그인 구현
+    //Firebase 로그인
     /* try {
       setLoading(true);
       const response = await axios.post(

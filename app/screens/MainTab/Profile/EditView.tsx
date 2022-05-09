@@ -1,9 +1,20 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import styled from 'styled-components/native';
-import {Dimensions, TouchableOpacity} from 'react-native';
+import {
+  Alert,
+  Dimensions,
+  Platform,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {ProfileStackParamList} from '../../../navigations/Types';
+import ImageResizer from 'react-native-image-resizer';
+import ImagePicker from 'react-native-image-crop-picker';
+import storage from '@react-native-firebase/storage';
+import {firebase} from '@react-native-firebase/firestore';
 
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
@@ -106,50 +117,197 @@ interface EditProps {
   image: string;
 }
 
-const EditView = () => {
-  const route = useRoute<RouteProp<ProfileStackParamList>>();
+const EditView: React.FC<EditProps> = () => {
+  const route = useRoute<RouteProp<ProfileStackParamList, 'EditView'>>();
   const navigation =
     useNavigation<
       NativeStackNavigationProp<ProfileStackParamList, 'EditView'>
     >();
+  const [image, setImage] = useState<string>('');
+  const [uploading, setUploading] = useState<boolean>(false);
+  const [transferred, setTranferred] = useState<number>(0);
+  const [postText, setPostText] = useState<string>('');
+
+  const onResponse = useCallback(async response => {
+    return ImageResizer.createResizedImage(
+      response.path,
+      600,
+      600,
+      response.mime.includes('jpeg') ? 'JPEG' : 'PNG',
+      100,
+      0,
+    ).then(r => {
+      //for Firebase Storage
+      const imageUri = Platform.OS === 'ios' ? r.uri : r.path;
+      setImage(imageUri);
+    });
+  }, []);
+
+  const onTakePhoto = useCallback(() => {
+    // eslint-disable-next-line no-undef
+    return ImagePicker.openCamera({
+      includeBase64: true,
+      includeExif: true,
+      saveToPhotos: true,
+    })
+      .then(onResponse)
+      .catch(console.log);
+  }, [onResponse]);
+
+  const onChangeFile = useCallback(() => {
+    return ImagePicker.openPicker({
+      includeExif: true, //카메라 가로/세로 대응
+      includeBase64: true, //미리보기 띄우기 가능
+      mediaType: 'photo',
+    })
+      .then(onResponse)
+      .catch(console.log);
+  }, [onResponse]);
+
+  const cancel = () => {
+    if (image || postText) {
+      Alert.alert('알림', '작업을 취소하시겠습니까?', [
+        {
+          text: '아니오',
+        },
+        {
+          text: '예',
+          onPress: () => navigation.goBack(),
+        },
+      ]);
+    } else {
+      navigation.goBack();
+    }
+  };
+
+  const editDone = async () => {
+    const imageUrl = await uploadImage();
+
+    if (image || postText) {
+      Alert.alert('알림', '수정 완료하시겠습니까?', [
+        {
+          text: '아니오',
+        },
+        {
+          text: '예',
+          onPress: () => {
+            firebase
+              .firestore()
+              .collection('profile')
+              .doc('BEQmxPe4XeZ1BE2iQFJC')
+              .update({
+                userName: postText ? postText : route.params.name,
+                profileImg: imageUrl ? imageUrl : route.params.image,
+              })
+              .then(res => {
+                Alert.alert('알림', '프로필이 수정되었습니다');
+                setPostText('');
+                navigation.goBack();
+              })
+              .catch(e => {
+                console.log('postDone Error : ', e);
+              });
+          },
+        },
+      ]);
+    } else {
+      navigation.goBack();
+    }
+  };
+
+  const uploadImage = async () => {
+    let fileName = image.substring(image.lastIndexOf('/') + 1);
+
+    const extension = fileName.split('.').pop();
+    const name = fileName.split('.').slice(0, -1).join('.');
+    fileName = name + Date.now() + '.' + extension;
+
+    setUploading(true);
+    setTranferred(0);
+
+    const storageRef = storage().ref(`photos/${fileName}`);
+    const task = storageRef.putFile(image);
+
+    task.on('state_changed', taskSnapshot => {
+      setTranferred(
+        Math.round(
+          (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100,
+        ),
+      );
+    });
+
+    try {
+      await task;
+      const url = await storageRef.getDownloadURL();
+      setUploading(false);
+      setImage('');
+
+      return url;
+    } catch (e) {
+      console.log('UploadImage Error : ', e);
+      return null;
+    }
+  };
+
   return (
     <MainContainer>
       <HeaderSection>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => cancel()}>
           <HeaderText>취소</HeaderText>
         </TouchableOpacity>
         <HeaderText style={{fontWeight: '600', fontSize: 17}}>
           프로필 편집
         </HeaderText>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => editDone()}>
           <HeaderText>완료</HeaderText>
         </TouchableOpacity>
       </HeaderSection>
       <ImageSection>
-        <ImageView>
-          {/* <ProfileImage source={{uri: route.params?.image}} /> */}
-          <ProfileImage
-            source={{
-              uri: 'http://www.nbnnews.co.kr/news/photo/202106/506788_549628_956.jpg',
-            }}
-          />
+        <ImageView onPress={onChangeFile}>
+          {image ? (
+            <ProfileImage source={{uri: image}} />
+          ) : (
+            <ProfileImage
+              source={{
+                uri: route.params.image,
+              }}
+            />
+          )}
         </ImageView>
       </ImageSection>
       <BodySection>
         <TextWrqapper>
           <TitleView>
-            <Title>이름</Title>
+            <Title>닉네임</Title>
           </TitleView>
           <InputView>
             <Input
-              placeholder={route.params?.name}
+              placeholder={route.params.name}
               style={{
                 fontWeight: '400',
               }}
+              value={postText}
+              onChangeText={(text: string) => {
+                setPostText(text);
+              }}
+              autoCapitalize="none"
+              autoCompleteType="off"
+              autoCorrect={false}
             />
           </InputView>
         </TextWrqapper>
       </BodySection>
+      {uploading ? (
+        <View
+          style={{
+            alignSelf: 'center',
+            justifyContent: 'flex-end',
+            margin: 20,
+            height: 40,
+          }}>
+          <Text>{transferred} % Completed</Text>
+        </View>
+      ) : null}
     </MainContainer>
   );
 };

@@ -68,3 +68,9 @@ export type PostState = {
   postImg: string;
   postTime: string;
 };
+
+export type ProfileState = {
+  email: string;
+  userName: string;
+  profileImage: string;
+};

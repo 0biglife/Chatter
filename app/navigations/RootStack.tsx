@@ -140,7 +140,6 @@ const RootStack = () => {
         }
       } finally {
         //로그인 화면 가려주기 위해 splash-screen을 넣을건데 여기서 제거 흐름
-        // TODO : 스플래시 스크린 없애기
       }
     };
     //useEffect는 async 불가기 때문에 별개 함수로 선언하고 호출하는 방식으로 구현
@@ -269,9 +268,7 @@ const RootStack = () => {
           } else if (route.name === 'ProfileStack') {
             iconName = focused ? 'person' : 'person-outline';
           }
-          return (
-            <IonIcon name={iconName.toString()} size={size} color={color} />
-          );
+          return <IonIcon name={iconName} size={size} color={color} />;
         },
       })}>
       <Tab.Screen

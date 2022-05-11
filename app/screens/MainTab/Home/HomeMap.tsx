@@ -154,8 +154,7 @@ const HomeMap = () => {
   const [myWeather, setMyWeather] = useState<string>('');
   const [iconName, setIconName] = useState<string>('');
 
-  //현위치(서울특별시 중구) 날씨 정보 지정
-  useEffect(() => {
+  const getMyPosition = () => {
     Geolocation.getCurrentPosition(
       info => {
         setMyPosition({
@@ -170,35 +169,41 @@ const HomeMap = () => {
         distanceFilter: 400,
       },
     );
-    const getWeather = async () => {
-      try {
-        const response = await weatherClient.get(
-          `/weather?lat=${myPosition?.latitude}&lon=${myPosition?.longitude}&appid=${Config.WEATHER_APIKEY}`,
-        );
-        setWeatherData(response.data);
-        setMyWeather(response.data.weather[0].main);
-        var date = new Date(weatherData!.sys.sunset * 1000);
-        var hours = date.getHours();
-        var minutes = date.getMinutes();
-        setHour(hours);
-        setMinute(minutes);
-        if (myWeather === 'Clouds') {
-          setIconName('cloudy-outline');
-        } else if (myWeather === 'Mist') {
-          setIconName('filter');
-        } else if (myWeather === 'Rain') {
-          setIconName('rainy-outline');
-        } else if (myWeather === 'Clear') {
-          setIconName('sunny-outline');
-        }
-        // else {
-        //   // <ActivityIndicator />;
-        // }
-        // getAreaWeather();
-      } catch (e) {
-        console.log('Weather API error : ', e);
+  };
+
+  const getWeather = async () => {
+    try {
+      const response = await weatherClient.get(
+        `/weather?lat=${myPosition?.latitude}&lon=${myPosition?.longitude}&appid=${Config.WEATHER_APIKEY}`,
+      );
+      setWeatherData(response.data);
+      setMyWeather(response.data.weather[0].main);
+      var date = new Date(weatherData!.sys.sunset * 1000);
+      var hours = date.getHours();
+      var minutes = date.getMinutes();
+      setHour(hours);
+      setMinute(minutes);
+      if (myWeather === 'Clouds') {
+        setIconName('cloudy-outline');
+      } else if (myWeather === 'Mist') {
+        setIconName('filter');
+      } else if (myWeather === 'Rain') {
+        setIconName('rainy-outline');
+      } else if (myWeather === 'Clear') {
+        setIconName('sunny-outline');
       }
-    };
+      // else {
+      //   // <ActivityIndicator />;
+      // }
+      // getAreaWeather();
+    } catch (e) {
+      console.log('Weather API error : ', e);
+    }
+  };
+
+  //현위치(서울특별시 중구) 날씨 정보 지정
+  useEffect(() => {
+    getMyPosition();
     getWeather();
   }, [
     myPosition?.latitude,

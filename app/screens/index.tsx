@@ -2,7 +2,6 @@ import SignIn from './Auth/SignIn';
 import SignUp from './Auth/SignUp';
 import Permission from './Auth/Permission';
 import HomeMap from './MainTab/Home/HomeMap';
-import Settings from './MainTab/Settings';
 import HomeFeed from './MainTab/Home/HomeFeed';
 import SearchResults from './MainTab/Home/SearchResults';
 import Chat from './MainTab/Chat/Chat';
@@ -30,6 +29,5 @@ export {
   PostDetail,
   PostModify,
   HomeMap,
-  Settings,
   Setting,
 };

@@ -1,12 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect, useCallback, useRef} from 'react';
-import {Alert, Image, Text, TextInput, View} from 'react-native';
+import React, {useState, useCallback, useRef} from 'react';
+import {Alert, Text, TextInput} from 'react-native';
 import styled from 'styled-components/native';
 //Social Login
-import {
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
+// import {
+//   GoogleSignin,
+//   statusCodes,
+// } from '@react-native-google-signin/google-signin';
 
 //Redux
 import DismissKeyboardView from '../../components/DismissKeyboardView';

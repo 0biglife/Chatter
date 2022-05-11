@@ -199,7 +199,7 @@ const EditView: React.FC<EditProps> = () => {
                 userName: postText ? postText : route.params.name,
                 profileImg: imageUrl ? imageUrl : route.params.image,
               })
-              .then(res => {
+              .then(() => {
                 Alert.alert('알림', '프로필이 수정되었습니다');
                 setPostText('');
                 navigation.goBack();

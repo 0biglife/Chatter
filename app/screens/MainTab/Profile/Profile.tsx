@@ -87,8 +87,6 @@ const Profile = () => {
     getProfile();
   }, []);
 
-  useEffect(() => {}, []);
-
   //sharing function
   const CustomShare = async () => {
     const shareOptions = {
@@ -184,7 +182,7 @@ const Profile = () => {
             <InfoSection>
               <TextWrapper>
                 <InnerTitle>Follower</InnerTitle>
-                <InnerSubtitle>2.7K</InnerSubtitle>
+                <InnerSubtitle>218</InnerSubtitle>
               </TextWrapper>
               <CustomLine />
               <TextWrapper>

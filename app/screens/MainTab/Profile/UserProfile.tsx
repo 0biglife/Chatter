@@ -203,11 +203,6 @@ const UserProfile: React.FC<UserProfileProps> = () => {
       headerBackTitle: '',
       headerTintColor: 'black',
       headerShadowVisible: false,
-    });
-  }, []);
-
-  useEffect(() => {
-    navigation.setOptions({
       headerTitle: route.params.user_name,
     });
   }, []);

@@ -156,15 +156,17 @@ const PostDetail = () => {
           thirdTapped={share}
         />
       </HeaderSection>
-      <Image
-        style={{
-          width: '97%',
-          height: 300,
-          alignSelf: 'center',
-          borderRadius: 10,
-        }}
-        source={{uri: route.params.image}}
-      />
+      {route.params.image && (
+        <Image
+          style={{
+            width: '97%',
+            height: 300,
+            alignSelf: 'center',
+            borderRadius: 10,
+          }}
+          source={{uri: route.params.image}}
+        />
+      )}
       <BodySection>
         <BodyText>{route.params.body}</BodyText>
       </BodySection>

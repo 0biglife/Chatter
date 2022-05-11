@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
-import {Dimensions, StatusBar} from 'react-native';
+import {Dimensions} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 import unsplashClient from '../../../apis/UnsplashAPI/unsplashClient';
@@ -71,22 +71,23 @@ const Chat = () => {
     useNavigation<NativeStackNavigationProp<ChatStackParamList>>();
   const [unsplashData, setUnsplashData] = useState<userModel>();
 
+  //unsplash api
+  const getUserData = async () => {
+    try {
+      const response = await unsplashClient.get('/photos/random', {
+        params: {
+          count: 12,
+          client_id: `${Config.UNSPLASH_ACCESSTOKEN}`,
+        },
+      });
+      setUnsplashData(response.data);
+      // console.log('CHAT API SUCCESS : ', response.data);
+    } catch (e) {
+      console.log('CHAT API FAILED : ', e);
+    }
+  };
+
   useEffect(() => {
-    //unsplash api
-    const getUserData = async () => {
-      try {
-        const response = await unsplashClient.get('/photos/random', {
-          params: {
-            count: 12,
-            client_id: `${Config.UNSPLASH_ACCESSTOKEN}`,
-          },
-        });
-        setUnsplashData(response.data);
-        // console.log('CHAT API SUCCESS : ', response.data);
-      } catch (e) {
-        console.log('CHAT API FAILED : ', e);
-      }
-    };
     getUserData();
   }, []);
 

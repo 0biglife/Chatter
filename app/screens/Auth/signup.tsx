@@ -110,7 +110,6 @@ const InformText = styled.Text`
 type SignUpProps = NativeStackScreenProps<AuthParamList, 'SignUp'>;
 
 const SignUp: React.FC<SignUpProps> = ({navigation}) => {
-  const dispatch = useAppDispatch();
   const [image, setImage] = useState<{uri: string}>();
   //Data Model
   const [email, setEmail] = useState<string>('');
@@ -293,7 +292,7 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
           <InputContainer>
             <Input
               placeholder="이메일을 입력해주세요"
-              onChangeText={text => onChangeEmail(text)}
+              onChangeText={onChangeEmail}
               importantForAutofill="yes"
               autoCompleteType="email"
               textContentType="emailAddress"
@@ -310,7 +309,7 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
           <InputContainer>
             <Input
               placeholder="실명이 아닌 닉네임을 입력해주세요"
-              onChangeText={text => onChangeName(text)}
+              onChangeText={onChangeName}
               importantForAutofill="yes"
               textContentType="name"
               value={name}
@@ -324,7 +323,7 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
           <InputContainer>
             <Input
               placeholder="비밀번호를 입력해주세요"
-              onChangeText={text => onChangePassword(text)}
+              onChangeText={onChangePassword}
               importantForAutofill="yes"
               autoCompleteType="password"
               textContentType="password"

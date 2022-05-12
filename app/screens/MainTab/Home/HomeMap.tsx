@@ -290,7 +290,7 @@ const HomeMap = () => {
           latitude: myPosition.latitude,
           longitude: myPosition.longitude,
         }}
-        nightMode={true}>
+        nightMode>
         <Marker
           coordinate={{
             latitude: myPosition.latitude,

@@ -128,15 +128,13 @@ const PostModify = () => {
       </ImageView>
       <PostBody
         value={postText}
-        onChangeText={(text: string) => {
-          setPostText(text);
-        }}
+        onChangeText={setPostText}
         placeholder={route.params?.body}
         placeholderTextColor="gray"
         autoCapitalize="none"
         autoCompleteType="off"
         autoCorrect={false}
-        multiline={true}
+        multiline
         numberOfLines={4}
       />
     </MainContainer>

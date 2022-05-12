@@ -99,7 +99,7 @@ const UserModal = (props: ModalProps) => {
       <Modal
         backdropColor="transparent"
         animationIn="fadeInUp"
-        useNativeDriver={true}
+        useNativeDriver
         isVisible={props.showModal}
         onBackdropPress={() => props.setShowModal(false)}>
         <ModalContainer>

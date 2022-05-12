@@ -269,7 +269,7 @@ const SignIn: React.FC<LogInProps> = ({navigation}) => {
           <InputContainer>
             <Input
               placeholder="이메일을 입력해주세요"
-              onChangeText={text => onChangeEmail(text)}
+              onChangeText={onChangeEmail}
               importantForAutofill="yes"
               autoCompleteType="email"
               textContentType="emailAddress"
@@ -287,7 +287,7 @@ const SignIn: React.FC<LogInProps> = ({navigation}) => {
           <InputContainer>
             <Input
               placeholder="비밀번호를 입력해주세요"
-              onChangeText={text => onChangePassword(text)}
+              onChangeText={onChangePassword}
               importantForAutofill="yes"
               autoCompleteType="password"
               textContentType="password"

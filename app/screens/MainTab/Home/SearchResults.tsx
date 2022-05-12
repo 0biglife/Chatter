@@ -118,7 +118,7 @@ const SearchResults = () => {
     <MainContainer>
       <SearchBar
         placeholder="찾고 싶은 닉네임을 입력해주세요"
-        onChangeText={(text: string) => searchData(text)}
+        onChangeText={searchData}
         autoCompleteType="off"
         autoCapitalize="none"
       />

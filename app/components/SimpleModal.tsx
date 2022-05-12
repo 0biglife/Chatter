@@ -61,7 +61,6 @@ const SimpleModal = (props: Props) => {
         isVisible={props.modalVisible}
         animationInTiming={0.1}
         animationOutTiming={0.1}
-        // hideModalContentWhileAnimating={true}
         onBackdropPress={() => props.setModalVisible(false)}>
         <ModalContainer>
           <ModalTitle>

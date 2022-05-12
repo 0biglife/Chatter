@@ -287,9 +287,7 @@ const EditView: React.FC<EditProps> = () => {
                 fontWeight: '400',
               }}
               value={postText}
-              onChangeText={(text: string) => {
-                setPostText(text);
-              }}
+              onChangeText={setPostText}
               autoCapitalize="none"
               autoCompleteType="off"
               autoCorrect={false}
@@ -297,7 +295,7 @@ const EditView: React.FC<EditProps> = () => {
           </InputView>
         </TextWrqapper>
       </BodySection>
-      {uploading ? (
+      {uploading && (
         <View
           style={{
             alignSelf: 'center',
@@ -307,7 +305,7 @@ const EditView: React.FC<EditProps> = () => {
           }}>
           <Text>{transferred} % Completed</Text>
         </View>
-      ) : null}
+      )}
     </MainContainer>
   );
 };

@@ -13,7 +13,6 @@ import {useNavigation} from '@react-navigation/native';
 import ImageResizer from 'react-native-image-resizer';
 import ImagePicker from 'react-native-image-crop-picker';
 import storage from '@react-native-firebase/storage';
-import {useAppDispatch} from '../../../redux/store';
 
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
@@ -68,7 +67,6 @@ const PostBody = styled.TextInput`
 
 const Posting = () => {
   const navigation = useNavigation();
-  const dispatch = useAppDispatch();
   //Data Upload
   const [image, setImage] = useState<string>('');
   const [uploading, setUploading] = useState<boolean>(false);
@@ -160,10 +158,10 @@ const Posting = () => {
         postImg: imageUrl,
         postTime: dateStr,
       })
-      .then(res => {
-        Alert.alert('알림', '게시글이 등록되었습니다');
+      .then(() => {
         setPostText('');
         navigation.goBack();
+        Alert.alert('알림', '게시글이 등록되었습니다');
       })
       .catch(e => {
         console.log('postDone Error : ', e);
@@ -248,10 +246,10 @@ const Posting = () => {
         autoCapitalize="none"
         autoCompleteType="off"
         autoCorrect={false}
-        multiline={true}
+        multiline
         numberOfLines={4}
       />
-      {uploading ? (
+      {uploading && (
         <View
           style={{
             alignSelf: 'center',
@@ -261,7 +259,7 @@ const Posting = () => {
           }}>
           <Text>{transferred} % Completed</Text>
         </View>
-      ) : null}
+      )}
     </MainContainer>
   );
 };

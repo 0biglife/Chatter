@@ -114,8 +114,6 @@ const PostDetail = () => {
   };
 
   const share = async () => {
-    // setShowModal(false);
-
     const shareOptions = {
       message: 'test for sharing function',
     };

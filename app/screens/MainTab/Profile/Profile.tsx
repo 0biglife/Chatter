@@ -30,9 +30,6 @@ const Profile = () => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   //Modal Control
   const [showHalfModal, setShowHalfModal] = useState<boolean>(false);
-  // const getImage = useSelector((state: RootState) => state.user.profileImage);
-  // const getName = useSelector((state: RootState) => state.user.name);
-
   const getPostData = async () => {
     try {
       const list: PostState[] = [];
@@ -239,9 +236,6 @@ const Profile = () => {
           <BottomSection>
             <BodyTopWrapper>
               <BodyTitle>Place Record ( {0} )</BodyTitle>
-              {/* <AddButton onPress={() => gotoSpacePostView()}>
-                <IonIcon name="add" size={24} color="black" />
-              </AddButton> */}
             </BodyTopWrapper>
             <BodyLine />
             <View

@@ -59,7 +59,7 @@ const HalfModal: React.FC<HalfModal> = props => {
     <Modal
       backdropOpacity={0.3}
       isVisible={props.showModal}
-      useNativeDriver={true}
+      useNativeDriver
       onBackdropPress={() => props.setShowModal(false)}
       animationIn="slideInUp"
       animationInTiming={300}

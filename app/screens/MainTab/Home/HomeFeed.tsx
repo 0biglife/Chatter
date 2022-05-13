@@ -1,14 +1,15 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import unsplashClient from '../../../apis/UnsplashAPI/unsplashClient';
-import Config from 'react-native-config';
 import {useNavigation} from '@react-navigation/native';
 import {HomeFeedStackParamList} from '../../../navigations/Types';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {ActivityIndicator} from 'react-native';
+import {useQuery} from 'react-query';
+import {getPhoto} from '../../../apis/UnsplashAPI/service';
+import {randomPhotoState} from '../../../apis/UnsplashAPI/type';
 
 const MainContainer = styled.View`
   flex: 1;
@@ -97,38 +98,55 @@ const BodyText = styled.Text`
 const HomeFeed = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<HomeFeedStackParamList>>();
-  const [data, setData] = useState();
-  const [loading, setLoading] = useState<boolean>(false);
+  const {data, isLoading} = useQuery('homePost', getPhoto);
 
-  // 1. Unsplash API 요청으로 프로필 정보, 사진 정보 가져오기
-  // 1. 2번을 배열로 넣어서 Profile, Post로 분리하여 화면에 뿌려주기
-  const getUser = async () => {
-    try {
-      setLoading(true);
-      const response = await unsplashClient.get('/photos/random', {
-        params: {
-          count: 12,
-          query: 'war',
-          client_id: `${Config.UNSPLASH_ACCESSTOKEN}`,
-        },
-      });
-      setData(response.data);
-    } catch (e) {
-      console.log('HomeFeed/getUser Error : ', e);
-    } finally {
-      setLoading(false);
-    }
-  };
+  //useQuery 적용 전 .get 호출
+  // -> useEffect, useState 생략 가능
+  // -> Auth 인증은 최적화 처리
+  // const getUser = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const response = await client.get('/photos/random', {
+  //       params: {
+  //         count: 1,
+  //         query: 'war',
+  //         client_id: `${Config.UNSPLASH_ACCESSTOKEN}`,
+  //       },
+  //     });
+  //     setData(response.data);
+  //     console.log('HomeFeed Unsplash Data : ', response.data);
+  //   } catch (e) {
+  //     console.log('HomeFeed/getUser Error : ', e);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+  // useEffect(() => {
+  //   getUser();
+  // }, []);
 
-  useEffect(() => {
-    getUser();
-  }, []);
+  if (!data) {
+    console.log('data uploading : ', isLoading);
+    return (
+      <ActivityIndicator
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignContent: 'center',
+        }}
+        size="small"
+        color="gray"
+      />
+    );
+  } else {
+    console.log('Home useQuery Data : ', data);
+  }
 
-  const renderItem = ({item}) => {
+  const renderItem = ({item}: {item: randomPhotoState}) => {
     return (
       <CellContainer
         style={{
-          height: item.user.bio ? 390 : 320,
+          height: item.user.bio === '' ? 390 : 320,
           shadowColor: 'black',
           shadowOpacity: 0.2,
           shadowRadius: 3,
@@ -140,7 +158,7 @@ const HomeFeed = () => {
             onPress={() =>
               navigation.navigate('UserProfile', {
                 id: item.id,
-                user_id: item.user.id,
+                // user_id: item.user.id,
                 user_name: item.user.name,
                 user_location: item.user.location,
                 user_profile: item.user.profile_image.large,
@@ -179,24 +197,12 @@ const HomeFeed = () => {
         size={20}
         color="black"
       />
-      {loading ? (
-        <ActivityIndicator
-          style={{
-            justifyContent: 'center',
-            alignContent: 'center',
-            marginTop: '70%',
-          }}
-          size="small"
-          color="black"
-        />
-      ) : (
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          showsVerticalScrollIndicator={false}
-        />
-      )}
+      <FlatList
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+        showsVerticalScrollIndicator={false}
+      />
     </MainContainer>
   );
 };

@@ -1,13 +1,12 @@
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import React, {useEffect, useState} from 'react';
-import {Dimensions} from 'react-native';
+import React from 'react';
+import {ActivityIndicator, Dimensions} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
-import unsplashClient from '../../../apis/UnsplashAPI/unsplashClient';
-import {userModel} from '../../../apis/sampleData/userData';
 import {ChatStackParamList} from '../../../navigations/Types';
-import Config from 'react-native-config';
+import {getUser} from '../../../apis/UnsplashAPI/service';
+import {useQuery} from 'react-query';
 
 const MainConatiner = styled.View`
   flex: 1;
@@ -69,27 +68,41 @@ const BodyText = styled.Text`
 const Chat = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<ChatStackParamList>>();
-  const [unsplashData, setUnsplashData] = useState<userModel>();
+  const {data} = useQuery('chatUser', getUser);
+
+  if (!data) {
+    return (
+      <ActivityIndicator
+        style={{
+          justifyContent: 'center',
+          alignContent: 'center',
+          marginTop: '70%',
+        }}
+        size="small"
+        color="gray"
+      />
+    );
+  }
 
   //unsplash api
-  const getUserData = async () => {
-    try {
-      const response = await unsplashClient.get('/photos/random', {
-        params: {
-          count: 12,
-          client_id: `${Config.UNSPLASH_ACCESSTOKEN}`,
-        },
-      });
-      setUnsplashData(response.data);
-      // console.log('CHAT API SUCCESS : ', response.data);
-    } catch (e) {
-      console.log('CHAT API FAILED : ', e);
-    }
-  };
+  // const getUserData = async () => {
+  //   try {
+  //     const response = await client.get('/photos/random', {
+  //       params: {
+  //         count: 12,
+  //         client_id: `${Config.UNSPLASH_ACCESSTOKEN}`,
+  //       },
+  //     });
+  //     setUnsplashData(response.data);
+  //     // console.log('CHAT API SUCCESS : ', response.data);
+  //   } catch (e) {
+  //     console.log('CHAT API FAILED : ', e);
+  //   }
+  // };
 
-  useEffect(() => {
-    getUserData();
-  }, []);
+  // useEffect(() => {
+  //   getUserData();
+  // }, []);
 
   const renderItem = ({item}) => {
     return (
@@ -104,7 +117,7 @@ const Chat = () => {
           onPress={() =>
             navigation.navigate('UserProfile', {
               id: item.id,
-              user_id: item.user.id,
+              // user_id: item.user.id,
               user_name: item.user.username,
               user_profile: item.user.profile_image.large,
               user_location: '',
@@ -116,7 +129,7 @@ const Chat = () => {
           onPress={() =>
             navigation.navigate('ChatDetail', {
               id: item.id,
-              user_id: item.user.id,
+              // user_id: item.user.id,
               user_location: item.user.location,
               user_name: item.user.username,
               user_profile: item.user.profile_image.large,
@@ -136,7 +149,7 @@ const Chat = () => {
   return (
     <MainConatiner>
       <FlatList
-        data={unsplashData}
+        data={data}
         keyExtractor={item => item.id}
         renderItem={renderItem}
         showsVerticalScrollIndicator={false}

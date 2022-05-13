@@ -3,12 +3,13 @@ import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import {SearchBar} from './HomeFeed';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import unsplashClient from '../../../apis/UnsplashAPI/unsplashClient';
-import Config from 'react-native-config';
-import {FlatList} from 'react-native';
+import {ActivityIndicator, FlatList} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {HomeFeedStackParamList} from '../../../navigations/Types';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {searchUser} from '../../../apis/UnsplashAPI/service';
+import {useQuery} from 'react-query';
+import {searchUserResults} from '../../../apis/UnsplashAPI/type';
 
 const MainContainer = styled.View`
   flex: 1;
@@ -63,11 +64,30 @@ const Location = styled.Text`
 `;
 
 const SearchResults = () => {
-  const [users, setUsers] = useState();
+  const [value, setValue] = useState<string>('');
   const navigation =
     useNavigation<NativeStackNavigationProp<HomeFeedStackParamList>>();
+  const {data, refetch} = useQuery(['searchUser', value], () =>
+    searchUser(value),
+  );
 
-  const renderItem = ({item}) => {
+  if (!data) {
+    return (
+      <ActivityIndicator
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignContent: 'center',
+        }}
+        size="small"
+        color="gray"
+      />
+    );
+  } else {
+    console.log('Search Data Succeed : ', data);
+  }
+
+  const renderItem = ({item}: {item: searchUserResults}) => {
     return (
       <CellContainer
         activeOpacity={0.4}
@@ -80,7 +100,6 @@ const SearchResults = () => {
         onPress={() =>
           navigation.navigate('UserProfile', {
             id: item.id,
-            user_id: item.user_id,
             user_name: item.name,
             user_location: item.location,
             user_profile: item.profile_image.large,
@@ -97,30 +116,34 @@ const SearchResults = () => {
     );
   };
 
-  const searchData = async (text: string) => {
-    console.log('search : ', text);
-    try {
-      const response = await unsplashClient.get('/search/users?', {
-        params: {
-          // per_page: 10,
-          query: text,
-          client_id: `${Config.UNSPLASH_ACCESSTOKEN}`,
-        },
-      });
-      console.log('SearchBar Succeed : ', response.data.results);
-      setUsers(response.data.results);
-    } catch (e) {
-      console.log('HomeFeed/SearchBar Error : ', e);
-    }
-  };
+  // const searchData = async (text: string) => {
+  //   console.log('search : ', text);
+  //   try {
+  //     const response = await client.get('/search/users?', {
+  //       params: {
+  //         // per_page: 10,
+  //         query: text,
+  //         client_id: `${Config.UNSPLASH_ACCESSTOKEN}`,
+  //       },
+  //     });
+  //     console.log('SearchBar Succeed : ', response.data.results);
+  //     setUsers(response.data.results);
+  //   } catch (e) {
+  //     console.log('HomeFeed/SearchBar Error : ', e);
+  //   }
+  // };
 
   return (
     <MainContainer>
       <SearchBar
         placeholder="찾고 싶은 닉네임을 입력해주세요"
-        onChangeText={searchData}
         autoCompleteType="off"
         autoCapitalize="none"
+        returnKeyType="search"
+        autoCorrect={false}
+        autoFocus={false}
+        onChangeText={(text: string) => setValue(text)}
+        // onSubmitEditing={onSubmit}
       />
       <IonIcon
         style={{position: 'absolute', marginTop: 11, marginLeft: 16}}
@@ -129,7 +152,7 @@ const SearchResults = () => {
         color="lightgray"
       />
       <FlatList
-        data={users}
+        data={data}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         showsVerticalScrollIndicator={false}

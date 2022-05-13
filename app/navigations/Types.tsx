@@ -55,8 +55,8 @@ export type AuthParamList = {
 };
 
 type UserData = {
-  id: number;
-  user_id: string;
+  id: string;
+  // user_id: string;
   user_name: string;
   user_location: string;
   user_profile: string;

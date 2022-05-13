@@ -1,6 +1,10 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
+import {Platform} from 'react-native';
+import ImageResizer from 'react-native-image-resizer';
+import ImagePicker from 'react-native-image-crop-picker';
 
-const ImagePicker = () => {
+const ReusableImagePicker = () => {
+  const [image, setImage] = useState<string>('');
   const onResponse = useCallback(async response => {
     return ImageResizer.createResizedImage(
       response.path,
@@ -51,4 +55,4 @@ const ImagePicker = () => {
   }, [onResponse]);
 };
 
-export default ImagePicker;
+export default ReusableImagePicker;

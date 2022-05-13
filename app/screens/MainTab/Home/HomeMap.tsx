@@ -10,7 +10,7 @@ import Config from 'react-native-config';
 import weatherClient from '../../../apis/WeatherAPI/weatherClient';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import UserModal from '../../../components/UserModal';
-import unsplashClient from '../../../apis/UnsplashAPI/unsplashClient';
+import client from '../../../apis/UnsplashAPI/client';
 import {WeatherState} from '../../../apis/WeatherAPI/weatherState';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
@@ -224,7 +224,7 @@ const HomeMap = () => {
   const getRandomImage = async () => {
     try {
       setLoading(true);
-      const response = await unsplashClient.get('/photos/random', {
+      const response = await client.get('/photos/random', {
         params: {
           count: 1,
           client_id: '3eVYYY9UEOTwk4CcDUgHt9uSSP_MJiAO3E1hcna-i1Q',
@@ -257,8 +257,8 @@ const HomeMap = () => {
   const gotoProfile = () => {
     setShowModal(false);
     navigation.navigate('UserProfile', {
-      id: 1,
-      user_id: '1',
+      id: '1',
+      // user_id: '1',
       user_location: userLoca,
       user_name: userInfo,
       user_profile: userImage,

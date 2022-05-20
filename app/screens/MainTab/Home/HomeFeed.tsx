@@ -146,7 +146,7 @@ const HomeFeed = () => {
     return (
       <CellContainer
         style={{
-          height: item.user.bio === '' ? 390 : 320,
+          height: item.user.bio ? 390 : 320,
           shadowColor: 'black',
           shadowOpacity: 0.2,
           shadowRadius: 3,
@@ -158,7 +158,6 @@ const HomeFeed = () => {
             onPress={() =>
               navigation.navigate('UserProfile', {
                 id: item.id,
-                // user_id: item.user.id,
                 user_name: item.user.name,
                 user_location: item.user.location,
                 user_profile: item.user.profile_image.large,

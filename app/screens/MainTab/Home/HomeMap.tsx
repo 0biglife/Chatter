@@ -11,7 +11,7 @@ import weatherClient from '../../../apis/WeatherAPI/weatherClient';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import UserModal from '../../../components/UserModal';
 import client from '../../../apis/UnsplashAPI/client';
-import {WeatherState} from '../../../apis/WeatherAPI/weatherState';
+import {WeatherState} from '../../../apis/WeatherAPI/type';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {HomeMapStackParamList} from '../../../navigations/Types';

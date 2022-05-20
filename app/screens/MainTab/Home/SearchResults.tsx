@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import styled from 'styled-components/native';
 import {SearchBar} from './HomeFeed';
 import IonIcon from 'react-native-vector-icons/Ionicons';
@@ -64,11 +64,11 @@ const Location = styled.Text`
 `;
 
 const SearchResults = () => {
-  const [value, setValue] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>('');
   const navigation =
     useNavigation<NativeStackNavigationProp<HomeFeedStackParamList>>();
-  const {data, refetch} = useQuery(['searchUser', value], () =>
-    searchUser(value),
+  const {data} = useQuery(['searchUser', inputValue], () =>
+    searchUser(inputValue),
   );
 
   if (!data) {
@@ -116,23 +116,6 @@ const SearchResults = () => {
     );
   };
 
-  // const searchData = async (text: string) => {
-  //   console.log('search : ', text);
-  //   try {
-  //     const response = await client.get('/search/users?', {
-  //       params: {
-  //         // per_page: 10,
-  //         query: text,
-  //         client_id: `${Config.UNSPLASH_ACCESSTOKEN}`,
-  //       },
-  //     });
-  //     console.log('SearchBar Succeed : ', response.data.results);
-  //     setUsers(response.data.results);
-  //   } catch (e) {
-  //     console.log('HomeFeed/SearchBar Error : ', e);
-  //   }
-  // };
-
   return (
     <MainContainer>
       <SearchBar
@@ -142,8 +125,8 @@ const SearchResults = () => {
         returnKeyType="search"
         autoCorrect={false}
         autoFocus={false}
-        onChangeText={(text: string) => setValue(text)}
-        // onSubmitEditing={onSubmit}
+        value={inputValue}
+        onChangeText={setInputValue}
       />
       <IonIcon
         style={{position: 'absolute', marginTop: 11, marginLeft: 16}}

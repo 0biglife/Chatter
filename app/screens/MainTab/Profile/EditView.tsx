@@ -1,20 +1,13 @@
-import React, {useCallback, useState} from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components/native';
-import {
-  Alert,
-  Dimensions,
-  Platform,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {ProfileStackParamList} from '../../../navigations/Types';
+import { Alert, Dimensions, Platform, Text, TouchableOpacity, View } from 'react-native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ProfileStackParamList } from '../../../navigations/Types';
 import ImageResizer from 'react-native-image-resizer';
 import ImagePicker from 'react-native-image-crop-picker';
 import storage from '@react-native-firebase/storage';
-import {firebase} from '@react-native-firebase/firestore';
+import { firebase } from '@react-native-firebase/firestore';
 
 const Width = Dimensions.get('window').width;
 const Height = Dimensions.get('window').height;
@@ -119,24 +112,14 @@ interface EditProps {
 
 const EditView: React.FC<EditProps> = () => {
   const route = useRoute<RouteProp<ProfileStackParamList, 'EditView'>>();
-  const navigation =
-    useNavigation<
-      NativeStackNavigationProp<ProfileStackParamList, 'EditView'>
-    >();
+  const navigation = useNavigation<NativeStackNavigationProp<ProfileStackParamList, 'EditView'>>();
   const [image, setImage] = useState<string>('');
   const [uploading, setUploading] = useState<boolean>(false);
   const [transferred, setTranferred] = useState<number>(0);
   const [postText, setPostText] = useState<string>('');
 
-  const onResponse = useCallback(async response => {
-    return ImageResizer.createResizedImage(
-      response.path,
-      600,
-      600,
-      response.mime.includes('jpeg') ? 'JPEG' : 'PNG',
-      100,
-      0,
-    ).then(r => {
+  const onResponse = useCallback(async (response) => {
+    return ImageResizer.createResizedImage(response.path, 600, 600, response.mime.includes('jpeg') ? 'JPEG' : 'PNG', 100, 0).then((r) => {
       //for Firebase Storage
       const imageUri = Platform.OS === 'ios' ? r.uri : r.path;
       setImage(imageUri);
@@ -204,7 +187,7 @@ const EditView: React.FC<EditProps> = () => {
                 setPostText('');
                 navigation.goBack();
               })
-              .catch(e => {
+              .catch((e) => {
                 console.log('postDone Error : ', e);
               });
           },
@@ -228,12 +211,8 @@ const EditView: React.FC<EditProps> = () => {
     const storageRef = storage().ref(`photos/${fileName}`);
     const task = storageRef.putFile(image);
 
-    task.on('state_changed', taskSnapshot => {
-      setTranferred(
-        Math.round(
-          (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100,
-        ),
-      );
+    task.on('state_changed', (taskSnapshot) => {
+      setTranferred(Math.round((taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100));
     });
 
     try {
@@ -255,9 +234,7 @@ const EditView: React.FC<EditProps> = () => {
         <TouchableOpacity onPress={() => cancel()}>
           <HeaderText>취소</HeaderText>
         </TouchableOpacity>
-        <HeaderText style={{fontWeight: '600', fontSize: 17}}>
-          프로필 편집
-        </HeaderText>
+        <HeaderText style={{ fontWeight: '600', fontSize: 17 }}>프로필 편집</HeaderText>
         <TouchableOpacity onPress={() => editDone()}>
           <HeaderText>완료</HeaderText>
         </TouchableOpacity>
@@ -265,7 +242,7 @@ const EditView: React.FC<EditProps> = () => {
       <ImageSection>
         <ImageView onPress={onChangeFile}>
           {image ? (
-            <ProfileImage source={{uri: image}} />
+            <ProfileImage source={{ uri: image }} />
           ) : (
             <ProfileImage
               source={{
@@ -302,7 +279,8 @@ const EditView: React.FC<EditProps> = () => {
             justifyContent: 'flex-end',
             margin: 20,
             height: 40,
-          }}>
+          }}
+        >
           <Text>{transferred} % Completed</Text>
         </View>
       )}

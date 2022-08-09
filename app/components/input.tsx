@@ -23,6 +23,7 @@ const CustomInput = styled.TextInput`
 
 interface Props {
   placeholder: string;
+  value: string;
   onChangeText: (text: string) => void;
   secureTextEntry?: boolean;
   onKeyPressed: () => void;

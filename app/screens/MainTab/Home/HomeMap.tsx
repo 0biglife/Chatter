@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import NaverMapView, {Circle, Marker} from 'react-native-nmap';
 import styled from 'styled-components/native';
 import Geolocation from '@react-native-community/geolocation';
-import {ActivityIndicator} from 'react-native';
+import {ActivityIndicator, StatusBar} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../redux/store/reducers';
 import Config from 'react-native-config';
@@ -281,6 +281,7 @@ const HomeMap = () => {
 
   return (
     <Container>
+      <StatusBar barStyle="light-content" />
       <NaverMapView
         mapType={1}
         style={{width: '100%', height: '100%'}}
@@ -352,7 +353,7 @@ const HomeMap = () => {
           <TitleView>
             <Title>위도 경도</Title>
             <Title>일몰 시간</Title>
-            <Title>생존자 수</Title>
+            <Title>근처 유저</Title>
           </TitleView>
           <TextView>
             <DataText>
